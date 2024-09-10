@@ -21,12 +21,12 @@ export default function PureComponent() {
         </defs>
         <Pie
           data={data}
-          cx={90}
-          cy={90}
-          startAngle={0}
-          endAngle={300}
-          innerRadius={65}
-          outerRadius={80}
+          cx={66}
+          cy={66}
+          innerRadius={50}
+          outerRadius={60}
+          startAngle={300}
+          endAngle={0}
           dataKey="value"
           stroke="none"
         >

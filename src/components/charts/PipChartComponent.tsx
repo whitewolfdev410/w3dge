@@ -13,6 +13,8 @@ export default function PieChartComponent(props: any) {
           innerRadius={50}
           outerRadius={60}
           fill="#8884d8"
+          endAngle={-180}
+          startAngle={180}
           //   paddingAngle={0}
           dataKey="value"
           stroke="none"

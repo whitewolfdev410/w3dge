@@ -22,10 +22,6 @@ function Distribution({
   }, []);
   return (
     <div className="mt-3">
-      <div className=" justify-between grid grid-cols-[auto_2rem] ">
-        <Bodoy1 text={name} />
-        <Bodoy1 text={amount} />
-      </div>
       <div
         className="bg-white  h-2 rounded-full mt-1 relative block"
         style={{ width: "calc(100% - 50px)" }}
@@ -36,6 +32,10 @@ function Distribution({
             `}
           // style={{ width: isExpanded ? amount : "w-[5%]" }}
         ></div>
+      </div>
+      <div className=" justify-between grid grid-cols-[auto_2rem] ">
+        <Bodoy1 text={name} />
+        <Bodoy1 text={amount} />
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ import { Heading5 } from "../FontComponent";
 function WontToLearn() {
   return (
     <div
-      className="w-fit  p-5 bg-cover bg-current bg-no-repeat"
+      className="w-fit  p-5 bg-cover bg-current bg-no-repeat h-fit rounded-xl"
       style={{
         backgroundImage: `url(${BackgroundImage})`,
       }}

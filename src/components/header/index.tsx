@@ -6,10 +6,10 @@ function Headers() {
   console.log(location);
   return (
     <div>
-      <div className="container-nav fixed w-full top-0 right-0 z-50 left-0 md:hidden">
+      <div className="container-nav fixed w-full top-0 right-0 z-50 left-0 lg:hidden">
         <MobileDrawer />
       </div>
-      <nav className="container-nav  justify-end fixed top-0 right-0 z-50 hidden md:flex">
+      <nav className="container-nav  justify-end fixed top-0 right-0 z-50 hidden lg:flex">
         <div className="header-content flex bg-[#A5A6A5] w-fit rounded-md overflow-hidden my-8 mx-4 items-center pr-3">
           <Link
             to="/"

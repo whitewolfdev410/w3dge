@@ -1,12 +1,13 @@
-import { LogoText } from "../icons";
+import LogoImage from "../assets/images/logoAndText.png";
 
 function HeroHeading({ text }: { text: string }) {
   return (
-    <div className="flex items-center pt-5 md:pt-0">
-      <div className="hidden md:flex">
-        <LogoText key="hero_header" />
+    <div className="flex items-center pt-10 lg:pt-0 lg:-mt-10">
+      <div className="hidden lg:flex">
+        <img src={LogoImage} alt="logo" className="w-28" />
+        {/* <LogoText key="hero_header" /> */}
       </div>
-      <h1 className="font-GBold text-[40px] pt-3 md:pt-0 md:text-[80px] font-bold text-white">
+      <h1 className="font-GBold text-[40px] pt-3 md:pt-0 lg:text-[80px] font-bold text-white">
         {text}
       </h1>
     </div>

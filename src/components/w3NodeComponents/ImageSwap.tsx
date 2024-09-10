@@ -24,8 +24,8 @@ const ImageSwap: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center space-y-4 ">
-      <div className=" flex justify-between gap-52 md:gap-96 mb-16">
+    <div className="flex flex-col items-center space-y-4 h-fit">
+      <div className=" flex justify-between gap-52 md:gap-96 mb-14">
         <div>
           <p className="font-normal font-GRegular text-[14px] text-white">
             Box Identification

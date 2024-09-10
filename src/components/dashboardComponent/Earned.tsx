@@ -24,7 +24,7 @@ function Earned({
             dgeBox ? "font-normal font-GRegular" : "font-bold font-GBold"
           } text-[32px] text-white`}
           step={amount}
-          countSteps={dgeBox ? 100 : 10}
+          countSteps={dgeBox || title === "Total Earned" ? 50 : 10}
           duration={dgeBox ? 5000 : 1000}
           tagText={tagText}
         />

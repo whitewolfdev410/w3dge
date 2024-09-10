@@ -8,7 +8,7 @@ body {
   height: 100vh;
 }
 .max-width-app {
-  max-width: 1600px;
+  max-width: 1700px;
   margin: auto;
 }
 
@@ -54,6 +54,28 @@ body {
   scrollbar-color: #1c1c1c #363636; /* thumb color and track color */
 }
 
+input {
+  background-color: black;
+  color: white;
+}
+
+/* For Chrome/Edge/Opera browsers to keep the background color during autocomplete */
+input:-webkit-autofill {
+  background-color: black !important;
+  color: white !important;
+}
+
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  background-color: black !important;
+  color: white !important;
+}
+
+/* Remove the default styling for Firefox and other browsers */
+input:-moz-autofill {
+  background-color: black !important;
+  color: white !important;
+}
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

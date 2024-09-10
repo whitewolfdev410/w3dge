@@ -4,39 +4,16 @@ import { Bodoy1, HeroHeading } from "../../components/FontComponent";
 import BoostPayout from "../../components/w3NodeComponents/BoostPayout";
 import Footer from "../../components/footer";
 import ImageSwap from "../../components/w3NodeComponents/ImageSwap";
-import ImageOne from "../../assets/images/background_pattern.png";
-import ImageTwo from "../../assets/images/ellipse_8.png";
+import NodeBackground from "../../assets/images/node_background.png";
 
 function W3Node() {
   return (
     <div className="section-node p-7">
-      <img
-        src={ImageOne}
-        style={{
-          position: "fixed",
-          width: "45%",
-          height: "45%",
-          top: "30%",
-          left: "27%",
-          zIndex: -1,
-        }}
-      />
-      <img
-        src={ImageTwo}
-        style={{
-          position: "fixed",
-          top: "-50px",
-          left: "0px",
-          width: "100%",
-          height: "100%",
-          zIndex: -1,
-        }}
-      />
       <div className="grid row">
         <HeroHeading text={"Node View"} />
       </div>
-      <div className=" row grid lg:grid-cols-[30%_70%]  xl:grid-cols-[25%_50%_25%]">
-        <div className="flex flex-wrap justify-center gap-5">
+      <div className=" row grid lg:grid-cols-[30%_70%]  xl:grid-cols-[20%_60%_20%]">
+        <div className="flex flex-wrap mt-10 xl:mt-0 justify-center xl:justify-start gap-10 ">
           <div className="w-80 h-60 grid bg-dark-main p-4 rounded-xl">
             <Bodoy1 text="Preformance" style={"!pb-3"} />
             <LineChartComponent />
@@ -46,10 +23,16 @@ function W3Node() {
             <StokedBorChartComponent />
           </div>
         </div>
-        <div className="flex-1 grid items-center mt-10 gl:mt-0">
+        <div
+          className="flex-1 grid items-center  gl:pt-0  bg-center bg-no-repeat mt-10 xl:mt-0"
+          style={{
+            backgroundImage: `url(${NodeBackground})`,
+            backgroundSize: "130% 130%",
+          }}
+        >
           <ImageSwap />
         </div>
-        <div className=" mt-10 xl:mt-0 flex justify-center">
+        <div className=" mt-10 xl:mt-0 flex justify-center xl:justify-end">
           <div className="max-w-80 w-fit">
             <BoostPayout
               title="Boost your payout"

@@ -12,9 +12,9 @@ function Validators() {
         <HeroHeading text={"Network"} />
       </div>
       <div className="block mt-14">
-        <div className="grid grid-cols-1 xl:grid-cols-[15%_70%_15%] ">
+        <div className="grid grid-cols-1 xl:grid-cols-[20%_70%_10%] ">
           <div className="h-full w-full relative"></div>
-          <div className="flex gap-5 flex-wrap justify-center">
+          <div className="flex gap-5 flex-wrap justify-center xl:justify-between">
             <BoostPayout
               title="Network share"
               precentage="2%"
@@ -55,17 +55,27 @@ function Validators() {
           <div className="h-full w-full relative "></div>
         </div>
       </div>
-      <div className="flex gap-5 mt-20 flex-wrap justify-center">
-        <WontToLearn />
-        <div className="w-72 h-72 grid bg-dark-main p-4 rounded-xl">
-          <Bodoy1 text="Preformance 2" style={"!pb-3"} />
-          <StokedBorChartComponent />
+      <div className="  mt-20 grid grid-cols-1 xl:grid-cols-[20%_70%_10%]">
+        <div className="hidden  xl:grid items-center">
+          <WontToLearn />
         </div>
-        <div className="w-[450px] h-72 grid bg-dark-main p-4 rounded-xl">
-          <Bodoy1 text="Preformance" style={"!pb-3"} />
-          <LineChartComponent />
+        <div className="flex gap-5 flex-wrap justify-center">
+          <div className="w-72 h-72 grid bg-dark-main p-4 rounded-xl">
+            <Bodoy1 text="Preformance 2" style={"!pb-3"} />
+            <StokedBorChartComponent />
+          </div>
+          <div className="w-[400px] h-72 grid bg-dark-main p-4 rounded-xl">
+            <Bodoy1 text="Preformance" style={"!pb-3"} />
+            <LineChartComponent />
+          </div>
+          <TabMain />
         </div>
-        <TabMain />
+        <div></div>
+      </div>
+      <div className="grid">
+        <div className="grid  xl:hidden items-center mt-10 mx-auto">
+          <WontToLearn />
+        </div>
       </div>
     </div>
   );

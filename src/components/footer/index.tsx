@@ -11,9 +11,11 @@ function Footer() {
             Active Validators
           </p>
           <div className="flex items-end gap-2 mt-1">
-            <p className="font-GRegular font-normal text-3xl text-white">
-              14,744
-            </p>
+            <CounterAnimation
+              style="font-GRegular font-normal text-3xl text-white"
+              step={14744}
+              countSteps={50}
+            />
             <p className="font-GRegular font-normal text-sm text-primary-main">
               +13,6%
             </p>
@@ -24,9 +26,11 @@ function Footer() {
             Total Bandwidth
           </p>
           <div className="flex items-end gap-2 mt-1">
-            <p className="font-GRegular font-normal text-3xl text-white">
-              24,744
-            </p>
+            <CounterAnimation
+              style="font-GRegular font-normal text-3xl text-white"
+              step={14744}
+              countSteps={50}
+            />
             <p className="font-GRegular font-normal text-sm text-primary-main">
               +13,6%
             </p>
@@ -37,9 +41,11 @@ function Footer() {
             Resold Bandwidth
           </p>
           <div className="flex items-end gap-2 mt-1">
-            <p className="font-GRegular font-normal text-3xl text-white">
-              14,744
-            </p>
+            <CounterAnimation
+              style="font-GRegular font-normal text-3xl text-white"
+              step={14744}
+              countSteps={50}
+            />
             <p className="font-GRegular font-normal text-sm text-primary-main">
               +13,6%
             </p>
@@ -50,9 +56,11 @@ function Footer() {
             Distributed Bandwidth
           </p>
           <div className="flex items-end gap-2 mt-1">
-            <p className="font-GRegular font-normal text-3xl text-white">
-              14,744
-            </p>
+            <CounterAnimation
+              style="font-GRegular font-normal text-3xl text-white"
+              step={14744}
+              countSteps={50}
+            />
             <p className="font-GRegular font-normal text-sm text-primary-main">
               +13,6%
             </p>
@@ -62,7 +70,7 @@ function Footer() {
       <div className="hidden xl:block">
         <WontToLearn />
       </div>
-      <div className=" gap-5 flex-1 justify-center pt-20 hidden xl:flex">
+      <div className=" gap-5 flex-1 justify-center pt-20 hidden xl:flex xl:pr-10">
         <div>
           <p className="font-GBold font-normal text-sm text-white">
             Active Validators
@@ -71,7 +79,7 @@ function Footer() {
             <CounterAnimation
               style="font-GRegular font-normal text-3xl text-white"
               step={14744}
-              countSteps={100}
+              countSteps={50}
             />
             <p className="font-GRegular font-normal text-sm text-primary-main">
               +13,6%
@@ -86,7 +94,7 @@ function Footer() {
             <CounterAnimation
               style="font-GRegular font-normal text-3xl text-white"
               step={14744}
-              countSteps={100}
+              countSteps={50}
             />
             <p className="font-GRegular font-normal text-sm text-primary-main">
               +13,6%
@@ -101,7 +109,7 @@ function Footer() {
             <CounterAnimation
               style="font-GRegular font-normal text-3xl text-white"
               step={14744}
-              countSteps={100}
+              countSteps={50}
             />
             <p className="font-GRegular font-normal text-sm text-primary-main">
               +13,6%
@@ -116,7 +124,7 @@ function Footer() {
             <CounterAnimation
               style="font-GRegular font-normal text-3xl text-white"
               step={14744}
-              countSteps={100}
+              countSteps={50}
             />
             <p className="font-GRegular font-normal text-sm text-primary-main">
               +13,6%
@@ -130,19 +138,18 @@ function Footer() {
         </div>
         <div className="  relative mt-8 md:mt-0 h-[180px] w-[180px]">
           <PureComponent />
-          <div className="grid w-fit absolute top-[50px] left-[60px]">
-            <p className="font-GRegular font-normal text-[12px] text-white text-end">
+          <div className="grid w-fit absolute top-[37px] left-[37px]">
+            <p className="font-GRegular font-normal text-[12px] text-white text-end -mb-3">
               {" "}
               Payout
             </p>
             <CounterAnimation
-              style="font-GBold font-bold text-5xl text-white"
+              style="font-GBold font-bold text-[40px] text-white"
               step={9.3}
               countSteps={1}
               duration={1000}
             />
-            {/* <p className="font-GBold font-bold text-5xl text-white ">9.3</p> */}
-            <p className="font-GRegular font-normal text-[12px] text-white text-end">
+            <p className="font-GRegular font-normal text-[12px] text-white text-end -mt-3">
               CDN
             </p>
           </div>

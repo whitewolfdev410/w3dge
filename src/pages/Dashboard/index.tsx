@@ -19,7 +19,7 @@ function Dashboard() {
       <div className="grid pt-4 md:pt-0">
         <HeroHeading text={"Cockpit"} />
       </div>
-      <div className="row grid grid-cols-1 lg:grid-cols-[60%_40%] xl:grid-cols-[25%_50%_25%] justify-between mt-14">
+      <div className="row grid grid-cols-1 lg:grid-cols-[60%_40%] xl:grid-cols-[20%_55%_25%] justify-between mt-14">
         <div className="bg-contain bg-center bg-no-repeat relative hidden xl:grid h-fit ">
           <HeroHeadingTwo text="Total Earning" />
           <div className="grid grid-cols-2 gap-x-2 gap-y-6 mt-5 justify-start">
@@ -36,7 +36,7 @@ function Dashboard() {
             <WontToLearn />
           </div>
         </div>
-        <div className=" lg:pr-14">
+        <div className=" lg:px-36">
           <HeroHeadingTwo text="Validator Pools" />
           <div className="flex flex-wrap justify-start">
             <div className="w-[140px] h-[140px] grid relative">
@@ -65,12 +65,12 @@ function Dashboard() {
               </p>
             </div>
           </div>
-          <div className="flex gap-10 mt-20 flex-wrap justify-center">
-            <div className="w-[320px] h-72 grid bg-dark-main p-4 rounded-xl">
+          <div className="flex gap-10 mt-20 flex-wrap justify-center xl:gap-3 xl:justify-between">
+            <div className="w-[290px] h-72 grid bg-dark-main p-4 rounded-xl">
               <Bodoy1 text="Preformance 2" style={"!pb-3"} />
               <StokedBorChartComponent />
             </div>
-            <div className="w-[320px] h-72 grid bg-dark-main p-4 rounded-xl">
+            <div className="w-[290px] h-72 grid bg-dark-main p-4 rounded-xl">
               <Bodoy1 text="Preformance" style={"!pb-3"} />
               <LineChartComponent />
             </div>
@@ -81,20 +81,20 @@ function Dashboard() {
             <HeroHeadingTwo text="3dge Box " />
           </div>
           <div className="flex row gap-5 xl:gap-10 w-full justify-start">
-            <div className="h-[180px] w-[180px] relative ">
+            <div className="h-[140px] w-[140px] relative ">
               <PureComponent />
-              <div className="grid w-fit absolute top-[50px] left-[60px]">
-                <p className="font-GRegular font-normal text-[12px] text-white text-end">
+              <div className="grid w-fit absolute top-[37px] left-[37px]">
+                <p className="font-GRegular font-normal text-[12px] text-white text-end -mb-3">
                   {" "}
                   Payout
                 </p>
                 <CounterAnimation
-                  style="font-GBold font-bold text-5xl text-white"
+                  style="font-GBold font-bold text-[40px] text-white"
                   step={9.3}
                   countSteps={1}
                   duration={1000}
                 />
-                <p className="font-GRegular font-normal text-[12px] text-white text-end">
+                <p className="font-GRegular font-normal text-[12px] text-white text-end -mt-3">
                   CDN
                 </p>
               </div>
