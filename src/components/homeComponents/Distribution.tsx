@@ -24,7 +24,7 @@ function Distribution({
     <div className="mt-3">
       <div
         className="bg-white  h-2 rounded-full mt-1 relative block"
-        style={{ width: "calc(100% - 50px)" }}
+        style={{ width: "calc(100% - 3.12rem)" }}
       >
         <div
           className={`absolute top-0 left-0 h-2  bg-primary-main z-10 rounded-full block  transition-all duration-1000 ease-linear

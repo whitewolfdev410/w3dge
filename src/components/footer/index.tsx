@@ -4,7 +4,7 @@ import CounterAnimation from "../animation/counterAnimation";
 
 function Footer() {
   return (
-    <div className="container footer-section grid xl:flex pt-7 ">
+    <div className=" w-full  xl:flex grid pt-0">
       <div className="flex flex-wrap gap-5 flex-1 justify-center pt-8 xl:hidden">
         <div>
           <p className="font-GBold font-normal text-sm text-white">
@@ -67,10 +67,10 @@ function Footer() {
           </div>
         </div>
       </div>
-      <div className="hidden xl:block">
+      <div className="hidden xl:block -mt-5">
         <WontToLearn />
       </div>
-      <div className=" gap-5 flex-1 justify-center pt-20 hidden xl:flex xl:pr-10">
+      <div className=" gap-7 flex-1 justify-center pt-20 hidden xl:flex xl:pr-10">
         <div>
           <p className="font-GBold font-normal text-sm text-white">
             Active Validators
@@ -136,20 +136,20 @@ function Footer() {
         <div className="mt-10 md:mt-0 flex justify-center xl:hidden">
           <WontToLearn />
         </div>
-        <div className="  relative mt-8 md:mt-0 h-[180px] w-[180px]">
+        <div className="  relative mt-8 md:mt-0 h-[11.25rem] w-[11.25rem]">
           <PureComponent />
-          <div className="grid w-fit absolute top-[37px] left-[37px]">
-            <p className="font-GRegular font-normal text-[12px] text-white text-end -mb-3">
+          <div className="grid w-fit absolute top-[2.61rem] left-[2.61rem]">
+            <p className="font-GRegular font-normal text-[0.75rem] text-white text-end -mb-3">
               {" "}
               Payout
             </p>
             <CounterAnimation
-              style="font-GBold font-bold text-[40px] text-white"
+              style="font-GBold font-bold text-[2.5rem] text-white"
               step={9.3}
               countSteps={1}
               duration={1000}
             />
-            <p className="font-GRegular font-normal text-[12px] text-white text-end -mt-3">
+            <p className="font-GRegular font-normal text-[0.75rem] text-white text-end -mt-3">
               CDN
             </p>
           </div>

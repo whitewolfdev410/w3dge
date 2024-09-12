@@ -8,10 +8,10 @@ import TabMain from "../../components/tabs";
 function Validators() {
   return (
     <div className="section-validators p-5 ">
-      <div className="grid pt-4 md:pt-0">
-        <HeroHeading text={"Network"} />
+      <div className="grid pt-4 md:pt-0 ">
+        <HeroHeading text={"Validator Pools"} />
       </div>
-      <div className="block mt-14">
+      <div className="block pt-16">
         <div className="grid grid-cols-1 xl:grid-cols-[20%_70%_10%] ">
           <div className="h-full w-full relative"></div>
           <div className="flex gap-5 flex-wrap justify-center xl:justify-between">
@@ -55,16 +55,16 @@ function Validators() {
           <div className="h-full w-full relative "></div>
         </div>
       </div>
-      <div className="  mt-20 grid grid-cols-1 xl:grid-cols-[20%_70%_10%]">
+      <div className="  mt-32 grid grid-cols-1 xl:grid-cols-[20%_70%_10%]">
         <div className="hidden  xl:grid items-center">
           <WontToLearn />
         </div>
-        <div className="flex gap-5 flex-wrap justify-center">
-          <div className="w-72 h-72 grid bg-dark-main p-4 rounded-xl">
+        <div className="flex gap-5 flex-wrap justify-center xl:justify-between">
+          <div className="w-80 h-72 grid bg-dark-main p-4 rounded-xl">
             <Bodoy1 text="Preformance 2" style={"!pb-3"} />
             <StokedBorChartComponent />
           </div>
-          <div className="w-[400px] h-72 grid bg-dark-main p-4 rounded-xl">
+          <div className="w-[29rem] h-72 grid bg-dark-main p-4 rounded-xl">
             <Bodoy1 text="Preformance" style={"!pb-3"} />
             <LineChartComponent />
           </div>

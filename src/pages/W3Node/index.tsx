@@ -8,12 +8,12 @@ import NodeBackground from "../../assets/images/node_background.png";
 
 function W3Node() {
   return (
-    <div className="section-node p-7">
+    <div className="section-node p-5">
       <div className="grid row">
         <HeroHeading text={"Node View"} />
       </div>
-      <div className=" row grid lg:grid-cols-[30%_70%]  xl:grid-cols-[20%_60%_20%]">
-        <div className="flex flex-wrap mt-10 xl:mt-0 justify-center xl:justify-start gap-10 ">
+      <div className=" row grid lg:grid-cols-[30%_70%]  xl:grid-cols-[20%_60%_20%] pt-16">
+        <div className="flex flex-wrap mt-10 xl:mt-0 justify-center xl:justify-start gap-8 ">
           <div className="w-80 h-60 grid bg-dark-main p-4 rounded-xl">
             <Bodoy1 text="Preformance" style={"!pb-3"} />
             <LineChartComponent />
@@ -32,7 +32,7 @@ function W3Node() {
         >
           <ImageSwap />
         </div>
-        <div className=" mt-10 xl:mt-0 flex justify-center xl:justify-end">
+        <div className=" mt-10 xl:mt-0 flex justify-center xl:justify-start items-center">
           <div className="max-w-80 w-fit">
             <BoostPayout
               title="Boost your payout"
@@ -44,7 +44,9 @@ function W3Node() {
           </div>
         </div>
       </div>
-      <Footer />
+      <div className="pt-16 grid  xl:pr-28">
+        <Footer />
+      </div>
     </div>
   );
 }

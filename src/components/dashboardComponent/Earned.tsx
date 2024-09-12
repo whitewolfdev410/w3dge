@@ -15,14 +15,14 @@ function Earned({
 }) {
   return (
     <div>
-      <p className="font-normal font-GRegular text-[14px] text-[#949596]">
+      <p className="font-normal font-GRegular text-[0.87rem] text-[#949596]">
         {title}
       </p>
       <div className="flex items-end gap-2">
         <CounterAnimation
           style={`${
             dgeBox ? "font-normal font-GRegular" : "font-bold font-GBold"
-          } text-[32px] text-white`}
+          } text-[2rem] text-white`}
           step={amount}
           countSteps={dgeBox || title === "Total Earned" ? 50 : 10}
           duration={dgeBox ? 5000 : 1000}
@@ -31,7 +31,7 @@ function Earned({
         {/* <p
           className={`${
             dgeBox ? "font-normal font-GRegular" : "font-bold font-GBold"
-          } text-[32px] text-white`}
+          } text-[2rem] text-white`}
         >
           
           {amount}

@@ -13,11 +13,11 @@ function TabMain() {
         <div
           className={`py-3 rounded-md ${
             tab === "Requirements" && "bg-primary-main"
-          } -ml-2 cursor-pointer `}
+          } -ml-2 cursor-pointer transition-all duration-300 ease-linear `}
           id="Requirements"
           onClick={onClickFunction}
         >
-          <p className="text-center font-bold font-GBold text-white text-[20px]">
+          <p className="text-center font-bold font-GBold text-white text-[1.25rem]">
             Requirements
           </p>
         </div>
@@ -25,10 +25,10 @@ function TabMain() {
           id="Earnings"
           className={`py-3 rounded-md ${
             tab === "Earnings" && "bg-primary-main"
-          } -mr-2 cursor-pointer `}
+          } -mr-2 cursor-pointer transition-all duration-300 ease-linear `}
           onClick={onClickFunction}
         >
-          <p className="text-center font-bold font-GBold text-white text-[20px]">
+          <p className="text-center font-bold font-GBold text-white text-[1.25rem]">
             Earnings
           </p>
         </div>

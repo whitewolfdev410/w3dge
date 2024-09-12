@@ -2,12 +2,12 @@ import LogoImage from "../assets/images/logoAndText.png";
 
 function HeroHeading({ text }: { text: string }) {
   return (
-    <div className="flex items-center pt-10 lg:pt-0 lg:-mt-10">
+    <div className="flex items-center pt-10 lg:pt-0 lg:-mt-[3.5rem]">
       <div className="hidden lg:flex">
         <img src={LogoImage} alt="logo" className="w-28" />
         {/* <LogoText key="hero_header" /> */}
       </div>
-      <h1 className="font-GBold text-[40px] pt-3 md:pt-0 lg:text-[80px] font-bold text-white">
+      <h1 className="font-GBold text-[2.5rem] pt-3 md:pt-0 lg:text-[5rem] font-bold text-white">
         {text}
       </h1>
     </div>
@@ -15,7 +15,7 @@ function HeroHeading({ text }: { text: string }) {
 }
 function HeroHeadingTwo({ text }: { text: string }) {
   return (
-    <h2 className={"font-bold font-GBold text-[48px] text-white"}>{text}</h2>
+    <h2 className={"font-bold font-GBold text-[3rem] text-white"}>{text}</h2>
   );
 }
 function Heading1({ text }: { text: string }) {

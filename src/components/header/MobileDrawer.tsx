@@ -42,7 +42,7 @@ const MobileDrawer: React.FC = () => {
         } transition-transform duration-300 ease-in-out`}
       >
         <div className="flex justify-between p-4 border-b border-grey-grey1">
-          <img src={LogoText} style={{ width: "120px" }} />
+          <img src={LogoText} style={{ width: "7.5rem" }} />
           <button onClick={toggleDrawer}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
