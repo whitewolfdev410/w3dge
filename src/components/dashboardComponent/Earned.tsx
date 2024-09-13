@@ -4,11 +4,13 @@ function Earned({
   title,
   amount,
   dgeBox,
+  percentage,
   showPrecentage = true,
   tagText,
 }: {
   title: string;
   amount: number;
+  percentage?: string;
   dgeBox?: boolean;
   showPrecentage?: boolean;
   tagText?: string;
@@ -38,7 +40,7 @@ function Earned({
         </p> */}
         {showPrecentage && (
           <p className="font-bold font-GBold text-[16x] text-primary-main pb-2">
-            +13,6%
+            {percentage}
           </p>
         )}
       </div>

@@ -1,10 +1,11 @@
 import { Heading1, HeroHeading } from "../../components/FontComponent";
-import Distribution from "../../components/homeComponents/Distribution";
 import BackgroundImage from "../../assets/images/home-icon.png";
 import DailyPayouts from "../../components/homeComponents/DailyPayouts";
 import Footer from "../../components/footer";
 import AutoScrollContainer from "../../components/animation/AutoScrollContainer";
 import { HomeData } from "../../assets/constant";
+import { DistributionData } from "../../assets/distribution"
+import Distribution from "../../components/homeComponents/Distribution";
 
 const blinkingPoints = [
   {
@@ -63,12 +64,9 @@ function HomePage() {
         <div className="grid grid-cols-1 xl:grid-cols-[20%_60%_20%] ">
           <div className=" mt-20 mb-16 p-3">
             <Heading1 text="Distribution" />
-            <Distribution width="w-[50%]" amount="50%" name="Vietnam" />
-            <Distribution width="w-[40%]" amount="40%" name="Thailand" />
-            <Distribution width="w-[30%]" amount="30%" name="Malaysia" />
-            <Distribution width="w-[20%]" amount="20%" name="China" />
-            <Distribution width="w-[10%]" amount="10%" name="Philippines " />
-            <Distribution width="w-[0%]" amount="0%" name="Singapore" />
+            {DistributionData.map((item) => (
+              <Distribution width={`w-[${item.amount}]`} amount={item.amount} name={item.name} />
+            ))}
           </div>
           <div
             className="w-full h-[31.25rem] bg-contain bg-center bg-no-repeat relative "

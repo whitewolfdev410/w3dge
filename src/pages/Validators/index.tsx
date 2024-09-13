@@ -4,6 +4,7 @@ import { Bodoy1, HeroHeading } from "../../components/FontComponent";
 import WontToLearn from "../../components/footer/WontToLearn";
 import BoostPayout from "../../components/w3NodeComponents/BoostPayout";
 import TabMain from "../../components/tabs";
+import { ValidatorsData } from "../../assets/validatordata";
 
 function Validators() {
   return (
@@ -15,42 +16,17 @@ function Validators() {
         <div className="grid grid-cols-1 xl:grid-cols-[20%_70%_10%] ">
           <div className="h-full w-full relative"></div>
           <div className="flex gap-5 flex-wrap justify-center xl:justify-between">
-            <BoostPayout
-              title="Network share"
-              precentage="2%"
-              amount="10.000"
-              stockNow={false}
-              subtitle="for Validator reward"
-              validators
-              level="1"
-            />
-            <BoostPayout
-              title="Network share"
-              precentage="3%"
-              amount="20.000"
-              stockNow={false}
-              subtitle="for Validator reward"
-              validators
-              level="2"
-            />
-            <BoostPayout
-              title="Network share"
-              precentage="5%"
-              amount="40.000"
-              stockNow={false}
-              subtitle="for Validator reward"
-              validators
-              level="3"
-            />
-            <BoostPayout
-              title="Network share"
-              precentage="10%"
-              amount="100.000"
-              stockNow={false}
-              subtitle="for Validator reward"
-              validators
-              level="4"
-            />
+            {ValidatorsData.map((item) => (
+              <BoostPayout
+                title={item.title}
+                precentage={item.percentage}
+                amount={item.amount}
+                stockNow={false}
+                subtitle={item.subtitle}
+                validators
+                level={item.level}
+              />
+            ))}
           </div>
           <div className="h-full w-full relative "></div>
         </div>

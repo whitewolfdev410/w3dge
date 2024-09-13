@@ -1,6 +1,6 @@
 import CounterAnimation from "../animation/counterAnimation";
 
-function Earn({ title, amount }: { title: string; amount: number }) {
+function Earn({ title, amount, currency }: { title: string; amount: number, currency?: string }) {
   return (
     <div className="w-fit">
       <p className="font-normal font-GRegular text-[1.5rem] text-white">
@@ -14,7 +14,7 @@ function Earn({ title, amount }: { title: string; amount: number }) {
           duration={1000}
         />
         <p className="font-bold font-GBold text-[16x] text-primary-main pb-3">
-          CDN
+          {currency}
         </p>
       </div>
     </div>

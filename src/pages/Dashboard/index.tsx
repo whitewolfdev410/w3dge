@@ -12,6 +12,10 @@ import StokedBorChartComponent from "../../components/charts/stackedBarChart";
 import LineChartComponent from "../../components/charts/lineChart";
 import PureComponent from "../../components/charts/SimpleRadialBarChart";
 import CounterAnimation from "../../components/animation/counterAnimation";
+import { ValidatorPoolData } from "../../assets/validatorpooldata";
+import { ValidatorEarnData } from "../../assets/validatorearndata";
+import { DashboardTotalEarnData } from "../../assets/dashboardtotalearndata";
+import { FooterData, PayoutData } from "../../assets/footerdata";
 
 function Dashboard() {
   return (
@@ -24,9 +28,9 @@ function Dashboard() {
           <div className="xl:pl-28">
             <HeroHeadingTwo text="Total Earning" />
             <div className="grid grid-cols-2 gap-x-0 gap-y-6 mt-5 justify-start">
-              <Earn title="Today" amount={12} />
-              <Earn title="This Week" amount={142} />
-              <Earn title="This Month" amount={1242} />
+              {DashboardTotalEarnData.map((item) => (
+                <Earn title={item.title} amount={item.amount} currency={item.currency}/>
+              ))}
             </div>
             <div className="flex justify-start pl-14">
               <div className="bg-dark-main  rounded-md py-3 px-14 flex justify-center transition-all duration-300 ease-linear mt-3 items-center w-fit text-primary-main cursor-pointer  hover:bg-primary-main hover:text-white">
@@ -45,26 +49,17 @@ function Dashboard() {
             <HeroHeadingTwo text="Validator Pools" />
           </div>
           <div className="flex flex-wrap justify-center">
-            <div className="w-[9.5rem] h-[9.5rem] grid relative">
-              <PieChartComponent color="#00B649" />
-              <PieChartContent amount={140.93} />
-            </div>
-            <div className="w-[9.5rem] h-[9.5rem] grid relative">
-              <PieChartComponent color="#00B649" />
-              <PieChartContent amount={240.43} />
-            </div>
-            <div className="w-[9.5rem] h-[9.5rem] grid relative">
-              <PieChartComponent color="#949596" />
-              <PieChartContent />
-            </div>
-            <div className="w-[9.5rem] h-[9.5rem] grid relative">
-              <PieChartComponent color="#949596" />
-              <PieChartContent />
-            </div>
+            {ValidatorPoolData.map((item) => (
+              <div className="w-[9.5rem] h-[9.5rem] grid relative">
+                <PieChartComponent color={item.amount != 0 ? "#00B649" : "#949596"} />
+                <PieChartContent amount={item.amount} />
+              </div>
+            ))}
           </div>
           <div className="flex flex-wrap gap-12 justify-center  my-7 items-center">
-            <Earned title="Total Earned" amount={14744} />
-            <Earned title="Total Netork Share" amount={20.1} tagText="%" />
+            {ValidatorEarnData.map((item) => (
+              <Earned title="Total Earned" amount={item.amount} percentage={item.percentage} tagText={item.tagText}/>
+            ))}
             <div className="bg-dark-main w-[10.43rem] py-3 h-fit transition-all duration-300 ease-linear justify-center rounded-lg cursor-pointer text-primary-main hover:bg-primary-main hover hover:text-white">
               <p className="font-bold font-GBold text-[0.93rem] text-center">
                 Claim Reward
@@ -97,12 +92,12 @@ function Dashboard() {
                   </p>
                   <CounterAnimation
                     style="font-GBold font-bold text-[2.5rem] text-white"
-                    step={9.3}
+                    step={PayoutData.amount}
                     countSteps={1}
                     duration={1000}
                   />
                   <p className="font-GRegular font-normal text-[0.75rem] text-white text-end -mt-3">
-                    CDN
+                    {PayoutData.token}
                   </p>
                 </div>
               </div>
@@ -117,10 +112,9 @@ function Dashboard() {
               </div>
             </div>
             <div className="grid grid-cols-2 gap-5 xl:gap-10">
-              <Earned title="Active Validators" amount={14744} dgeBox />
-              <Earned title="Total Bandwidth" amount={14744} dgeBox />
-              <Earned title="Resold Bandwidth " amount={14744} dgeBox />
-              <Earned title="Distributed Bandwidth" amount={14744} dgeBox />
+              {FooterData.map((item) => (
+                <Earned title={item.title} amount={item.value} percentage={item.percentage} dgeBox />
+              ))}
             </div>
           </div>
         </div>

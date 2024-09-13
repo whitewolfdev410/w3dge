@@ -5,6 +5,7 @@ import BoostPayout from "../../components/w3NodeComponents/BoostPayout";
 import Footer from "../../components/footer";
 import ImageSwap from "../../components/w3NodeComponents/ImageSwap";
 import NodeBackground from "../../assets/images/node_background.png";
+import { BoostData } from "../../assets/boostdata";
 
 function W3Node() {
   return (
@@ -36,8 +37,8 @@ function W3Node() {
           <div className="max-w-80 w-fit">
             <BoostPayout
               title="Boost your payout"
-              precentage="20%"
-              amount="10.000"
+              precentage={BoostData.percentage}
+              amount={BoostData.amount}
               stockNow
               validators={false}
             />
