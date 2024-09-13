@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 interface IPropsCounterAnimation {
   style: string;
-  step: number;
+  step: any;
   countSteps?: number;
   duration?: number;
   tagText?: string;

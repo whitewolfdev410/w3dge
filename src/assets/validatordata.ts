@@ -1,27 +1,27 @@
 export const ValidatorsData = [
     {
-        percentage: '2%',
+        percentage: 2,
         amount: '10.000',
         title: 'Network share',
         subtitle: 'for Validator reward',
         level: "1"
     },
     {
-        percentage: '3%',
+        percentage: 3,
         amount: '20.000',
         title: 'Network share',
         subtitle: 'for Validator reward',
         level: "2"
     },
     {
-        percentage: '5%',
+        percentage: 5,
         amount: '40.000',
         title: 'Network share',
         subtitle: 'for Validator reward',
         level: "3"
     },
     {
-        percentage: '10%',
+        percentage: 10,
         amount: '100.000',
         title: 'Network share',
         subtitle: 'for Validator reward',

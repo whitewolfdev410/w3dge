@@ -3,10 +3,11 @@ import LogoIcon from "../../assets/images/logo.png";
 import { Clock, Lock } from "../../icons";
 import ValedateImage from "../../assets/images/validatore.png";
 import Tooltip from "../Tooltip";
+import CounterAnimation from "../animation/counterAnimation";
 
 interface IPropsBoostPayout {
   title: string;
-  precentage: string;
+  precentage: number;
   subtitle?: string;
   amount: string;
   stockNow?: boolean;
@@ -34,9 +35,13 @@ function BoostPayout({
       <div className=" p-9">
         <Heading5 text={title} />
         <div>
-          <p className="font-bold font-GBold text-[2.5rem] text-primary-main">
-            {precentage}
-          </p>
+          <CounterAnimation
+            style="font-bold font-GBold text-[2.5rem] text-primary-main"
+            step={precentage}
+            countSteps={0.3}
+            duration={500}
+            tagText="%"
+          />
           {subtitle ? (
             <p className="font-normal font-GRegular text-[0.75rem] text-grey-grey1">
               {subtitle}
@@ -59,9 +64,12 @@ function BoostPayout({
                 backgroundImage: `url(${LogoIcon})`,
               }}
             ></div>
-            <p className="text-primary-main font-GBold font-bold text-[1.25rem]">
-              {amount}
-            </p>
+            <CounterAnimation
+              style="text-primary-main font-GBold font-bold text-[1.25rem]"
+              step={amount}
+              countSteps={1}
+              duration={1000}
+            />
           </div>
           <p className="text-white font-GRegular font-normal text-[0.62rem]">
             required
@@ -102,9 +110,12 @@ function BoostPayout({
             }}
           ></div>
           <div className="flex items-end h-fit">
-            <p className="font-bold font-GBold text-[2.5rem] text-white leading-10">
-              {level}
-            </p>
+            <CounterAnimation
+              style="font-bold font-GBold text-[2.5rem] text-white leading-10"
+              step={level}
+              countSteps={1}
+              duration={300}
+            />
             <div>
               <p className="font-normal font-GRegular text-[0.75rem] text-white pb-0 -mb-1">
                 Level
