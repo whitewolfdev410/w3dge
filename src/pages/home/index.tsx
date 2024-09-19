@@ -4,8 +4,11 @@ import DailyPayouts from "../../components/homeComponents/DailyPayouts";
 import Footer from "../../components/footer";
 import AutoScrollContainer from "../../components/animation/AutoScrollContainer";
 import { HomeData } from "../../assets/constant";
-import { DistributionData } from "../../assets/distribution"
+import { LocationCount } from "../../assets/location_count"
 import Distribution from "../../components/homeComponents/Distribution";
+import { useAccount } from "wagmi";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const blinkingPoints = [
   {
@@ -55,6 +58,53 @@ const blinkingPoints = [
 ];
 
 function HomePage() {
+
+  const { address, isConnected } = useAccount();
+  const [ networkStats, setNetworkStats ] = useState<any>();
+  const [ isLoading, setIsLoading ] = useState<boolean>(true);
+  const [ error, setError ] = useState<any>(null)
+  const [locationCountData, setLocationCountData] = useState<any>(null)
+  const [boxPayoutList, setBoxPayoutList] = useState<any>(null)
+  const [averageDailyRevenue, setAverageDailyRevenue] = useState<any>(null)
+
+  const fetchData = async (url:string, setData:any, setError:any, setIsLoading:any) => {
+    try {
+      const todayDate = new Date().toISOString().split('T')[0];
+      const response = await axios.get(`${url}/${todayDate}`);
+      setData(response.data);
+    } catch (err:any) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  useEffect(() => {
+    if (isConnected && address) {
+      setIsLoading(true);
+  
+      fetchData(
+        import.meta.env.VITE_API_URL + '/networkStats',
+        (data:any) => {
+          setNetworkStats(data);
+          setAverageDailyRevenue(data.average_daily_revenue);
+          setLocationCountData(Object.entries(data.location_count).map(([name, amount]) => ({
+            name,
+            amount
+          })));
+        },
+        setError,
+        setIsLoading
+      );
+  
+      fetchData(
+        import.meta.env.VITE_API_URL + '/boxPayoutList',
+        (data:any) => setBoxPayoutList(data.transactions),
+        setError,
+        setIsLoading
+      );
+    }
+  }, [isConnected, address]);
   return (
     <div className="section-home p-5 ">
       <div className="grid ">
@@ -64,9 +114,9 @@ function HomePage() {
         <div className="grid grid-cols-1 xl:grid-cols-[20%_60%_20%] ">
           <div className=" mt-20 mb-16 p-3">
             <Heading1 text="Distribution" />
-            {DistributionData.map((item) => (
-              <Distribution width={`w-[${item.amount}]`} amount={item.amount} name={item.name} />
-            ))}
+            {!isLoading && locationCountData && (locationCountData.map((item:any, index:any) => (
+              <Distribution width={`w-[${item.amount}]`} key={index} amount={item.amount} name={item.name} />
+            )))}
           </div>
           <div
             className="w-full h-[31.25rem] bg-contain bg-center bg-no-repeat relative "
@@ -85,8 +135,8 @@ function HomePage() {
             <Heading1 text="Daily Payouts" />
             <AutoScrollContainer>
               <div className="scroll-container p-3 relative">
-                {HomeData?.map((item) => (
-                  <DailyPayouts key={item?.id} item={item} />
+                { !isLoading && boxPayoutList?.map((item:any, index:number) => (
+                  <DailyPayouts key={index} item={item} />
                 ))}
               </div>
             </AutoScrollContainer>
@@ -96,7 +146,9 @@ function HomePage() {
         </div>
       </div>
       <div className="grid pr-12">
-        <Footer />
+        { !isLoading && (
+          <Footer networkStats={networkStats}/>
+        )}
       </div>
     </div>
   );

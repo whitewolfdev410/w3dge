@@ -1,8 +1,15 @@
+import { useEffect, useState } from "react";
 import Logo from "../../assets/images/login_page_logo.png";
 import BackgroundImage from "../../assets/images/login_background_image.png";
 
 import { useForm, SubmitHandler } from "react-hook-form";
 import Switch from "../../components/switch/switch";
+import { useAccount, useDisconnect } from 'wagmi';
+import { WalletModal } from "../../components/modals/WalletModal";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
+import * as walletStore from '../../store/wallet';
 
 interface IFormInput {
   email: string;
@@ -10,8 +17,29 @@ interface IFormInput {
 }
 
 function LoginPage() {
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const { register, handleSubmit } = useForm<IFormInput>();
   const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
+  const { address, isConnected } = useAccount();
+  const [showModal, setShowModal] = useState(false);
+  const { disconnect } = useDisconnect();
+  const handleClick = () => {
+      if (isConnected) {
+          disconnect();
+      } else {
+          setShowModal(true);
+      }
+  }
+  useEffect(() => {
+      if (address) {
+          dispatch(walletStore.setAddress(address));
+          navigate('/');
+      }
+  }, [address])
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2">
       <img
@@ -76,7 +104,18 @@ function LoginPage() {
             list="off"
             className="bg-primary-main   w-full cursor-pointer transition-all duration-300 ease-linear hover:bg-[#08ef65fa] font-GBold font-bold text-[0.75rem] text-white py-3 rounded-[0.75rem] mt-9"
           />
+          <input
+            type="submit"
+            value={"Wallet Connect"}
+            onClick={handleClick}
+            autoComplete="off"
+            list="off"
+            className="bg-primary-main   w-full cursor-pointer transition-all duration-300 ease-linear hover:bg-[#08ef65fa] font-GBold font-bold text-[0.75rem] text-white py-3 rounded-[0.75rem] mt-9"
+          />
         </form>
+        {
+            showModal && <WalletModal close={() => setShowModal(false)} />
+        }
         <p className="font-GRegular font-normal text-[0.87rem] text-[#A0AEC0] text-center mt-4">
           Don't have an account?{" "}
           <span className="font-GBold font-bold text-[0.87rem] text-white">

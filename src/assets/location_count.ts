@@ -1,4 +1,4 @@
-export const DistributionData = [
+export const LocationCount = [
     {
         name: 'Vietnam',
         amount: '50%'

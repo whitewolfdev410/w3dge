@@ -6,8 +6,58 @@ import Footer from "../../components/footer";
 import ImageSwap from "../../components/w3NodeComponents/ImageSwap";
 import NodeBackground from "../../assets/images/node_background.png";
 import { BoostData } from "../../assets/boostdata";
+import { useAccount } from "wagmi";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 function W3Node() {
+  const { address, isConnected } = useAccount();
+  const [ networkStats, setNetworkStats ] = useState<any>();
+  const [ isLoading, setIsLoading ] = useState<boolean>(true);
+  const [ error, setError ] = useState<any>(null)
+  const [boxViewData, setBoxViewData] = useState<any>(null)
+  const [boxViewPayoutData, setBoxViewPayoutData] = useState<any>(null)
+  const [selectedBoxId, setSelectedBoxId] = useState<string | null>(null);
+
+  const handleBoxSelect = (boxId: string) => {
+    fetchData(
+      import.meta.env.VITE_API_URL + '/boxPayout/' + boxId,
+      (data:any) => setBoxViewPayoutData(data),
+      setError,
+      setIsLoading,
+      false
+    );
+    setSelectedBoxId(boxId);
+  };
+  const fetchData = async (url:string, setData:any, setError:any, setIsLoading:any, isdate: boolean) => {
+    try {
+      const todayDate = new Date().toISOString().split('T')[0];
+      let reqUrl = isdate ? `${url}/${todayDate}` : url;
+      const response = await axios.get(reqUrl);
+      setData(response.data);
+    } catch (err:any) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  useEffect(() => {
+    if (isConnected && address) {
+      setIsLoading(true);
+      fetchData(
+        import.meta.env.VITE_API_URL + '/boxView',
+        (data:any) => setBoxViewData(data),
+        setError,
+        setIsLoading,
+        false
+      );
+    }
+  }, [isConnected, address]);
+  useEffect(()=>{
+    if(boxViewData)
+    handleBoxSelect(boxViewData[0]?.box_id)
+  }, [boxViewData])
   return (
     <div className="section-node p-5">
       <div className="grid row">
@@ -17,11 +67,11 @@ function W3Node() {
         <div className="flex flex-wrap mt-10 xl:mt-0 justify-center xl:justify-start gap-8 ">
           <div className="w-80 h-60 grid bg-dark-main p-4 rounded-xl">
             <Bodoy1 text="Preformance" style={"!pb-3"} />
-            <LineChartComponent />
+            <LineChartComponent boxViewPayoutData={boxViewPayoutData}/>
           </div>
           <div className="w-80 h-60 grid bg-dark-main p-4 rounded-xl">
             <Bodoy1 text="Preformance 2" style={"!pb-3"} />
-            <StokedBorChartComponent />
+            <StokedBorChartComponent boxViewPayoutData = {boxViewPayoutData}/>
           </div>
         </div>
         <div
@@ -31,7 +81,7 @@ function W3Node() {
             backgroundSize: "130% 130%",
           }}
         >
-          <ImageSwap />
+          <ImageSwap boxViewData={boxViewData} onBoxSelect={handleBoxSelect}/>
         </div>
         <div className=" mt-10 xl:mt-0 flex justify-center xl:justify-start items-center">
           <div className="max-w-80 w-fit">
@@ -46,7 +96,9 @@ function W3Node() {
         </div>
       </div>
       <div className="pt-16 grid  xl:pr-28">
-        <Footer />
+        { !isLoading && (
+          <Footer networkStats={networkStats}/>
+        )}
       </div>
     </div>
   );

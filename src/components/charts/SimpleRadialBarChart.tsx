@@ -15,8 +15,8 @@ export default function PureComponent() {
             y2="138.35"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stop-color="#00BB35" />
-            <stop offset="1" stop-color="#05CD99" stop-opacity="0" />
+            <stop stopColor="#00BB35" />
+            <stop offset="1" stopColor="#05CD99" stopOpacity="0" />
           </linearGradient>
         </defs>
         <Pie

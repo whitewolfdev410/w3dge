@@ -10,12 +10,12 @@ export const FooterData = [
         percentage: '+13.6%'
     },
     {
-        title: 'Resold Bandwidth',
+        title: 'Daily Bandwidth',
         value: 14730,
         percentage: '+13.6%'
     },
     {
-        title: 'Distributed Bandwidth',
+        title: 'Total Earning',
         value: 14700,
         percentage: '+13.7%'
     },

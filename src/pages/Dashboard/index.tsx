@@ -14,10 +14,79 @@ import PureComponent from "../../components/charts/SimpleRadialBarChart";
 import CounterAnimation from "../../components/animation/counterAnimation";
 import { ValidatorPoolData } from "../../assets/validatorpooldata";
 import { ValidatorEarnData } from "../../assets/validatorearndata";
-import { DashboardTotalEarnData } from "../../assets/dashboardtotalearndata";
 import { FooterData, PayoutData } from "../../assets/footerdata";
+import { useAccount } from "wagmi";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 function Dashboard() {
+  
+  const { address, isConnected } = useAccount();
+  const [userData, setUserData] = useState<any>(); // State to store fetched data
+  const [loading, setLoading] = useState(true); // Loading state
+  const [error, setError] = useState(null); // Error state
+  const [boxViewData, setBoxViewData] = useState<any>(null)
+  const [boxViewPayoutData, setBoxViewPayoutData] = useState<any>(null)
+  const [ isLoading, setIsLoading ] = useState<boolean>(true);
+  const [selectedBoxId, setSelectedBoxId] = useState<string | null>(null);
+  const handleBoxSelect = (boxId: string) => {
+    fetchData(
+      import.meta.env.VITE_API_URL + '/boxPayout/' + boxId,
+      (data:any) => setBoxViewPayoutData(data),
+      setError,
+      setIsLoading,
+      false
+    );
+    setSelectedBoxId(boxId);
+  };
+  const fetchData = async (url:string, setData:any, setError:any, setIsLoading:any, isdate: boolean) => {
+    try {
+      const todayDate = new Date().toISOString().split('T')[0];
+      let reqUrl = isdate ? `${url}/${todayDate}` : url;
+      const response = await axios.get(reqUrl);
+      setData(response.data);
+    } catch (err:any) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
+  useEffect(() => {
+    if (isConnected && address) {
+      setIsLoading(true);
+      fetchData(
+        import.meta.env.VITE_API_URL + '/boxView',
+        (data:any) => setBoxViewData(data),
+        setError,
+        setIsLoading,
+        false
+      );
+    }
+  }, [isConnected, address]);
+  useEffect(()=>{
+    if(boxViewData)
+    handleBoxSelect(boxViewData[0]?.box_id)
+  }, [boxViewData])
+
+  useEffect(() => {
+    if (isConnected && address) {
+      const fetchUserData = async () => {
+        try {
+          const response = await axios.get(`${import.meta.env.VITE_API_URL}/users/0xdef456`);
+          setUserData(response.data);
+          setLoading(false);
+        } catch (err:any) {
+          setError(err.message);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchUserData();
+    }
+  }, [isConnected, address]);
+  console.log('userData: ', userData)
+
   return (
     <div className="section-dashboard p-5 ">
       <div className="grid pt-4 md:pt-0">
@@ -27,11 +96,13 @@ function Dashboard() {
         <div className="bg-contain bg-center bg-no-repeat relative hidden xl:grid h-fit pt-12">
           <div className="xl:pl-28">
             <HeroHeadingTwo text="Total Earning" />
-            <div className="grid grid-cols-2 gap-x-0 gap-y-6 mt-5 justify-start">
-              {DashboardTotalEarnData.map((item) => (
-                <Earn title={item.title} amount={item.amount} currency={item.currency}/>
-              ))}
-            </div>
+            {!loading && (
+              <div className="grid grid-cols-2 gap-x-0 gap-y-6 mt-5 justify-start">
+                  <Earn title="Today" amount={userData?.income_per_day ?? 0} currency="CND"/>
+                  <Earn title="This Week" amount={userData?.income_per_week ?? 0} currency="CND"/>
+                  <Earn title="This Month" amount={userData?.income_per_month ?? 0} currency="CND"/>
+              </div>
+            )}
             <div className="flex justify-start pl-14">
               <div className="bg-dark-main  rounded-md py-3 px-14 flex justify-center transition-all duration-300 ease-linear mt-3 items-center w-fit text-primary-main cursor-pointer  hover:bg-primary-main hover:text-white">
                 <p className="font-bold font-GBold text-[0.93rem]  hover:text-white">
@@ -49,17 +120,20 @@ function Dashboard() {
             <HeroHeadingTwo text="Validator Pools" />
           </div>
           <div className="flex flex-wrap justify-center">
-            {ValidatorPoolData.map((item) => (
+            {userData?.staking_pools.map((item: any) => (
               <div className="w-[9.5rem] h-[9.5rem] grid relative">
-                <PieChartComponent color={item.amount != 0 ? "#00B649" : "#949596"} />
-                <PieChartContent amount={item.amount} />
+                <PieChartComponent color={item.amount_locked != 0 ? "#00B649" : "#949596"} />
+                <PieChartContent amount={item.amount_locked} />
               </div>
             ))}
           </div>
           <div className="flex flex-wrap gap-12 justify-center  my-7 items-center">
-            {ValidatorEarnData.map((item) => (
-              <Earned title="Total Earned" amount={item.amount} percentage={item.percentage} tagText={item.tagText}/>
-            ))}
+            {!loading && (
+              <>
+                <Earned title="Total Earned" amount={userData?.staking_rewards} percentage={"13.6%"}/>
+                <Earned title="Total Earned" amount={userData?.total_network_share_percentage} percentage={"13.6%"} tagText="%"/>
+              </>
+            )}
             <div className="bg-dark-main w-[10.43rem] py-3 h-fit transition-all duration-300 ease-linear justify-center rounded-lg cursor-pointer text-primary-main hover:bg-primary-main hover hover:text-white">
               <p className="font-bold font-GBold text-[0.93rem] text-center">
                 Claim Reward
@@ -69,11 +143,11 @@ function Dashboard() {
           <div className="flex gap-7 mt-16 flex-wrap justify-center xl:gap-7 xl:justify-center">
             <div className="w-[17rem] h-72 grid bg-dark-main p-4 rounded-xl">
               <Bodoy1 text="Preformance 2" style={"!pb-3"} />
-              <StokedBorChartComponent />
+              <StokedBorChartComponent boxViewPayoutData = {boxViewPayoutData}/>
             </div>
             <div className="w-[17rem] h-72 grid bg-dark-main p-4 rounded-xl">
               <Bodoy1 text="Preformance" style={"!pb-3"} />
-              <LineChartComponent />
+              <LineChartComponent boxViewPayoutData={boxViewPayoutData}/>
             </div>
           </div>
         </div>
