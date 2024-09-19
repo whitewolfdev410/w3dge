@@ -12,8 +12,6 @@ import StokedBorChartComponent from "../../components/charts/stackedBarChart";
 import LineChartComponent from "../../components/charts/lineChart";
 import PureComponent from "../../components/charts/SimpleRadialBarChart";
 import CounterAnimation from "../../components/animation/counterAnimation";
-import { ValidatorPoolData } from "../../assets/validatorpooldata";
-import { ValidatorEarnData } from "../../assets/validatorearndata";
 import { FooterData, PayoutData } from "../../assets/footerdata";
 import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
@@ -37,6 +35,9 @@ function Dashboard() {
       setIsLoading,
       false
     );
+    console.log('here is error: ', error)
+    console.log('here is selectedBoxId: ', selectedBoxId)
+    console.log('here is isLoading: ', isLoading)
     setSelectedBoxId(boxId);
   };
   const fetchData = async (url:string, setData:any, setError:any, setIsLoading:any, isdate: boolean) => {

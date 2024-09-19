@@ -18,6 +18,8 @@ function W3Node() {
   const [boxViewData, setBoxViewData] = useState<any>(null)
   const [boxViewPayoutData, setBoxViewPayoutData] = useState<any>(null)
   const [selectedBoxId, setSelectedBoxId] = useState<string | null>(null);
+  const [averageDailyRevenue, setAverageDailyRevenue] = useState<any>(null)
+  const [locationCountData, setLocationCountData] = useState<any>(null)
 
   const handleBoxSelect = (boxId: string) => {
     fetchData(
@@ -27,6 +29,10 @@ function W3Node() {
       setIsLoading,
       false
     );
+    console.log('here is error: ', error)
+    console.log('here is selectedBoxId: ', selectedBoxId)
+    console.log('here is averageDailyRevenue: ', averageDailyRevenue)
+    console.log('here is locationCountData: ', locationCountData)
     setSelectedBoxId(boxId);
   };
   const fetchData = async (url:string, setData:any, setError:any, setIsLoading:any, isdate: boolean) => {
@@ -45,6 +51,20 @@ function W3Node() {
   useEffect(() => {
     if (isConnected && address) {
       setIsLoading(true);
+      fetchData(
+        import.meta.env.VITE_API_URL + '/networkStats',
+        (data:any) => {
+          setNetworkStats(data);
+          setAverageDailyRevenue(data.average_daily_revenue);
+          setLocationCountData(Object.entries(data.location_count).map(([name, amount]) => ({
+            name,
+            amount
+          })));
+        },
+        setError,
+        setIsLoading,
+        true
+      );
       fetchData(
         import.meta.env.VITE_API_URL + '/boxView',
         (data:any) => setBoxViewData(data),

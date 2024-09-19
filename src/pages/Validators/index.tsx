@@ -25,6 +25,9 @@ function Validators() {
       setIsLoading,
       false
     );
+    console.log('here is error: ', error)
+    console.log('here is selectedBoxId: ', selectedBoxId)
+    console.log('here is isLoading: ', isLoading)
     setSelectedBoxId(boxId);
   };
   const fetchData = async (url:string, setData:any, setError:any, setIsLoading:any, isdate: boolean) => {

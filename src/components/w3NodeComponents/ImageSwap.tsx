@@ -1,10 +1,5 @@
 import React, { useState } from "react";
 import { ArrowLeft, ArrowRight } from "../../icons";
-interface dataSwap {
-  image: string;
-  identification: string;
-  location: string;
-}
 interface ImageSwapProps {
   boxViewData: any; 
   onBoxSelect: (boxId: string) => void;

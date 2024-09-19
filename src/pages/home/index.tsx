@@ -3,8 +3,6 @@ import BackgroundImage from "../../assets/images/home-icon.png";
 import DailyPayouts from "../../components/homeComponents/DailyPayouts";
 import Footer from "../../components/footer";
 import AutoScrollContainer from "../../components/animation/AutoScrollContainer";
-import { HomeData } from "../../assets/constant";
-import { LocationCount } from "../../assets/location_count"
 import Distribution from "../../components/homeComponents/Distribution";
 import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
@@ -72,6 +70,8 @@ function HomePage() {
       const todayDate = new Date().toISOString().split('T')[0];
       const response = await axios.get(`${url}/${todayDate}`);
       setData(response.data);
+      console.log('here is error: ', error)
+      console.log('here is averageDailyRevenue: ', averageDailyRevenue)
     } catch (err:any) {
       setError(err.message);
     } finally {

@@ -8,9 +8,6 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { StokeChartData } from "../../assets/stockchartdata";
-
-const data = StokeChartData
 
 // Function to format the YAxis values to 1k, 2k, etc.
 const formatYAxis = (tickItem: any) => {
