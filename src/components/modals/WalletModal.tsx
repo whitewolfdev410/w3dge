@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Connector, useConnect, useAccount } from 'wagmi';
 import { BrowserProvider } from 'ethers';
 
