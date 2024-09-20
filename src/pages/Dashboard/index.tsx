@@ -74,7 +74,7 @@ function Dashboard() {
     if (isConnected && address) {
       const fetchUserData = async () => {
         try {
-          const response = await axios.get(`${import.meta.env.VITE_API_URL}/users/0xdef456`);
+          const response = await axios.get(`${import.meta.env.VITE_API_URL}/users/${address}`);
           setUserData(response.data);
           setLoading(false);
         } catch (err:any) {
