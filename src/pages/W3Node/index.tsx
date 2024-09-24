@@ -14,6 +14,7 @@ function W3Node() {
   const { address, isConnected } = useAccount();
   const [ networkStats, setNetworkStats ] = useState<any>();
   const [ isLoading, setIsLoading ] = useState<boolean>(true);
+  const [isLoadingNet, setIsLoadingNet] = useState<boolean>(true);
   const [ error, setError ] = useState<any>(null)
   const [boxViewData, setBoxViewData] = useState<any>(null)
   const [boxViewPayoutData, setBoxViewPayoutData] = useState<any>(null)
@@ -30,12 +31,13 @@ function W3Node() {
       false
     );
     console.log('here is error: ', error)
+    console.log('here is isLoading: ', isLoading)
     console.log('here is selectedBoxId: ', selectedBoxId)
     console.log('here is averageDailyRevenue: ', averageDailyRevenue)
     console.log('here is locationCountData: ', locationCountData)
     setSelectedBoxId(boxId);
   };
-  const fetchData = async (url:string, setData:any, setError:any, setIsLoading:any, isdate: boolean) => {
+  const fetchData = async (url:string, setData:any, setError:any, setChangeStatus:any, isdate: boolean) => {
     try {
       const todayDate = new Date().toISOString().split('T')[0];
       let reqUrl = isdate ? `${url}/${todayDate}` : url;
@@ -44,13 +46,14 @@ function W3Node() {
     } catch (err:any) {
       setError(err.message);
     } finally {
-      setIsLoading(false);
+      setChangeStatus(false);
     }
   };
   
   useEffect(() => {
     if (isConnected && address) {
       setIsLoading(true);
+      setIsLoadingNet(true);
       fetchData(
         import.meta.env.VITE_API_URL + '/networkStats',
         (data:any) => {
@@ -62,7 +65,7 @@ function W3Node() {
           })));
         },
         setError,
-        setIsLoading,
+        setIsLoadingNet,
         true
       );
       fetchData(
@@ -116,7 +119,7 @@ function W3Node() {
         </div>
       </div>
       <div className="pt-16 grid  xl:pr-28">
-        { !isLoading && (
+        { !isLoadingNet && (
           <Footer networkStats={networkStats}/>
         )}
       </div>

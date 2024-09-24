@@ -60,6 +60,7 @@ function HomePage() {
   const { address, isConnected } = useAccount();
   const [ networkStats, setNetworkStats ] = useState<any>();
   const [ isLoading, setIsLoading ] = useState<boolean>(true);
+  const [isLoadingNet, setIsLoadingNet] = useState<boolean>(true);
   const [ error, setError ] = useState<any>(null)
   const [locationCountData, setLocationCountData] = useState<any>(null)
   const [boxPayoutList, setBoxPayoutList] = useState<any>(null)
@@ -82,6 +83,7 @@ function HomePage() {
   useEffect(() => {
     if (isConnected && address) {
       setIsLoading(true);
+      setIsLoadingNet(true);
   
       fetchData(
         import.meta.env.VITE_API_URL + '/networkStats',
@@ -94,7 +96,7 @@ function HomePage() {
           })));
         },
         setError,
-        setIsLoading
+        setIsLoadingNet
       );
   
       fetchData(
@@ -146,7 +148,7 @@ function HomePage() {
         </div>
       </div>
       <div className="grid pr-12">
-        { !isLoading && (
+        { !isLoadingNet && (
           <Footer networkStats={networkStats}/>
         )}
       </div>

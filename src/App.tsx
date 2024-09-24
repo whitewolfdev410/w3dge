@@ -6,16 +6,24 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { accessToken } from "./assets/constant";
 import LoginPage from "./pages/login";
+import { useAccount } from "wagmi";
+import { useDispatch } from "react-redux";
+import * as walletStore from './store/wallet';
 
 function App() {
   const location = useLocation();
-  const [isLogin, setIsLogin] = useState(false);
+  const dispatch = useDispatch();
   const [loadingPage, setLoadingPage] = useState(true);
+  const { address, isConnected } = useAccount();
+  useEffect(() => {
+      if (address) {
+          dispatch(walletStore.setAddress(address));
+      }
+  }, [address])
 
   useEffect(() => {
     const token = localStorage.getItem(accessToken);
     if (token) {
-      setIsLogin(true);
       setLoadingPage(false);
     } else {
       localStorage.setItem(accessToken, "sdfsdf");
@@ -32,7 +40,7 @@ function App() {
   }
   return (
     <div>
-      {isLogin ? (
+      {isConnected ? (
         <main className="max-width-app pt-9">
           {location.pathname !== "/" && location.pathname !== "/W3Node" && (
             <div>
