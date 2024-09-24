@@ -55,9 +55,15 @@ function W3Node() {
       setIsLoading(true);
       setIsLoadingNet(true);
       fetchData(
-        import.meta.env.VITE_API_URL + '/networkStats',
+        import.meta.env.VITE_API_URL + '/boxView/address/' + address,
         (data:any) => {
-          setNetworkStats(data);
+          setNetworkStats({
+            average_daily_revenue: data?.average_daily_income,
+            total_bandwidth: data?.total_bandwidth,
+            total_bandwidth_daily: data?.total_bandwidth * 0.1,
+            unique_validator_count: data?.uptime_in_days * 24,
+            total_earnings: data?.total_income_per_box
+          });
           setAverageDailyRevenue(data.average_daily_revenue);
           setLocationCountData(Object.entries(data.location_count).map(([name, amount]) => ({
             name,
@@ -66,7 +72,7 @@ function W3Node() {
         },
         setError,
         setIsLoadingNet,
-        true
+        false
       );
       fetchData(
         import.meta.env.VITE_API_URL + '/boxView',
