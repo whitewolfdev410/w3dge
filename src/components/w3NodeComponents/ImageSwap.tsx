@@ -47,14 +47,15 @@ const ImageSwap: React.FC<ImageSwapProps> = ({boxViewData, onBoxSelect}) => {
       {boxViewData && (
         <div className="relative w-full h-52 flex justify-center">
           <div className="relative w-fit">
-            <img
-              src='https://images.ctfassets.net/hrltx12pl8hq/28ECAQiPJZ78hxatLTa7Ts/2f695d869736ae3b0de3e56ceaca3958/free-nature-images.jpg?fit=fill&w=1200&h=630'
-              alt={`Image ${currentIndex + 1}`}
-              className={`w-80 h-full object-cover rounded-lg shadow-lg transition-opacity duration-500 ease-in-out ${
-                isFading ? "opacity-0" : "opacity-100"
-              }`}
-            />
-
+          <video
+            src='/src/assets/boxVideo.mp4'
+            className={`w-80 h-auto object-cover rounded-lg shadow-lg transition-opacity duration-500 ease-in-out ${
+              isFading ? "opacity-0" : "opacity-100"
+            }`}
+            autoPlay
+            loop
+            muted
+          />
             <div
               onClick={handleNext}
               className="absolute top-[45%] -left-[3.12rem] xl:-left-[8.12rem] h-fit w-fit rounded-full  bg-primary-main cursor-pointer"

@@ -20,6 +20,13 @@ export default {
           main: "#1A1A1A",
         },
       },
+      width: (() => {
+        const widths = {};
+        for (let i = 1; i <= 100; i++) {
+          widths[`[${i}%]`] = `${i}%`; // Generates classes from w-1 to w-100 (as 1% to 100%)
+        }
+        return widths;
+      })(),
     },
   },
   plugins: [],

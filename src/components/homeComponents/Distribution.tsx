@@ -8,7 +8,7 @@ function Distribution({
 }: {
   name: string;
   width: string;
-  amount: string;
+  amount: any;
 }) {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
@@ -27,10 +27,8 @@ function Distribution({
         style={{ width: "calc(100% - 3.12rem)" }}
       >
         <div
-          className={`absolute top-0 left-0 h-2  bg-primary-main z-10 rounded-full block  transition-all duration-1000 ease-linear
-             ${isExpanded ? width : "w-[5%]"}
-            `}
-          // style={{ width: isExpanded ? amount : "w-[5%]" }}
+          className={`absolute top-0 left-0 h-2  bg-primary-main z-10 rounded-full block  transition-all duration-1000 ease-linear`}
+          style={{ width: isExpanded ? (amount + '%') : "w-[5%]" }}
         ></div>
       </div>
       <div className=" justify-between grid grid-cols-[auto_2rem] ">

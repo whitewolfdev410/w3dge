@@ -117,7 +117,7 @@ function HomePage() {
           <div className=" mt-20 mb-16 p-3">
             <Heading1 text="Distribution" />
             {!isLoading && locationCountData && (locationCountData.map((item:any, index:any) => (
-              <Distribution width={`w-[${item.amount}]`} key={index} amount={item.amount} name={item.name} />
+              <Distribution width={`w-[${item.amount * 20}%]`} key={index} amount={item.amount * 20} name={item.name} />
             )))}
           </div>
           <div
