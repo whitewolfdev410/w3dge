@@ -19,6 +19,16 @@ const ImageSwap: React.FC<ImageSwapProps> = ({boxViewData, onBoxSelect}) => {
       setIsFading(false);
     }, 500); // 500ms fade duration
   };
+  const handlePrev = (): void => {
+    if (isFading) return;
+    setIsFading(true);
+    setTimeout(() => {
+      const newIndex = currentIndex === boxViewData.length - 1 ? 0 : currentIndex - 1;
+      setCurrentIndex(newIndex);
+      onBoxSelect(boxViewData[newIndex].box_id); // Send box_id to parent component
+      setIsFading(false);
+    }, 500); // 500ms fade duration
+  };
 
 
   return (
@@ -58,7 +68,7 @@ const ImageSwap: React.FC<ImageSwapProps> = ({boxViewData, onBoxSelect}) => {
             muted
           />
             <div
-              onClick={handleNext}
+              onClick={handlePrev}
               className="absolute top-[45%] -left-[3.12rem] xl:-left-[4.12rem] h-fit w-fit rounded-full  bg-primary-main cursor-pointer"
             >
               <ArrowLeft />

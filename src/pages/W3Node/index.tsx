@@ -75,7 +75,7 @@ function W3Node() {
         false
       );
       fetchData(
-        import.meta.env.VITE_API_URL + '/boxView',
+        import.meta.env.VITE_API_URL + '/boxView/wallet/' + address,
         (data:any) => setBoxViewData(data),
         setError,
         setIsLoading,
