@@ -52,19 +52,20 @@ const ImageSwap: React.FC<ImageSwapProps> = ({boxViewData, onBoxSelect}) => {
             className={`w-80 h-auto object-cover rounded-lg shadow-lg transition-opacity duration-500 ease-in-out ${
               isFading ? "opacity-0" : "opacity-100"
             }`}
+            style={{width: '30rem'}}
             autoPlay
             loop
             muted
           />
             <div
               onClick={handleNext}
-              className="absolute top-[45%] -left-[3.12rem] xl:-left-[8.12rem] h-fit w-fit rounded-full  bg-primary-main cursor-pointer"
+              className="absolute top-[45%] -left-[3.12rem] xl:-left-[4.12rem] h-fit w-fit rounded-full  bg-primary-main cursor-pointer"
             >
               <ArrowLeft />
             </div>
             <div
               onClick={handleNext}
-              className="absolute top-[45%]  -right-[3.12rem] xl:-right-[8.12rem] h-fit w-fit rounded-full bg-primary-main cursor-pointer"
+              className="absolute top-[45%]  -right-[3.12rem] xl:-right-[3.12rem] h-fit w-fit rounded-full bg-primary-main cursor-pointer"
             >
               <ArrowRight />
             </div>
