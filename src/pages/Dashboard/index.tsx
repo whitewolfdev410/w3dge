@@ -12,7 +12,7 @@ import StokedBorChartComponent from "../../components/charts/stackedBarChart";
 import LineChartComponent from "../../components/charts/lineChart";
 import PureComponent from "../../components/charts/SimpleRadialBarChart";
 import CounterAnimation from "../../components/animation/counterAnimation";
-import { FooterData, PayoutData } from "../../assets/footerdata";
+import { PayoutData } from "../../assets/footerdata";
 import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -116,7 +116,7 @@ function Dashboard() {
       setIsFading(false);
     }, 500); // 500ms fade duration
   };
-  console.log('selectedBoxData: ', selectedBoxData)
+  console.log('boxViewPayoutData: ', boxViewPayoutData?.total_payouts)
 
   return (
     <div className="section-dashboard p-5 ">
@@ -191,18 +191,20 @@ function Dashboard() {
               <div className="h-[12.5rem] w-[12.5rem] relative ">
                 <PureComponent />
                 <div className="grid w-fit absolute top-[2.65rem] left-[2.65rem]">
-                  <p className="font-GRegular font-normal text-[0.75rem] text-white text-end -mb-3">
+                  <p className="font-GRegular font-normal text-[0.75rem] text-white text-center -mb-3">
                     {" "}
                     Payout
                   </p>
-                  <CounterAnimation
-                    style="font-GBold font-bold text-[2.5rem] text-white"
-                    step={PayoutData.amount}
-                    countSteps={1}
-                    duration={1000}
-                  />
-                  <p className="font-GRegular font-normal text-[0.75rem] text-white text-end -mt-3">
-                    {PayoutData.token}
+                  {boxViewPayoutData?.total_payouts && (
+                    <CounterAnimation
+                      style="font-GBold font-bold text-[2.5rem] text-white"
+                      step={parseInt(boxViewPayoutData?.total_payouts)}
+                      countSteps={1}
+                      duration={1000}
+                    />
+                  )}
+                  <p className="font-GRegular font-normal text-[0.75rem] text-white text-center -mt-3">
+                    {'CDN'}
                   </p>
                 </div>
               </div>
