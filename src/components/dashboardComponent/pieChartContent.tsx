@@ -1,6 +1,6 @@
 import PrimaryLogo from "../../assets/images/logo-chart-primary.png";
 import CounterAnimation from "../animation/counterAnimation";
-function PieChartContent({ amount }: { amount?: number }) {
+function PieChartContent({ amount, title }: { amount?: number, title?: string }) {
   return (
     <div className="absolute top-[3.2rem] left-[3.3rem] flex flex-col justify-center " style={{minWidth: '45px'}}>
       <img src={PrimaryLogo} style={{ width: "1.87rem", margin: "auto" }} />
@@ -17,7 +17,7 @@ function PieChartContent({ amount }: { amount?: number }) {
         </p>
       )}
       <p className="font-bold font-GBold text-[0.62rem] text-[#767676] text-center">
-        Earned
+        {title ? title : 'Earned'}
       </p>
     </div>
   );

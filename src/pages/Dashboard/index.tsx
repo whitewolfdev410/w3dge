@@ -161,7 +161,7 @@ function Dashboard() {
             {!loading && (
               <>
                 <Earned title="Total Earned" amount={Math.floor(userData?.staking_rewards)} percentage={"13.6%"} key={0}/>
-                <Earned title="Total Earned" amount={Math.floor(userData?.total_network_share_percentage)} percentage={"13.6%"} key={1} tagText="%"/>
+                <Earned title="Network Share" amount={Math.floor(userData?.total_network_share_percentage)} percentage={"13.6%"} key={1} tagText="%"/>
               </>
             )}
             <div className="bg-dark-main w-[10.43rem] py-3 h-fit transition-all duration-300 ease-linear justify-center rounded-lg cursor-pointer text-primary-main hover:bg-primary-main hover hover:text-white">

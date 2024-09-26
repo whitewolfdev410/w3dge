@@ -11,7 +11,8 @@ export const ValidatorsData = [
         amount: '20.000',
         title: 'Network share',
         subtitle: 'for Validator reward',
-        level: "2"
+        level: "2",
+        is_piechart: true
     },
     {
         percentage: 5,

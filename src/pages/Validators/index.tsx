@@ -77,6 +77,7 @@ function Validators() {
                 subtitle={item.subtitle}
                 validators
                 level={item.level}
+                is_piechart={item.is_piechart}
               />
             ))}
           </div>
