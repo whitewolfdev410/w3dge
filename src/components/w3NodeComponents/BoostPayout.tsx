@@ -37,7 +37,7 @@ function BoostPayout({
       }}
     >
       <div className="p-9" style={{paddingBottom: is_piechart ? 0 : '2.8rem'}}>
-        <div className="flex justify-between">
+        <div className="flex justify-between gap-8">
           <div>
             <Heading5 text={is_piechart ? 'Your Share' : title} />
             <CounterAnimation
@@ -82,7 +82,7 @@ function BoostPayout({
           )}
         </div>
         {is_piechart ? (
-          <div className="w-[9.5rem] h-[9.5rem] grid relative">
+          <div className="w-[9.5rem] h-[9.5rem] grid relative mx-auto">
             <PieChartComponent color={"#00B649"} />
             <PieChartContent amount={240.43} title="Claim"/>
           </div>
