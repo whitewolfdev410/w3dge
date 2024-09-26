@@ -12,7 +12,6 @@ import StokedBorChartComponent from "../../components/charts/stackedBarChart";
 import LineChartComponent from "../../components/charts/lineChart";
 import PureComponent from "../../components/charts/SimpleRadialBarChart";
 import CounterAnimation from "../../components/animation/counterAnimation";
-import { PayoutData } from "../../assets/footerdata";
 import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
 import axios from "axios";

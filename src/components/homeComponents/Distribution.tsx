@@ -11,7 +11,7 @@ function Distribution({
   amount: any;
 }) {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
-
+  console.log(width)
   // Animate width on page load
   useEffect(() => {
     const timer = setTimeout(() => {
