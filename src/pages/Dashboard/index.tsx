@@ -16,6 +16,8 @@ import { FooterData, PayoutData } from "../../assets/footerdata";
 import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { ArrowRight } from "../../icons";
+import EarnedWithString from "../../components/dashboardComponent/EarnedWithString";
 
 function Dashboard() {
   
@@ -27,6 +29,11 @@ function Dashboard() {
   const [boxViewPayoutData, setBoxViewPayoutData] = useState<any>(null)
   const [ isLoading, setIsLoading ] = useState<boolean>(true);
   const [selectedBoxId, setSelectedBoxId] = useState<string | null>(null);
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [isFading, setIsFading] = useState<boolean>(false);
+  const [selectedBoxData, setSelectedBoxData] = useState<any>();
+  const [isLoadingNet, setIsLoadingNet] = useState<boolean>(true);
+  const [ networkStats, setNetworkStats ] = useState<any>();
   const handleBoxSelect = (boxId: string) => {
     fetchData(
       import.meta.env.VITE_API_URL + '/boxPayout/' + boxId,
@@ -44,6 +51,7 @@ function Dashboard() {
     try {
       const todayDate = new Date().toISOString().split('T')[0];
       let reqUrl = isdate ? `${url}/${todayDate}` : url;
+      console.log('here: ', reqUrl)
       const response = await axios.get(reqUrl);
       setData(response.data);
     } catch (err:any) {
@@ -52,26 +60,38 @@ function Dashboard() {
       setIsLoading(false);
     }
   };
-  
+  useEffect(()=>{
+    if(boxViewData){
+      handleBoxSelect(boxViewData[0]?.box_id)
+      setSelectedBoxData(boxViewData[0]);
+    }
+  }, [boxViewData])
+
   useEffect(() => {
     if (isConnected && address) {
-      setIsLoading(true);
+      setIsLoadingNet(true);
       fetchData(
-        import.meta.env.VITE_API_URL + '/boxView',
+        import.meta.env.VITE_API_URL + '/boxView/address/' + address,
+        (data:any) => {
+          setNetworkStats({
+            average_daily_revenue: data?.average_daily_income,
+            total_bandwidth: data?.total_bandwidth,
+            total_bandwidth_daily: data?.total_bandwidth * 0.1,
+            unique_validator_count: data?.uptime_in_days * 24,
+            total_earnings: data?.total_income_per_box
+          });
+        },
+        setError,
+        setIsLoadingNet,
+        false
+      );
+      fetchData(
+        import.meta.env.VITE_API_URL + '/boxView/wallet/' + address,
         (data:any) => setBoxViewData(data),
         setError,
         setIsLoading,
         false
       );
-    }
-  }, [isConnected, address]);
-  useEffect(()=>{
-    if(boxViewData)
-    handleBoxSelect(boxViewData[0]?.box_id)
-  }, [boxViewData])
-
-  useEffect(() => {
-    if (isConnected && address) {
       const fetchUserData = async () => {
         try {
           const response = await axios.get(`${import.meta.env.VITE_API_URL}/users/${address}`);
@@ -86,7 +106,17 @@ function Dashboard() {
       fetchUserData();
     }
   }, [isConnected, address]);
-  console.log('userData: ', userData)
+  const handleNext = (): void => {
+    if (isFading) return;
+    setIsFading(true);
+    setTimeout(() => {
+      const newIndex = currentIndex === boxViewData.length - 1 ? 0 : currentIndex + 1;
+      setCurrentIndex(newIndex);
+      setSelectedBoxData(boxViewData[newIndex]); // Send box_id to parent component
+      setIsFading(false);
+    }, 500); // 500ms fade duration
+  };
+  console.log('selectedBoxData: ', selectedBoxData)
 
   return (
     <div className="section-dashboard p-5 ">
@@ -99,9 +129,9 @@ function Dashboard() {
             <HeroHeadingTwo text="Total Earning" />
             {!loading && (
               <div className="grid grid-cols-2 gap-x-0 gap-y-6 mt-5 justify-start">
-                  <Earn title="Today" amount={userData?.income_per_day ?? 0} currency="CND"/>
-                  <Earn title="This Week" amount={userData?.income_per_week ?? 0} currency="CND"/>
-                  <Earn title="This Month" amount={userData?.income_per_month ?? 0} currency="CND"/>
+                  <Earn title="Today" amount={userData?.income_per_day ?? 0} currency="CND" key={0}/>
+                  <Earn title="This Week" amount={userData?.income_per_week ?? 0} currency="CND" key={1}/>
+                  <Earn title="This Month" amount={userData?.income_per_month ?? 0} currency="CND" key={2}/>
               </div>
             )}
             <div className="flex justify-start pl-14">
@@ -131,8 +161,8 @@ function Dashboard() {
           <div className="flex flex-wrap gap-12 justify-center  my-7 items-center">
             {!loading && (
               <>
-                <Earned title="Total Earned" amount={userData?.staking_rewards} percentage={"13.6%"}/>
-                <Earned title="Total Earned" amount={userData?.total_network_share_percentage} percentage={"13.6%"} tagText="%"/>
+                <Earned title="Total Earned" amount={Math.floor(userData?.staking_rewards)} percentage={"13.6%"} key={0}/>
+                <Earned title="Total Earned" amount={Math.floor(userData?.total_network_share_percentage)} percentage={"13.6%"} key={1} tagText="%"/>
               </>
             )}
             <div className="bg-dark-main w-[10.43rem] py-3 h-fit transition-all duration-300 ease-linear justify-center rounded-lg cursor-pointer text-primary-main hover:bg-primary-main hover hover:text-white">
@@ -176,20 +206,33 @@ function Dashboard() {
                   </p>
                 </div>
               </div>
-              <div>
-                <Earned
-                  title="Box Identification"
-                  amount={320}
-                  showPrecentage={false}
-                  dgeBox
-                  tagText="AXD"
-                />
+              <div className="relative">
+                {!isLoading && (
+                  <EarnedWithString
+                    title="Box Identification"
+                    amount={selectedBoxData?.box_id}
+                    showPrecentage={false}
+                    dgeBox
+                    tagText="AXD"
+                  />
+                )}
+                <div
+                  onClick={handleNext}
+                  className="absolute top-[15%]  -right-[3.12rem] xl:-right-[3.12rem] h-fit w-fit rounded-full bg-primary-main cursor-pointer"
+                >
+                  <ArrowRight />
+                </div>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-5 xl:gap-10">
-              {FooterData.map((item) => (
-                <Earned title={item.title} amount={item.value} percentage={item.percentage} dgeBox />
-              ))}
+              { !isLoadingNet && (
+                <>
+                  <Earned title={'Uptime in ViewBox'} amount={networkStats?.unique_validator_count ?? 0} percentage={'+13.6%'} dgeBox />
+                  <Earned title={'Total Bandwidth'} amount={networkStats?.total_bandwidth ?? 0} percentage={'+13.6%'} dgeBox />
+                  <Earned title={'Network Contribution'} amount={networkStats?.total_bandwidth_daily ?? 0} percentage={'+13.6%'} dgeBox />
+                  <Earned title={'Total Earning'} amount={networkStats?.total_earnings ?? 0} percentage={'+13.6%'} dgeBox />
+                </>
+              )}
             </div>
           </div>
         </div>

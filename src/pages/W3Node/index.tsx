@@ -9,6 +9,7 @@ import { BoostData } from "../../assets/boostdata";
 import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import W3NodeFooter from "../../components/footer/W3NodeFooter";
 
 function W3Node() {
   const { address, isConnected } = useAccount();
@@ -126,7 +127,7 @@ function W3Node() {
       </div>
       <div className="pt-16 grid  xl:pr-28">
         { !isLoadingNet && (
-          <Footer networkStats={networkStats}/>
+          <W3NodeFooter networkStats={networkStats}/>
         )}
       </div>
     </div>

@@ -3,7 +3,7 @@ import PureComponent from "../charts/SimpleRadialBarChart";
 import CounterAnimation from "../animation/counterAnimation";
 import { FooterData, PayoutData } from "../../assets/footerdata";
 
-function Footer(data:any) {
+function W3NodeFooter(data:any) {
   return (
     <div className=" w-full  xl:flex grid pt-0">
       <div className="flex flex-wrap gap-5 flex-1 justify-center pt-8 xl:hidden">
@@ -31,7 +31,7 @@ function Footer(data:any) {
       <div className=" gap-7 flex-1 justify-center pt-20 hidden xl:flex xl:pr-10">
         <div>
           <p className="font-GBold font-normal text-sm text-white">
-            Active Validators
+            Uptime in ViewBox
           </p>
           <div className="flex items-end gap-2 mt-1">
             <CounterAnimation
@@ -61,7 +61,7 @@ function Footer(data:any) {
         </div>
         <div>
           <p className="font-GBold font-normal text-sm text-white">
-            Bandwidth Today
+            Network Contribution
           </p>
           <div className="flex items-end gap-2 mt-1">
             <CounterAnimation
@@ -117,4 +117,4 @@ function Footer(data:any) {
   );
 }
 
-export default Footer;
+export default W3NodeFooter;

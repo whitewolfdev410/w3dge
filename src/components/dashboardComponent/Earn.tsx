@@ -9,7 +9,7 @@ function Earn({ title, amount, currency }: { title: string; amount: number, curr
       <div className="flex items-end -mt-3">
         <CounterAnimation
           style="font-bold font-GBold text-[3rem] text-white"
-          step={amount}
+          step={Math.floor(amount)} 
           countSteps={10}
           duration={1000}
         />
