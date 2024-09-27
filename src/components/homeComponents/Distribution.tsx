@@ -33,7 +33,7 @@ function Distribution({
       </div>
       <div className=" justify-between grid grid-cols-[auto_2rem] ">
         <Bodoy1 text={name} />
-        <Bodoy1 text={(amount > 100 ? 100 : amount)} />
+        <Bodoy1 text={(amount > 100 ? 100 : amount) + '%'} />
       </div>
     </div>
   );

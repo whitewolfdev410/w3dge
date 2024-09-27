@@ -54,7 +54,7 @@ function W3Node() {
       setIsLoading(true);
       setIsLoadingNet(true);
       fetchData(
-        import.meta.env.VITE_API_URL + '/boxView/address/' + address,
+        import.meta.env.VITE_API_URL + `/boxView/address/${address}`,
         (data:any) => {
           setNetworkStats({
             average_daily_revenue: data?.average_daily_income,

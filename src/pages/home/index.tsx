@@ -116,18 +116,22 @@ function HomePage() {
         <div className="grid grid-cols-1 xl:grid-cols-[20%_60%_20%] ">
           <div className=" mt-20 mb-16 p-3">
             <Heading1 text="Distribution" />
-            {!isLoading && locationCountData && (
-              locationCountData
-                .sort((a: any, b: any) => b.amount - a.amount) // Reorder the data by 'amount' in descending order
-                .map((item: any, index: any) => (
+            {!isLoading && locationCountData && (() => {
+            const totalAmount = locationCountData.reduce((sum: number, item: any) => sum + item.amount, 0);
+            return locationCountData
+              .sort((a: any, b: any) => b.amount - a.amount) // Reorder the data by 'amount' in descending order
+              .map((item: any, index: any) => {
+                const percentage = Math.floor(((100 / totalAmount) * item.amount) * 10) / 10; // Calculate and round down to one decimal place
+                return (
                   <Distribution 
-                    width={`w-[${item.amount * 20}%]`} 
+                    width={`w-[${percentage}%]`} 
                     key={index} 
-                    amount={item.amount * 20} 
+                    amount={percentage} 
                     name={item.name} 
                   />
-                ))
-            )}
+                );
+              });
+          })()}
           </div>
           <div
             className="w-full h-[31.25rem] bg-contain bg-center bg-no-repeat relative "
