@@ -116,9 +116,18 @@ function HomePage() {
         <div className="grid grid-cols-1 xl:grid-cols-[20%_60%_20%] ">
           <div className=" mt-20 mb-16 p-3">
             <Heading1 text="Distribution" />
-            {!isLoading && locationCountData && (locationCountData.map((item:any, index:any) => (
-              <Distribution width={`w-[${item.amount * 20}%]`} key={index} amount={item.amount * 20} name={item.name} />
-            )))}
+            {!isLoading && locationCountData && (
+              locationCountData
+                .sort((a: any, b: any) => b.amount - a.amount) // Reorder the data by 'amount' in descending order
+                .map((item: any, index: any) => (
+                  <Distribution 
+                    width={`w-[${item.amount * 20}%]`} 
+                    key={index} 
+                    amount={item.amount * 20} 
+                    name={item.name} 
+                  />
+                ))
+            )}
           </div>
           <div
             className="w-full h-[31.25rem] bg-contain bg-center bg-no-repeat relative "

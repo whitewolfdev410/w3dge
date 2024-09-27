@@ -28,12 +28,12 @@ function Distribution({
       >
         <div
           className={`absolute top-0 left-0 h-2  bg-primary-main z-10 rounded-full block  transition-all duration-1000 ease-linear`}
-          style={{ width: isExpanded ? (amount + '%') : "w-[5%]" }}
+          style={{ width: isExpanded ? ((amount > 100 ? 100 : amount) + '%') : "w-[5%]" }}
         ></div>
       </div>
       <div className=" justify-between grid grid-cols-[auto_2rem] ">
         <Bodoy1 text={name} />
-        <Bodoy1 text={amount} />
+        <Bodoy1 text={(amount > 100 ? 100 : amount)} />
       </div>
     </div>
   );
