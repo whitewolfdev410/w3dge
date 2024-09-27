@@ -9,13 +9,14 @@ import PieChartContent from "../dashboardComponent/pieChartContent";
 
 interface IPropsBoostPayout {
   title: string;
-  precentage: number;
+  precentage: any;
   subtitle?: string;
   amount: string;
   stockNow?: boolean;
   validators: boolean;
   level?: string;
-  is_piechart?: boolean
+  is_piechart?: boolean;
+  earned?: any;
 }
 
 function BoostPayout({
@@ -26,7 +27,8 @@ function BoostPayout({
   stockNow,
   subtitle,
   level,
-  is_piechart
+  is_piechart,
+  earned
 }: IPropsBoostPayout) {
   return (
     <div
@@ -42,7 +44,7 @@ function BoostPayout({
             <Heading5 text={is_piechart ? 'Your Share' : title} />
             <CounterAnimation
               style="font-bold font-GBold text-[2.5rem] text-primary-main"
-              step={precentage}
+              step={parseInt(precentage)}
               countSteps={0.3}
               duration={500}
               tagText="%"
@@ -74,7 +76,7 @@ function BoostPayout({
               </div>
               <CounterAnimation
                 style="text-primary-main font-GBold font-bold text-[1.25rem]"
-                step={amount}
+                step={earned}
                 countSteps={1}
                 duration={1000}
               />
@@ -84,7 +86,7 @@ function BoostPayout({
         {is_piechart ? (
           <div className="w-[9.5rem] h-[9.5rem] grid relative mx-auto">
             <PieChartComponent color={"#00B649"} />
-            <PieChartContent amount={240.43} title="Claim"/>
+            <PieChartContent amount={amount} title="Claim"/>
           </div>
         ) : (
           <>

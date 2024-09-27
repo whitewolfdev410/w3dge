@@ -16,6 +16,7 @@ function Validators() {
   const [boxViewData, setBoxViewData] = useState<any>(null)
   const [boxViewPayoutData, setBoxViewPayoutData] = useState<any>(null)
   const [selectedBoxId, setSelectedBoxId] = useState<string | null>(null);
+  const [userData, setUserData] = useState<any>(null);
 
   const handleBoxSelect = (boxId: string) => {
     fetchData(
@@ -53,12 +54,20 @@ function Validators() {
         setIsLoading,
         false
       );
+      fetchData(
+        import.meta.env.VITE_API_URL + '/users/' + address,
+        (data:any) => setUserData(data),
+        setError,
+        setIsLoading,
+        false
+      );
     }
   }, [isConnected, address]);
   useEffect(()=>{
     if(boxViewData)
     handleBoxSelect(boxViewData[0]?.box_id)
   }, [boxViewData])
+  console.log('here is userData: ', userData)
   return (
     <div className="section-validators p-5 ">
       <div className="grid pt-4 md:pt-0 ">
@@ -68,16 +77,18 @@ function Validators() {
         <div className="grid grid-cols-1 xl:grid-cols-[20%_70%_10%] ">
           <div className="h-full w-full relative"></div>
           <div className="flex gap-5 flex-wrap justify-center xl:justify-between">
-            {ValidatorsData.map((item) => (
+            {userData && userData.staking_pools.map((item: any, index: any) => (
               <BoostPayout
-                title={item.title}
-                precentage={item.percentage}
-                amount={item.amount}
+                title={item.amount_locked > 0 ? 'Your share' : 'Network share'}
+                precentage={item.pool_type}
+                amount={item.amount_locked}
+                earned={item.reward_earned}
                 stockNow={false}
-                subtitle={item.subtitle}
+                subtitle={item.amount_locked > 0 ? "of Network" : "for Validator reward"}
                 validators
-                level={item.level}
-                is_piechart={item.is_piechart}
+                level={index + 1}
+                is_piechart={item.amount_locked > 0 ? true : false}
+                key={index}
               />
             ))}
           </div>
