@@ -109,7 +109,9 @@ function W3Node() {
           //   backgroundSize: "130% 130%",
           // }}
         >
-          <ImageSwap boxViewData={boxViewData} onBoxSelect={handleBoxSelect}/>
+          {boxViewData && (
+            <ImageSwap boxViewData={boxViewData} onBoxSelect={handleBoxSelect}/>
+          )}
         </div>
         <div className=" mt-10 xl:mt-0 flex justify-center xl:justify-start items-center">
           <div className="max-w-80 w-fit">
