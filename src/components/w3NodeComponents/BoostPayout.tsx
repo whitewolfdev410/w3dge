@@ -32,7 +32,7 @@ function BoostPayout({
 }: IPropsBoostPayout) {
   return (
     <div
-      className="bg-cover bg-center bg-no-repeat  rounded-xl"
+      className="bg-cover bg-center bg-no-repeat  rounded-xl w-[18rem]"
       style={{
         background:
           "linear-gradient(0deg, rgba(26,26,26,1) 0%, rgba(26,26,26,1) 100%)",
