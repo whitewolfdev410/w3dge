@@ -23,7 +23,12 @@ const ImageSwap: React.FC<ImageSwapProps> = ({boxViewData, onBoxSelect}) => {
     if (isFading) return;
     setIsFading(true);
     setTimeout(() => {
-      const newIndex = currentIndex === boxViewData.length - 1 ? 0 : currentIndex - 1;
+      let newIndex = 0;
+      if(currentIndex == 0) {
+        newIndex = boxViewData.length - 1;
+      } else {
+        newIndex = currentIndex === boxViewData.length - 1 ? 0 : currentIndex - 1;
+      }
       setCurrentIndex(newIndex);
       onBoxSelect(boxViewData[newIndex].box_id); // Send box_id to parent component
       setIsFading(false);

@@ -22,11 +22,33 @@ function W3Node() {
   const [locationCountData, setLocationCountData] = useState<any>(null)
 
   const handleBoxSelect = (boxId: string) => {
+    setIsLoadingNet(false)
+    setIsLoadingNet(true);
     fetchData(
       import.meta.env.VITE_API_URL + '/boxPayout/' + boxId,
       (data:any) => setBoxViewPayoutData(data),
       setError,
       setIsLoading,
+      false
+    );
+    fetchData(
+      import.meta.env.VITE_API_URL + `/boxView/address/${boxId}`,
+      (data:any) => {
+        setNetworkStats({
+          average_daily_revenue: data?.average_daily_income,
+          total_bandwidth: data?.total_bandwidth,
+          total_bandwidth_daily: data?.total_bandwidth * 0.1,
+          unique_validator_count: data?.uptime_in_days * 24,
+          total_earnings: data?.total_income_per_box
+        });
+        setAverageDailyRevenue(data.average_daily_revenue);
+        setLocationCountData(Object.entries(data.location_count).map(([name, amount]) => ({
+          name,
+          amount
+        })));
+      },
+      setError,
+      setIsLoadingNet,
       false
     );
     console.log('here is error: ', error)
@@ -52,27 +74,6 @@ function W3Node() {
   useEffect(() => {
     if (isConnected && address) {
       setIsLoading(true);
-      setIsLoadingNet(true);
-      fetchData(
-        import.meta.env.VITE_API_URL + `/boxView/address/${address}`,
-        (data:any) => {
-          setNetworkStats({
-            average_daily_revenue: data?.average_daily_income,
-            total_bandwidth: data?.total_bandwidth,
-            total_bandwidth_daily: data?.total_bandwidth * 0.1,
-            unique_validator_count: data?.uptime_in_days * 24,
-            total_earnings: data?.total_income_per_box
-          });
-          setAverageDailyRevenue(data.average_daily_revenue);
-          setLocationCountData(Object.entries(data.location_count).map(([name, amount]) => ({
-            name,
-            amount
-          })));
-        },
-        setError,
-        setIsLoadingNet,
-        false
-      );
       fetchData(
         import.meta.env.VITE_API_URL + '/boxView/wallet/' + address,
         (data:any) => setBoxViewData(data),

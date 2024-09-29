@@ -41,6 +41,22 @@ function Dashboard() {
       setIsLoading,
       false
     );
+    setIsLoadingNet(true);
+    fetchData(
+      import.meta.env.VITE_API_URL + '/boxView/address/' + boxId,
+      (data:any) => {
+        setNetworkStats({
+          average_daily_revenue: data?.average_daily_income,
+          total_bandwidth: data?.total_bandwidth,
+          total_bandwidth_daily: data?.total_bandwidth * 0.1,
+          unique_validator_count: data?.uptime_in_days * 24,
+          total_earnings: data?.total_income_per_box
+        });
+      },
+      setError,
+      setIsLoadingNet,
+      false
+    );
     console.log('here is error: ', error)
     console.log('here is selectedBoxId: ', selectedBoxId)
     console.log('here is isLoading: ', isLoading)
@@ -50,9 +66,9 @@ function Dashboard() {
     try {
       const todayDate = new Date().toISOString().split('T')[0];
       let reqUrl = isdate ? `${url}/${todayDate}` : url;
-      console.log('here: ', reqUrl)
       const response = await axios.get(reqUrl);
       setData(response.data);
+      setIsLoading(false);
     } catch (err:any) {
       setError(err.message);
     } finally {
@@ -68,22 +84,6 @@ function Dashboard() {
 
   useEffect(() => {
     if (isConnected && address) {
-      setIsLoadingNet(true);
-      fetchData(
-        import.meta.env.VITE_API_URL + '/boxView/address/' + address,
-        (data:any) => {
-          setNetworkStats({
-            average_daily_revenue: data?.average_daily_income,
-            total_bandwidth: data?.total_bandwidth,
-            total_bandwidth_daily: data?.total_bandwidth * 0.1,
-            unique_validator_count: data?.uptime_in_days * 24,
-            total_earnings: data?.total_income_per_box
-          });
-        },
-        setError,
-        setIsLoadingNet,
-        false
-      );
       fetchData(
         import.meta.env.VITE_API_URL + '/boxView/wallet/' + address,
         (data:any) => setBoxViewData(data),
@@ -112,10 +112,10 @@ function Dashboard() {
       const newIndex = currentIndex === boxViewData.length - 1 ? 0 : currentIndex + 1;
       setCurrentIndex(newIndex);
       setSelectedBoxData(boxViewData[newIndex]); // Send box_id to parent component
+      handleBoxSelect(boxViewData[newIndex].box_id)
       setIsFading(false);
     }, 500); // 500ms fade duration
   };
-  console.log('boxViewPayoutData: ', boxViewPayoutData?.total_payouts)
 
   return (
     <div className="section-dashboard p-5 ">
