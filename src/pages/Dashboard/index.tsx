@@ -43,13 +43,13 @@ function Dashboard() {
     );
     setIsLoadingNet(true);
     fetchData(
-      import.meta.env.VITE_API_URL + '/boxView/address/' + boxId,
+      import.meta.env.VITE_API_URL + `/boxView/address/${boxId}?wallet_address=${address}`,
       (data:any) => {
         setNetworkStats({
           average_daily_revenue: data?.average_daily_income,
           total_bandwidth: data?.total_bandwidth,
-          total_bandwidth_daily: data?.total_bandwidth * 0.1,
-          unique_validator_count: data?.uptime_in_days * 24,
+          total_bandwidth_daily: data?.total_bandwidth ? data?.total_bandwidth * 0.1 : 0,
+          unique_validator_count: data?.uptime_in_days ? data?.uptime_in_days * 24 : 0,
           total_earnings: data?.total_income_per_box
         });
       },
