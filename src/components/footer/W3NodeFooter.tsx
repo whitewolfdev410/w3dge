@@ -66,7 +66,7 @@ function W3NodeFooter({ networkStats, isLoadingNet }: {networkStats: any, isLoad
         </div>
         <div>
           <p className="font-GBold font-normal text-sm text-white">Total Earning</p>
-          <div className="flex items-end gap-2 mt-1">
+          <div className="flex items-end gap-0 mt-1">
             {!isLoadingNet && (
               <CounterAnimation
                 style="font-GRegular font-normal text-3xl text-white"
@@ -74,7 +74,7 @@ function W3NodeFooter({ networkStats, isLoadingNet }: {networkStats: any, isLoad
                 countSteps={50}
               />
             )}
-            <p className="font-GRegular font-normal text-sm text-primary-main">CND</p>
+            <p className="font-GRegular font-normal text-sm text-primary-main">CDN</p>
           </div>
         </div>
       </div>

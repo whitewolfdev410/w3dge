@@ -78,14 +78,14 @@ function Footer(data:any) {
           <p className="font-GBold font-normal text-sm text-white">
             Total Earning
           </p>
-          <div className="flex items-end gap-2 mt-1">
+          <div className="flex items-end gap-1 mt-1">
             <CounterAnimation
               style="font-GRegular font-normal text-3xl text-white"
               step={data.networkStats?.total_earnings ?? 0}
               countSteps={50}
             />
-            <p className="font-GRegular font-normal text-sm text-primary-main">
-              CND
+            <p className="font-GRegular font-normal text-sm text-primary-main pb-1">
+              CDN
             </p>
           </div>
         </div>

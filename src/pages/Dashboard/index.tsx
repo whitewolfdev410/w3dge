@@ -128,9 +128,9 @@ function Dashboard() {
             <HeroHeadingTwo text="Total Earning" />
             {!loading && (
               <div className="grid grid-cols-2 gap-x-0 gap-y-6 mt-5 justify-start">
-                  <Earn title="Today" amount={userData?.income_per_day ?? 0} currency="CND" key={0}/>
-                  <Earn title="This Week" amount={userData?.income_per_week ?? 0} currency="CND" key={1}/>
-                  <Earn title="This Month" amount={userData?.income_per_month ?? 0} currency="CND" key={2}/>
+                  <Earn title="Today" amount={userData?.income_per_day ?? 0} currency="CDN" key={0}/>
+                  <Earn title="This Week" amount={userData?.income_per_week ?? 0} currency="CDN" key={1}/>
+                  <Earn title="This Month" amount={userData?.income_per_month ?? 0} currency="CDN" key={2}/>
               </div>
             )}
             <div className="flex justify-start pl-14">
@@ -231,7 +231,7 @@ function Dashboard() {
                   <Earned title={'Uptime in ViewBox'} amount={networkStats?.unique_validator_count ?? 0} percentage={'+13.6%'} dgeBox showPrecentage={false}/>
                   <Earned title={'Total Bandwidth'} amount={networkStats?.total_bandwidth ?? 0} percentage={'+13.6%'} dgeBox  showPrecentage={false} className='pl-[3rem]'/>
                   <Earned title={'Network Contribution'} amount={networkStats?.total_bandwidth_daily ?? 0} percentage={'+13.6%'} dgeBox  showPrecentage={false}/>
-                  <Earned title={'Total Earning'} amount={networkStats?.total_earnings ?? 0} percentage={'CND'} dgeBox  showPrecentage={true} className='pl-[3rem]'/>
+                  <Earned title={'Total Earning'} amount={networkStats?.total_earnings ?? 0} percentage={'CDN'} dgeBox  showPrecentage={true} className='pl-[3rem]'/>
                 </>
               )}
             </div>

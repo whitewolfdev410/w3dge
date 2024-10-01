@@ -22,7 +22,7 @@ function Earned({
       <p className="font-normal font-GRegular text-[0.87rem] text-[#949596]">
         {title}
       </p>
-      <div className="flex items-end gap-2">
+      <div className="flex items-end gap-0">
         <CounterAnimation
           style={`${
             dgeBox ? "font-normal font-GRegular" : "font-bold font-GBold"
@@ -41,7 +41,7 @@ function Earned({
           {amount}
         </p> */}
         {showPrecentage && (
-          <p className="font-bold font-GBold text-[16x] text-primary-main pb-2">
+          <p className="font-bold font-GBold text-[16x] text-primary-main pb-1">
             {percentage}
           </p>
         )}
