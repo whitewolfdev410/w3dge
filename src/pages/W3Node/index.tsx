@@ -108,9 +108,9 @@ function W3Node() {
         <div
           className="flex-1 grid items-center  gl:pt-0  bg-center bg-no-repeat mt-10 xl:mt-0"
         >
-          {/* {boxViewData && ( */}
+          {!isLoading && (
             <ImageSwap boxViewData={boxViewData} onBoxSelect={handleBoxSelect}/>
-          {/* )} */}
+          )}
         </div>
         {boxViewData && boxViewData.length > 0 && (
         <div className=" mt-10 xl:mt-0 flex justify-center xl:justify-start items-center">

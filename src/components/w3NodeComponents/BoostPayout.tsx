@@ -86,7 +86,7 @@ function BoostPayout({
         {is_piechart ? (
           <div className="w-[9.5rem] h-[9.5rem] grid relative mx-auto">
             <PieChartComponent color={"#00B649"} />
-            <PieChartContent amount={amount} title="Claim"/>
+            <PieChartContent amount={amount} title="Staked"/>
           </div>
         ) : (
           <>

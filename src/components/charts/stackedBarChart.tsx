@@ -20,7 +20,7 @@ const transformData = (data: any[]) => {
   const aggregatedData: { [key: string]: { amt: number; legend: number; uv: number } } = {};
 
   data.forEach((entry) => {
-    const month = entry.date
+    const month = entry.date.slice(5)
     if (!aggregatedData[month]) {
       aggregatedData[month] = { amt: 0, legend: 0, uv: 0 };
     }
