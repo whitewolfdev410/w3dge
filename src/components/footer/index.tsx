@@ -39,9 +39,9 @@ function Footer(data:any) {
               step={data.networkStats?.unique_validator_count ?? 0}
               countSteps={50}
             />
-            <p className="font-GRegular font-normal text-sm text-primary-main">
+            {/* <p className="font-GRegular font-normal text-sm text-primary-main">
               +13.6%
-            </p>
+            </p> */}
           </div>
         </div>
         <div>
@@ -54,9 +54,9 @@ function Footer(data:any) {
               step={data.networkStats?.total_bandwidth ?? 0}
               countSteps={50}
             />
-            <p className="font-GRegular font-normal text-sm text-primary-main">
+            {/* <p className="font-GRegular font-normal text-sm text-primary-main">
               +13.6%
-            </p>
+            </p> */}
           </div>
         </div>
         <div>
@@ -69,9 +69,9 @@ function Footer(data:any) {
               step={data.networkStats?.total_bandwidth_daily ?? 0}
               countSteps={50}
             />
-            <p className="font-GRegular font-normal text-sm text-primary-main">
+            {/* <p className="font-GRegular font-normal text-sm text-primary-main">
               +13.6%
-            </p>
+            </p> */}
           </div>
         </div>
         <div>
@@ -84,9 +84,9 @@ function Footer(data:any) {
               step={data.networkStats?.total_earnings ?? 0}
               countSteps={50}
             />
-            <p className="font-GRegular font-normal text-sm text-primary-main">
+            {/* <p className="font-GRegular font-normal text-sm text-primary-main">
               +13.6%
-            </p>
+            </p> */}
           </div>
         </div>
       </div>

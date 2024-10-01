@@ -3,19 +3,18 @@ import PureComponent from "../charts/SimpleRadialBarChart";
 import CounterAnimation from "../animation/counterAnimation";
 import { FooterData, PayoutData } from "../../assets/footerdata";
 
-function W3NodeFooter(data:any) {
+function W3NodeFooter({ networkStats }: any) {
+
   return (
-    <div className=" w-full  xl:flex grid pt-0">
+    <div className="w-full xl:flex grid pt-0">
       <div className="flex flex-wrap gap-5 flex-1 justify-center pt-8 xl:hidden">
         {FooterData.map((item, index) => (
           <div key={index}>
-            <p className="font-GBold font-normal text-sm text-white">
-              {item.title}
-            </p>
+            <p className="font-GBold font-normal text-sm text-white">{item.title}</p>
             <div className="flex items-end gap-2 mt-1">
               <CounterAnimation
                 style="font-GRegular font-normal text-3xl text-white"
-                step={Math.floor(item.value)} 
+                step={Math.floor(item.value)}
                 countSteps={50}
               />
               <p className="font-GRegular font-normal text-sm text-primary-main">
@@ -28,82 +27,65 @@ function W3NodeFooter(data:any) {
       <div className="hidden xl:block -mt-5">
         <WontToLearn />
       </div>
-      <div className=" gap-7 flex-1 justify-center pt-20 hidden xl:flex xl:pr-10">
+      <div className="gap-7 flex-1 justify-center pt-20 hidden xl:flex">
         <div>
-          <p className="font-GBold font-normal text-sm text-white">
-            Uptime in ViewBox
-          </p>
+          <p className="font-GBold font-normal text-sm text-white">Uptime in ViewBox</p>
           <div className="flex items-end gap-2 mt-1">
             <CounterAnimation
               style="font-GRegular font-normal text-3xl text-white"
-              step={data.networkStats?.unique_validator_count ?? 0}
+              step={networkStats?.unique_validator_count ?? 0}
               countSteps={50}
             />
-            <p className="font-GRegular font-normal text-sm text-primary-main">
-              +13.6%
-            </p>
           </div>
         </div>
         <div>
-          <p className="font-GBold font-normal text-sm text-white">
-            Total Bandwidth
-          </p>
+          <p className="font-GBold font-normal text-sm text-white">Total Bandwidth</p>
           <div className="flex items-end gap-2 mt-1">
             <CounterAnimation
               style="font-GRegular font-normal text-3xl text-white"
-              step={data.networkStats?.total_bandwidth ?? 0}
+              step={networkStats?.total_bandwidth ?? 0}
               countSteps={50}
             />
-            <p className="font-GRegular font-normal text-sm text-primary-main">
-              +13.6%
-            </p>
           </div>
         </div>
         <div>
-          <p className="font-GBold font-normal text-sm text-white">
-            Network Contribution
-          </p>
+          <p className="font-GBold font-normal text-sm text-white">Network Contribution</p>
           <div className="flex items-end gap-2 mt-1">
             <CounterAnimation
               style="font-GRegular font-normal text-3xl text-white"
-              step={data.networkStats?.total_bandwidth_daily ?? 0}
+              step={networkStats?.total_bandwidth_daily ?? 0}
               countSteps={50}
             />
-            <p className="font-GRegular font-normal text-sm text-primary-main">
-              +13.6%
-            </p>
           </div>
         </div>
         <div>
-          <p className="font-GBold font-normal text-sm text-white">
-            Total Earning
-          </p>
+          <p className="font-GBold font-normal text-sm text-white">Total Earning</p>
           <div className="flex items-end gap-2 mt-1">
             <CounterAnimation
               style="font-GRegular font-normal text-3xl text-white"
-              step={data.networkStats?.total_earnings ?? 0}
+              step={networkStats?.total_earnings ?? 0}
               countSteps={50}
             />
-            <p className="font-GRegular font-normal text-sm text-primary-main">
-              +13.6%
-            </p>
+            <p className="font-GRegular font-normal text-sm text-primary-main">CND</p>
           </div>
         </div>
       </div>
-      <div className="grid justify-center md:flex md:justify-between mt-10 ">
+      <div className="grid justify-center md:flex md:justify-between mt-10">
         <div className="mt-10 md:mt-0 flex justify-center xl:hidden">
           <WontToLearn />
         </div>
-        <div className="  relative mt-8 md:mt-0 h-[11.25rem] w-[11.25rem]">
+        <div className="relative mt-8 md:mt-0 h-[11.25rem] w-[11.25rem]">
           <PureComponent />
-          <div className="grid w-fit absolute top-[2.61rem] left-[3.41rem]" style={{minWidth: '45px', justifyContent: 'center'}}>
+          <div
+            className="grid w-fit absolute top-[2.61rem] left-[3.41rem]"
+            style={{ minWidth: '45px', justifyContent: 'center' }}
+          >
             <p className="font-GRegular font-normal text-[0.75rem] text-white text-center -mb-3">
-              {" "}
               Payout
             </p>
             <CounterAnimation
               style="font-GBold font-bold text-[2.5rem] text-white px-1"
-              step={Math.floor(data.networkStats?.average_daily_revenue) ?? 0}
+              step={Math.floor(networkStats?.average_daily_revenue ?? 0)}
               countSteps={1}
               duration={1000}
             />

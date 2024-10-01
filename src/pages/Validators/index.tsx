@@ -4,10 +4,10 @@ import { Bodoy1, HeroHeading } from "../../components/FontComponent";
 import WontToLearn from "../../components/footer/WontToLearn";
 import BoostPayout from "../../components/w3NodeComponents/BoostPayout";
 import TabMain from "../../components/tabs";
-import { ValidatorsData } from "../../assets/validatordata";
 import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import LinePayoutChartComponent from "../../components/charts/linePayoutChart";
 
 function Validators() {
   const { address, isConnected } = useAccount();
@@ -15,6 +15,7 @@ function Validators() {
   const [ error, setError ] = useState<any>(null)
   const [boxViewData, setBoxViewData] = useState<any>(null)
   const [boxViewPayoutData, setBoxViewPayoutData] = useState<any>(null)
+  const [validatorPayoutdata, setValidatorPayoutdata] = useState<any>(null)
   const [selectedBoxId, setSelectedBoxId] = useState<string | null>(null);
   const [userData, setUserData] = useState<any>(null);
 
@@ -22,6 +23,13 @@ function Validators() {
     fetchData(
       import.meta.env.VITE_API_URL + '/boxPayout/' + boxId,
       (data:any) => setBoxViewPayoutData(data),
+      setError,
+      setIsLoading,
+      false
+    );
+    fetchData(
+      import.meta.env.VITE_API_URL + '/validator_payouts',
+      (data:any) => setValidatorPayoutdata(data),
       setError,
       setIsLoading,
       false
@@ -67,7 +75,7 @@ function Validators() {
     if(boxViewData)
     handleBoxSelect(boxViewData[0]?.box_id)
   }, [boxViewData])
-  console.log('here is userData: ', userData)
+  console.log('here is validatorPayoutdata: ', validatorPayoutdata)
   return (
     <div className="section-validators p-5 ">
       <div className="grid pt-4 md:pt-0 ">
@@ -101,12 +109,12 @@ function Validators() {
         </div>
         <div className="flex gap-5 flex-wrap justify-center xl:justify-between">
           <div className="w-80 h-72 grid bg-dark-main p-4 rounded-xl">
-            <Bodoy1 text="Preformance 2" style={"!pb-3"} />
+            <Bodoy1 text="Network Contribution" style={"!pb-3"} />
             <StokedBorChartComponent boxViewPayoutData = {boxViewPayoutData}/>
           </div>
           <div className="w-[29rem] h-72 grid bg-dark-main p-4 rounded-xl">
-            <Bodoy1 text="Preformance" style={"!pb-3"} />
-            <LineChartComponent boxViewPayoutData={boxViewPayoutData}/>
+            <Bodoy1 text="Payout History" style={"!pb-3"} />
+            <LinePayoutChartComponent validatorPayoutdata={validatorPayoutdata}/>
           </div>
           <TabMain />
         </div>

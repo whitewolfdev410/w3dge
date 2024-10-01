@@ -22,9 +22,9 @@ const transformData = (data: any[]) => {
       aggregatedData[month] = { amt: 0, Payout: 0, uv: 0 };
     }
     
-    aggregatedData[month].amt += entry.amount;
-    aggregatedData[month].Payout += entry.amount;
-    aggregatedData[month].uv += entry.amount * 0.1;
+    aggregatedData[month].amt += entry.total_payout;
+    aggregatedData[month].Payout += entry.total_payout;
+    aggregatedData[month].uv += entry.total_payout * 0.1;
   });
   return Object.keys(aggregatedData).map((month) => ({
     name: month,
@@ -34,8 +34,8 @@ const transformData = (data: any[]) => {
   }));
 };
 
-export default function LineChartComponent({ boxViewPayoutData }: any) {
-  const transformedData = transformData(boxViewPayoutData?.daily_payouts || []);
+export default function LinePayoutChartComponent({ validatorPayoutdata }: any) {
+  const transformedData = transformData(validatorPayoutdata || []);
 
   return (
     <ResponsiveContainer width="100%" height="100%">

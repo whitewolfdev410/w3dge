@@ -43,14 +43,14 @@ function Headers() {
           >
             Dashboard
           </Link>
-          <Link
+          {/* <Link
             to="/Assets"
             className={`${
               location?.pathname === "/Assets" ? "bg-white" : ""
             } font-GRegular text-[1rem] py-2 px-7 !font-normal`}
           >
             Assets
-          </Link>
+          </Link> */}
           <div
             className="w-8 h-8 rounded-full bg-grey-grey1 bg-cover bg-no-repeat bg-center"
             style={{

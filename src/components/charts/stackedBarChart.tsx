@@ -11,7 +11,10 @@ import {
 
 // Function to format the YAxis values to 1k, 2k, etc.
 const formatYAxis = (tickItem: any) => {
-  return `${tickItem / 1000}k`;
+  if(tickItem >= 100) {
+    return `${tickItem/1000}k`;
+  }
+  return `${tickItem}`;
 };
 const transformData = (data: any[]) => {
   const aggregatedData: { [key: string]: { amt: number; legend: number; uv: number } } = {};

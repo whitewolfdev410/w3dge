@@ -160,8 +160,8 @@ function Dashboard() {
           <div className="flex flex-wrap gap-12 justify-center  my-7 items-center">
             {!loading && (
               <>
-                <Earned title="Total Earned" amount={Math.floor(userData?.staking_rewards)} percentage={"13.6%"} key={0}/>
-                <Earned title="Network Share" amount={Math.floor(userData?.total_network_share_percentage)} percentage={"13.6%"} key={1} tagText="%"/>
+                <Earned title="Total Earned" amount={parseFloat(userData?.staking_rewards).toFixed(2)} percentage={"13.6%"} key={0} showPrecentage={false}/>
+                <Earned title="Network Share" amount={parseFloat(userData?.total_network_share_percentage).toFixed(2)} percentage={"13.6%"} key={1} tagText="%" showPrecentage={false}/>
               </>
             )}
             <div className="bg-dark-main w-[10.43rem] py-3 h-fit transition-all duration-300 ease-linear justify-center rounded-lg cursor-pointer text-primary-main hover:bg-primary-main hover hover:text-white">
@@ -172,11 +172,11 @@ function Dashboard() {
           </div>
           <div className="flex gap-7 mt-16 flex-wrap justify-center xl:gap-7 xl:justify-center">
             <div className="w-[17rem] h-72 grid bg-dark-main p-4 rounded-xl">
-              <Bodoy1 text="Preformance 2" style={"!pb-3"} />
+              <Bodoy1 text="Network Contribution" style={"!pb-3"} />
               <StokedBorChartComponent boxViewPayoutData = {boxViewPayoutData}/>
             </div>
             <div className="w-[17rem] h-72 grid bg-dark-main p-4 rounded-xl">
-              <Bodoy1 text="Preformance" style={"!pb-3"} />
+              <Bodoy1 text="Payout History" style={"!pb-3"} />
               <LineChartComponent boxViewPayoutData={boxViewPayoutData}/>
             </div>
           </div>
@@ -189,7 +189,7 @@ function Dashboard() {
             <div className="flex row gap-5 xl:gap-10 w-full justify-start">
               <div className="h-[12.5rem] w-[12.5rem] relative ">
                 <PureComponent />
-                <div className="grid w-fit absolute top-[2.65rem] left-[2.65rem]">
+                <div className="grid w-fit absolute top-[2.65rem] left-[2.65rem] justify-center w-[4.25rem]">
                   <p className="font-GRegular font-normal text-[0.75rem] text-white text-center -mb-3">
                     {" "}
                     Payout
@@ -197,7 +197,7 @@ function Dashboard() {
                   {boxViewPayoutData?.total_payouts && (
                     <CounterAnimation
                       style="font-GBold font-bold text-[2.5rem] text-white"
-                      step={parseInt(boxViewPayoutData?.total_payouts)}
+                      step={parseInt(selectedBoxData?.average_daily_income)}
                       countSteps={1}
                       duration={1000}
                     />
@@ -228,10 +228,10 @@ function Dashboard() {
             <div className="grid grid-cols-2 gap-5 xl:gap-10">
               { !isLoadingNet && (
                 <>
-                  <Earned title={'Uptime in ViewBox'} amount={networkStats?.unique_validator_count ?? 0} percentage={'+13.6%'} dgeBox />
-                  <Earned title={'Total Bandwidth'} amount={networkStats?.total_bandwidth ?? 0} percentage={'+13.6%'} dgeBox />
-                  <Earned title={'Network Contribution'} amount={networkStats?.total_bandwidth_daily ?? 0} percentage={'+13.6%'} dgeBox />
-                  <Earned title={'Total Earning'} amount={networkStats?.total_earnings ?? 0} percentage={'+13.6%'} dgeBox />
+                  <Earned title={'Uptime in ViewBox'} amount={networkStats?.unique_validator_count ?? 0} percentage={'+13.6%'} dgeBox showPrecentage={false}/>
+                  <Earned title={'Total Bandwidth'} amount={networkStats?.total_bandwidth ?? 0} percentage={'+13.6%'} dgeBox  showPrecentage={false} className='pl-[3rem]'/>
+                  <Earned title={'Network Contribution'} amount={networkStats?.total_bandwidth_daily ?? 0} percentage={'+13.6%'} dgeBox  showPrecentage={false}/>
+                  <Earned title={'Total Earning'} amount={networkStats?.total_earnings ?? 0} percentage={'+13.6%'} dgeBox  showPrecentage={false} className='pl-[3rem]'/>
                 </>
               )}
             </div>

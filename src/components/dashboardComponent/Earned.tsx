@@ -7,6 +7,7 @@ function Earned({
   percentage,
   showPrecentage = true,
   tagText,
+  className
 }: {
   title: string;
   amount: any;
@@ -14,9 +15,10 @@ function Earned({
   dgeBox?: boolean;
   showPrecentage?: boolean;
   tagText?: string;
+  className?: any
 }) {
   return (
-    <div>
+    <div className={`${className ? className : ""}`}>
       <p className="font-normal font-GRegular text-[0.87rem] text-[#949596]">
         {title}
       </p>

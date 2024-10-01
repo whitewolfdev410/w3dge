@@ -9,10 +9,10 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const blinkingPoints = [
-  {
-    x: "right-[298px]",
-    y: "top-[180px]",
-  },
+  // {
+  //   x: "right-[298px]",
+  //   y: "top-[180px]",
+  // },
   {
     x: "right-[332px]",
     y: "top-[198px]",
@@ -29,18 +29,18 @@ const blinkingPoints = [
     x: "right-[236px]",
     y: "top-[172px]",
   },
-  {
-    x: "right-[256px]",
-    y: "top-[172px]",
-  },
+  // {
+  //   x: "right-[256px]",
+  //   y: "top-[172px]",
+  // },
   {
     x: "right-[256px]",
     y: "top-[188px]",
   },
-  {
-    x: "right-[280px]",
-    y: "top-[172px]",
-  },
+  // {
+  //   x: "right-[280px]",
+  //   y: "top-[172px]",
+  // },
   {
     x: "right-[280px]",
     y: "top-[216px]",

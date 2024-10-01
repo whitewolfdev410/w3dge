@@ -17,7 +17,7 @@ function PieChartContent({ amount, title }: { amount?: any, title?: string }) {
         </p>
       )}
       <p className="font-bold font-GBold text-[0.62rem] text-[#767676] text-center">
-        {title ? title : 'Earned'}
+        {title ? title : 'Staked'}
       </p>
     </div>
   );
