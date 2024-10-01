@@ -128,9 +128,9 @@ function W3Node() {
       </div>
       {boxViewData && boxViewData.length > 0 && (
         <div className="pt-16 grid  xl:pr-28">
-          { !isLoadingNet && (
-            <W3NodeFooter networkStats={networkStats}/>
-          )}
+          {/* { !isLoadingNet && ( */}
+            <W3NodeFooter networkStats={networkStats} isLoadingNet={isLoadingNet}/>
+          {/* )} */}
         </div>
       )}
     </div>

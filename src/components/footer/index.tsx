@@ -84,9 +84,9 @@ function Footer(data:any) {
               step={data.networkStats?.total_earnings ?? 0}
               countSteps={50}
             />
-            {/* <p className="font-GRegular font-normal text-sm text-primary-main">
-              +13.6%
-            </p> */}
+            <p className="font-GRegular font-normal text-sm text-primary-main">
+              CND
+            </p>
           </div>
         </div>
       </div>
@@ -96,13 +96,13 @@ function Footer(data:any) {
         </div>
         <div className="  relative mt-8 md:mt-0 h-[11.25rem] w-[11.25rem]">
           <PureComponent />
-          <div className="grid w-fit absolute top-[2.61rem] left-[3.41rem]" style={{minWidth: '45px', justifyContent: 'center'}}>
+          <div className="grid absolute top-[22%] left-[25%] justify-center w-[4.25rem]">
             <p className="font-GRegular font-normal text-[0.75rem] text-white text-center -mb-3">
               {" "}
               Payout
             </p>
             <CounterAnimation
-              style="font-GBold font-bold text-[2.5rem] text-white px-1"
+              style="font-GBold font-bold text-[2.5rem] text-white text-center"
               step={Math.floor(data.networkStats?.average_daily_revenue) ?? 0}
               countSteps={1}
               duration={1000}

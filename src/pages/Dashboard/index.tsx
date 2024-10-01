@@ -189,23 +189,23 @@ function Dashboard() {
             <div className="flex row gap-5 xl:gap-10 w-full justify-start">
               <div className="h-[12.5rem] w-[12.5rem] relative ">
                 <PureComponent />
-                <div className="grid w-fit absolute top-[2.65rem] left-[2.65rem] justify-center w-[4.25rem]">
+                {!isFading && selectedBoxData && (
+                <div className="grid absolute top-[22%] left-[22%] justify-center w-[4.25rem]">
                   <p className="font-GRegular font-normal text-[0.75rem] text-white text-center -mb-3">
                     {" "}
                     Payout
                   </p>
-                  {boxViewPayoutData?.total_payouts && (
-                    <CounterAnimation
-                      style="font-GBold font-bold text-[2.5rem] text-white"
-                      step={parseInt(selectedBoxData?.average_daily_income)}
-                      countSteps={1}
-                      duration={1000}
-                    />
-                  )}
+                  <CounterAnimation
+                    style="font-GBold font-bold text-[2.5rem] text-white text-center"
+                    step={parseInt(selectedBoxData?.average_daily_income)}
+                    countSteps={1}
+                    duration={1000}
+                  />
                   <p className="font-GRegular font-normal text-[0.75rem] text-white text-center -mt-3">
                     {'CDN'}
                   </p>
                 </div>
+                )}
               </div>
               <div className="relative">
                 {!isLoading && (
@@ -231,7 +231,7 @@ function Dashboard() {
                   <Earned title={'Uptime in ViewBox'} amount={networkStats?.unique_validator_count ?? 0} percentage={'+13.6%'} dgeBox showPrecentage={false}/>
                   <Earned title={'Total Bandwidth'} amount={networkStats?.total_bandwidth ?? 0} percentage={'+13.6%'} dgeBox  showPrecentage={false} className='pl-[3rem]'/>
                   <Earned title={'Network Contribution'} amount={networkStats?.total_bandwidth_daily ?? 0} percentage={'+13.6%'} dgeBox  showPrecentage={false}/>
-                  <Earned title={'Total Earning'} amount={networkStats?.total_earnings ?? 0} percentage={'+13.6%'} dgeBox  showPrecentage={false} className='pl-[3rem]'/>
+                  <Earned title={'Total Earning'} amount={networkStats?.total_earnings ?? 0} percentage={'CND'} dgeBox  showPrecentage={true} className='pl-[3rem]'/>
                 </>
               )}
             </div>

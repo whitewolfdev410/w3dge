@@ -3,7 +3,7 @@ import PureComponent from "../charts/SimpleRadialBarChart";
 import CounterAnimation from "../animation/counterAnimation";
 import { FooterData, PayoutData } from "../../assets/footerdata";
 
-function W3NodeFooter({ networkStats }: any) {
+function W3NodeFooter({ networkStats, isLoadingNet }: {networkStats: any, isLoadingNet: boolean}) {
 
   return (
     <div className="w-full xl:flex grid pt-0">
@@ -31,41 +31,49 @@ function W3NodeFooter({ networkStats }: any) {
         <div>
           <p className="font-GBold font-normal text-sm text-white">Uptime in ViewBox</p>
           <div className="flex items-end gap-2 mt-1">
-            <CounterAnimation
-              style="font-GRegular font-normal text-3xl text-white"
-              step={networkStats?.unique_validator_count ?? 0}
-              countSteps={50}
-            />
+            {!isLoadingNet && (
+              <CounterAnimation
+                style="font-GRegular font-normal text-3xl text-white"
+                step={networkStats?.unique_validator_count ?? 0}
+                countSteps={50}
+              />
+            )}
           </div>
         </div>
         <div>
           <p className="font-GBold font-normal text-sm text-white">Total Bandwidth</p>
           <div className="flex items-end gap-2 mt-1">
-            <CounterAnimation
-              style="font-GRegular font-normal text-3xl text-white"
-              step={networkStats?.total_bandwidth ?? 0}
-              countSteps={50}
-            />
+            {!isLoadingNet && (
+              <CounterAnimation
+                style="font-GRegular font-normal text-3xl text-white"
+                step={networkStats?.total_bandwidth ?? 0}
+                countSteps={50}
+              />
+            )}
           </div>
         </div>
         <div>
           <p className="font-GBold font-normal text-sm text-white">Network Contribution</p>
           <div className="flex items-end gap-2 mt-1">
-            <CounterAnimation
-              style="font-GRegular font-normal text-3xl text-white"
-              step={networkStats?.total_bandwidth_daily ?? 0}
-              countSteps={50}
-            />
+            {!isLoadingNet && (
+              <CounterAnimation
+                style="font-GRegular font-normal text-3xl text-white"
+                step={networkStats?.total_bandwidth_daily ?? 0}
+                countSteps={50}
+              />
+            )}
           </div>
         </div>
         <div>
           <p className="font-GBold font-normal text-sm text-white">Total Earning</p>
           <div className="flex items-end gap-2 mt-1">
-            <CounterAnimation
-              style="font-GRegular font-normal text-3xl text-white"
-              step={networkStats?.total_earnings ?? 0}
-              countSteps={50}
-            />
+            {!isLoadingNet && (
+              <CounterAnimation
+                style="font-GRegular font-normal text-3xl text-white"
+                step={networkStats?.total_earnings ?? 0}
+                countSteps={50}
+              />
+            )}
             <p className="font-GRegular font-normal text-sm text-primary-main">CND</p>
           </div>
         </div>
@@ -77,18 +85,19 @@ function W3NodeFooter({ networkStats }: any) {
         <div className="relative mt-8 md:mt-0 h-[11.25rem] w-[11.25rem]">
           <PureComponent />
           <div
-            className="grid w-fit absolute top-[2.61rem] left-[3.41rem]"
-            style={{ minWidth: '45px', justifyContent: 'center' }}
+            className="grid absolute top-[22%] left-[25%] justify-center w-[4.25rem]"
           >
             <p className="font-GRegular font-normal text-[0.75rem] text-white text-center -mb-3">
               Payout
             </p>
-            <CounterAnimation
-              style="font-GBold font-bold text-[2.5rem] text-white px-1"
-              step={Math.floor(networkStats?.average_daily_revenue ?? 0)}
-              countSteps={1}
-              duration={1000}
-            />
+            {!isLoadingNet && (
+              <CounterAnimation
+                style="font-GBold font-bold text-[2.5rem] text-white text-center"
+                step={Math.floor(networkStats?.average_daily_revenue ?? 0)}
+                countSteps={1}
+                duration={1000}
+              />
+            )}
             <p className="font-GRegular font-normal text-[0.75rem] text-white text-center -mt-3">
               {PayoutData.token}
             </p>
