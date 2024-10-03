@@ -187,68 +187,70 @@ function HomePage() {
               ></div>
             ))}
           </div>
-          <div className=" gap-7 grid grid-cols-2 justify-around pt-0 xl:hidden flex xl:pr-10 pl-4">
-            <div>
-              <p className="font-GBold font-normal text-sm text-white">
-                Active Validators
-              </p>
-              <div className="flex items-end gap-2 mt-1">
-                <CounterAnimation
-                  style="font-GRegular font-normal text-3xl text-white"
-                  step={networkStats?.unique_validator_count ?? 0}
-                  countSteps={50}
-                />
-                {/* <p className="font-GRegular font-normal text-sm text-primary-main">
-              +13.6%
-            </p> */}
-              </div>
-            </div>
-            <div className="pl-8">
-              <p className="font-GBold font-normal text-sm text-white">
-                Total Bandwidth
-              </p>
-              <div className="flex items-end gap-2 mt-1">
-                <CounterAnimation
-                  style="font-GRegular font-normal text-3xl text-white"
-                  step={networkStats?.total_bandwidth ?? 0}
-                  countSteps={50}
-                />
-                {/* <p className="font-GRegular font-normal text-sm text-primary-main">
-              +13.6%
-            </p> */}
-              </div>
-            </div>
-            <div>
-              <p className="font-GBold font-normal text-sm text-white">
-                Bandwidth Today
-              </p>
-              <div className="flex items-end gap-2 mt-1">
-                <CounterAnimation
-                  style="font-GRegular font-normal text-3xl text-white"
-                  step={networkStats?.total_bandwidth_daily ?? 0}
-                  countSteps={50}
-                />
-                {/* <p className="font-GRegular font-normal text-sm text-primary-main">
-              +13.6%
-            </p> */}
-              </div>
-            </div>
-            <div className="pl-8">
-              <p className="font-GBold font-normal text-sm text-white">
-                Total Earning
-              </p>
-              <div className="flex items-end gap-1 mt-1">
-                <CounterAnimation
-                  style="font-GRegular font-normal text-3xl text-white"
-                  step={networkStats?.total_earnings ?? 0}
-                  countSteps={50}
-                />
-                <p className="font-GRegular font-normal text-sm text-primary-main pb-1">
-                  CDN
+          {!isLoadingNet && (
+            <div className=" gap-7 grid grid-cols-2 justify-around pt-0 xl:hidden flex xl:pr-10 pl-4">
+              <div>
+                <p className="font-GBold font-normal text-sm text-white">
+                  Active Validators
                 </p>
+                <div className="flex items-end gap-2 mt-1">
+                  <CounterAnimation
+                    style="font-GRegular font-normal text-3xl text-white"
+                    step={networkStats?.unique_validator_count ?? 0}
+                    countSteps={50}
+                  />
+                  {/* <p className="font-GRegular font-normal text-sm text-primary-main">
+              +13.6%
+            </p> */}
+                </div>
+              </div>
+              <div className="pl-8">
+                <p className="font-GBold font-normal text-sm text-white">
+                  Total Bandwidth
+                </p>
+                <div className="flex items-end gap-2 mt-1">
+                  <CounterAnimation
+                    style="font-GRegular font-normal text-3xl text-white"
+                    step={networkStats?.total_bandwidth ?? 0}
+                    countSteps={50}
+                  />
+                  {/* <p className="font-GRegular font-normal text-sm text-primary-main">
+              +13.6%
+            </p> */}
+                </div>
+              </div>
+              <div>
+                <p className="font-GBold font-normal text-sm text-white">
+                  Bandwidth Today
+                </p>
+                <div className="flex items-end gap-2 mt-1">
+                  <CounterAnimation
+                    style="font-GRegular font-normal text-3xl text-white"
+                    step={networkStats?.total_bandwidth_daily ?? 0}
+                    countSteps={50}
+                  />
+                  {/* <p className="font-GRegular font-normal text-sm text-primary-main">
+              +13.6%
+            </p> */}
+                </div>
+              </div>
+              <div className="pl-8">
+                <p className="font-GBold font-normal text-sm text-white">
+                  Total Earning
+                </p>
+                <div className="flex items-end gap-1 mt-1">
+                  <CounterAnimation
+                    style="font-GRegular font-normal text-3xl text-white"
+                    step={networkStats?.total_earnings ?? 0}
+                    countSteps={50}
+                  />
+                  <p className="font-GRegular font-normal text-sm text-primary-main pb-1">
+                    CDN
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          )}
           <div className="relative h-fit mt-20">
             <Heading1 text="Daily Payouts" />
             <AutoScrollContainer>
