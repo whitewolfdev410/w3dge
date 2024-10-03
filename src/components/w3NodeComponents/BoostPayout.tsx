@@ -28,20 +28,23 @@ function BoostPayout({
   subtitle,
   level,
   is_piechart,
-  earned
+  earned,
 }: IPropsBoostPayout) {
   return (
     <div
-      className="bg-cover bg-center bg-no-repeat  rounded-xl w-[18rem]"
+      className="bg-cover bg-center bg-no-repeat  rounded-xl w-[19rem]"
       style={{
         background:
           "linear-gradient(0deg, rgba(26,26,26,1) 0%, rgba(26,26,26,1) 100%)",
       }}
     >
-      <div className="p-9" style={{paddingBottom: is_piechart ? 0 : '2.8rem'}}>
+      <div
+        className="p-9"
+        style={{ paddingBottom: is_piechart ? 0 : "2.8rem" }}
+      >
         <div className="flex justify-between gap-8">
           <div>
-            <Heading5 text={is_piechart ? 'Your Share' : title} />
+            <Heading5 text={is_piechart ? "Your Share" : title} />
             <CounterAnimation
               style="font-bold font-GBold text-[2.5rem] text-primary-main"
               step={parseInt(precentage)}
@@ -66,7 +69,7 @@ function BoostPayout({
           {is_piechart && (
             <div>
               <div className="flex justify-between">
-                <Heading5 text={'Earned'} />
+                <Heading5 text={"Earned"} />
                 <div
                   className="w-[1.62rem] h-[1.25rem] "
                   style={{
@@ -86,7 +89,7 @@ function BoostPayout({
         {is_piechart ? (
           <div className="w-[9.5rem] h-[9.5rem] grid relative mx-auto">
             <PieChartComponent color={"#00B649"} />
-            <PieChartContent amount={amount} title="Staked"/>
+            <PieChartContent amount={amount} title="Staked" />
           </div>
         ) : (
           <>
@@ -109,24 +112,24 @@ function BoostPayout({
                 required
               </p>
             </div>
-          <div className="flex justify-between mt-2">
-            <Tooltip text="details ">
-              <div className="flex gap-3 border border-[#AAAAAA] rounded-md items-center py-1 px-2 cursor-pointer transition-all duration-300 ease-linear hover:bg-primary-main hover:border-primary-main">
-                <Clock />
-                <p className="font-normal font-GRegular text-[0.62rem] text-white">
-                  no exparation
-                </p>
-              </div>
-            </Tooltip>
-            <Tooltip text="details">
-              <div className="flex gap-5 border border-[#AAAAAA] rounded-md items-center py-1 px-2 cursor-pointer transition-all duration-300 ease-linear hover:bg-primary-main hover:border-primary-main">
-                <Lock />
-                <p className="font-normal font-GRegular text-[0.62rem] text-white">
-                  168 hours
-                </p>
-              </div>
-            </Tooltip>
-          </div>
+            <div className="flex justify-between mt-2">
+              <Tooltip text="details ">
+                <div className="flex gap-3 border border-[#AAAAAA] rounded-md items-center py-1 px-2 cursor-pointer transition-all duration-300 ease-linear hover:bg-primary-main hover:border-primary-main">
+                  <Clock />
+                  <p className="font-normal font-GRegular text-[0.62rem] text-white">
+                    no exparation
+                  </p>
+                </div>
+              </Tooltip>
+              <Tooltip text="details">
+                <div className="flex gap-5 border border-[#AAAAAA] rounded-md items-center py-1 px-2 cursor-pointer transition-all duration-300 ease-linear hover:bg-primary-main hover:border-primary-main">
+                  <Lock />
+                  <p className="font-normal font-GRegular text-[0.62rem] text-white">
+                    168 hours
+                  </p>
+                </div>
+              </Tooltip>
+            </div>
           </>
         )}
         {stockNow && (

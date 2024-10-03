@@ -13,13 +13,33 @@ function HeroHeading({ text }: { text: string }) {
     </div>
   );
 }
-function HeroHeadingTwo({ text }: { text: string }) {
+function HeroHeadingTwo({
+  text,
+  isCenter,
+}: {
+  text: string;
+  isCenter?: boolean;
+}) {
   return (
-    <h2 className={"font-bold font-GBold text-[3rem] text-white"}>{text}</h2>
+    <h2
+      className={`font-bold font-GBold text-[3rem] text-white ${
+        isCenter ? "text-center" : ""
+      }`}
+    >
+      {text}
+    </h2>
   );
 }
-function Heading1({ text }: { text: string }) {
-  return <h1 className="text-white font-bold font-GBold text-2xl">{text}</h1>;
+function Heading1({ text, isHidden }: { text: string; isHidden?: boolean }) {
+  return (
+    <h1
+      className={`text-white font-bold font-GBold text-2xl xl:text-start text-center ${
+        isHidden ? "hidden xl:flex" : ""
+      }`}
+    >
+      {text}
+    </h1>
+  );
 }
 function Heading5({ text, style }: { text: string; style?: string }) {
   return (
