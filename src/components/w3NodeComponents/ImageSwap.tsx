@@ -51,7 +51,7 @@ const ImageSwap: React.FC<ImageSwapProps> = ({
     <div className="flex flex-col items-center space-y-4 h-fit">
       {boxViewData && boxViewData.length > 0 ? (
         <>
-          <div className=" flex justify-between gap-52 md:gap-96 mb-14">
+          <div className=" flex justify-between gap-52 md:gap-96 mb-0 md:mb-14">
             <div>
               <p className="font-normal font-GRegular text-[0.87rem] text-white">
                 Box Identification
@@ -70,7 +70,7 @@ const ImageSwap: React.FC<ImageSwapProps> = ({
             </div>
           </div>
           <div className="relative w-full h-52 flex justify-center">
-            <div className="relative mt-8 md:mt-0 h-[11.25rem] w-[11.25rem] xl:hidden">
+            <div className="relative mt-0 h-[11.25rem] w-[11.25rem] xl:hidden">
               <PureComponent />
               <div className="grid absolute top-[22%] left-[25%] justify-center w-[4.25rem]">
                 <p className="font-GRegular font-normal text-[0.75rem] text-white text-center -mb-3">
@@ -102,13 +102,13 @@ const ImageSwap: React.FC<ImageSwapProps> = ({
               />
               <div
                 onClick={handlePrev}
-                className="absolute top-[45%] -left-[0rem] xl:-left-[4.12rem] h-fit w-fit rounded-full  bg-primary-main cursor-pointer"
+                className="absolute md:top-[45%] top-[30%] -left-[0rem] xl:-left-[4.12rem] h-fit w-fit rounded-full  bg-primary-main cursor-pointer"
               >
                 <ArrowLeft />
               </div>
               <div
                 onClick={handleNext}
-                className="absolute top-[45%]  -right-[0rem] xl:-right-[3.12rem] h-fit w-fit rounded-full bg-primary-main cursor-pointer"
+                className="absolute md:top-[45%] top-[30%]  -right-[0rem] xl:-right-[3.12rem] h-fit w-fit rounded-full bg-primary-main cursor-pointer"
               >
                 <ArrowRight />
               </div>

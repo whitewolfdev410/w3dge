@@ -128,10 +128,12 @@ function W3Node() {
 
         <div
           className="flex-1  items-center   gl:pt-0  bg-center bg-no-repeat mt-10 xl:mt-0"
-          style={{
-            backgroundImage: `url(${NodeBackground})`,
-            backgroundSize: "130% 130%",
-          }}
+          style={
+            {
+              // backgroundImage: `url(${NodeBackground})`,
+              // backgroundSize: "130% 130%",
+            }
+          }
         >
           {!isLoading && (
             <>
