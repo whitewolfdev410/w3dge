@@ -8,7 +8,11 @@ import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import W3NodeFooter from "../../components/footer/W3NodeFooter";
+import NodeBackground from "../../assets/images/node_background.png";
+import MobileNode from "../../assets/images/mobileNode.png";
+import PureComponent from "../../components/charts/SimpleRadialBarChart";
 import CounterAnimation from "../../components/animation/counterAnimation";
+import { PayoutData } from "../../assets/footerdata";
 
 function W3Node() {
   const { address, isConnected } = useAccount();
@@ -126,11 +130,11 @@ function W3Node() {
         )}
 
         <div
-          className="flex-1 grid items-center  gl:pt-0  bg-center bg-no-repeat mt-10 xl:mt-0"
-          // style={{
-          //   backgroundImage: `url(${NodeBackground})`,
-          //   backgroundSize: "130% 130%",
-          // }}
+          className="flex-1  items-center   gl:pt-0  bg-center bg-no-repeat mt-10 xl:mt-0"
+          style={{
+            backgroundImage: `url(${NodeBackground})`,
+            backgroundSize: "130% 130%",
+          }}
         >
           {!isLoading && (
             <>
