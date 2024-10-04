@@ -57,6 +57,52 @@ const blinkingPoints = [
     y: "top-[258px]",
   },
 ];
+const blinkingPointsMobile = [
+  // {
+  //   x: "right-[298px]",
+  //   y: "top-[180px]",
+  // },
+  {
+    x: "right-[20%]",
+    y: "top-[76%]",
+  },
+  {
+    x: "right-[15%]",
+    y: "top-[74%]",
+  },
+  {
+    x: "right-[15%]",
+    y: "top-[70%]",
+  },
+  {
+    x: "right-[25%]",
+    y: "top-[40%]",
+  },
+  // {
+  //   x: "right-[256px]",
+  //   y: "top-[172px]",
+  // },
+  {
+    x: "right-[35%]",
+    y: "top-[40%]",
+  },
+  // {
+  //   x: "right-[280px]",
+  //   y: "top-[172px]",
+  // },
+  {
+    x: "right-[25%]",
+    y: "top-[30%]",
+  },
+  {
+    x: "right-[30%]",
+    y: "top-[25%]",
+  },
+  {
+    x: "right-[20%]",
+    y: "top-[57%]",
+  },
+];
 
 function HomePage() {
   const { address, isConnected } = useAccount();
@@ -174,8 +220,22 @@ function HomePage() {
                 })()}
             </div>
           </div>
+          <div className="flex justify-center items-center xl:hidden">
+            <div className="w-fit h-fit  bg-contain bg-center bg-no-repeat relative ">
+              <img
+                src={BackgroundImage}
+                className="xl:h-[31.25rem] h-[20.25rem]"
+              />
+              {blinkingPointsMobile?.map((item) => (
+                <div
+                  key={item?.x + item?.y}
+                  className={`blinking-point absolute ${item?.y} ${item?.x} z-10`}
+                ></div>
+              ))}
+            </div>
+          </div>
           <div
-            className="w-full xl:h-[31.25rem] h-[20.25rem] bg-contain bg-center bg-no-repeat relative "
+            className="w-full xl:h-[31.25rem] h-[20.25rem] bg-contain bg-center bg-no-repeat relative hidden xl:flex "
             style={{
               backgroundImage: `url(${BackgroundImage})`,
             }}
@@ -187,6 +247,7 @@ function HomePage() {
               ></div>
             ))}
           </div>
+
           {!isLoadingNet && (
             <div className=" gap-7 grid grid-cols-2 justify-around pt-0 xl:hidden flex xl:pr-10 pl-6">
               <div>
