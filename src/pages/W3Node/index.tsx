@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import W3NodeFooter from "../../components/footer/W3NodeFooter";
 import CounterAnimation from "../../components/animation/counterAnimation";
+import PureComponent from "../../components/charts/SimpleRadialBarChart";
 
 function W3Node() {
   const { address, isConnected } = useAccount();
@@ -137,6 +138,8 @@ function W3Node() {
               <ImageSwap
                 boxViewData={boxViewData}
                 onBoxSelect={handleBoxSelect}
+                networkStats={networkStats}
+                isLoadingNet={isLoadingNet}
               />
             </>
           )}

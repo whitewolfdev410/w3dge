@@ -5,9 +5,16 @@ import CounterAnimation from "../animation/counterAnimation";
 interface ImageSwapProps {
   boxViewData: any;
   onBoxSelect: (boxId: string) => void;
+  networkStats: any;
+  isLoadingNet: boolean;
 }
 
-const ImageSwap: React.FC<ImageSwapProps> = ({ boxViewData, onBoxSelect }) => {
+const ImageSwap: React.FC<ImageSwapProps> = ({
+  boxViewData,
+  onBoxSelect,
+  networkStats,
+  isLoadingNet,
+}) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [isFading, setIsFading] = useState<boolean>(false);
 
@@ -38,7 +45,7 @@ const ImageSwap: React.FC<ImageSwapProps> = ({ boxViewData, onBoxSelect }) => {
       setIsFading(false);
     }, 500); // 500ms fade duration
   };
-  console.log("here is boxview: ", boxViewData);
+  console.log("here is boxview: ", networkStats);
 
   return (
     <div className="flex flex-col items-center space-y-4 h-fit">
@@ -63,26 +70,26 @@ const ImageSwap: React.FC<ImageSwapProps> = ({ boxViewData, onBoxSelect }) => {
             </div>
           </div>
           <div className="relative w-full h-52 flex justify-center">
-            {/* <div className="relative mt-8 md:mt-0 h-[11.25rem] w-[11.25rem] xl:hidden">
+            <div className="relative mt-8 md:mt-0 h-[11.25rem] w-[11.25rem] xl:hidden">
               <PureComponent />
               <div className="grid absolute top-[22%] left-[25%] justify-center w-[4.25rem]">
                 <p className="font-GRegular font-normal text-[0.75rem] text-white text-center -mb-3">
                   Payout
                 </p>
-                <CounterAnimation
-                  style="font-GBold font-bold text-[2.5rem] text-white text-center"
-                  step={Math.floor(
-                    boxViewData[currentIndex]?.total_income_per_box ?? 0
-                  )}
-                  countSteps={1}
-                  duration={1000}
-                />
+                {!isLoadingNet && (
+                  <CounterAnimation
+                    style="font-GBold font-bold text-[2.5rem] text-white text-center"
+                    step={Math.floor(networkStats?.average_daily_revenue ?? 0)}
+                    countSteps={1}
+                    duration={1000}
+                  />
+                )}
                 <p className="font-GRegular font-normal text-[0.75rem] text-white text-center -mt-3">
                   CDN
                 </p>
               </div>
-            </div> */}
-            <div className="relative w-fit">
+            </div>
+            <div className="relative lg:w-fit w-[60%]">
               <video
                 src="/src/assets/boxVideo.mp4"
                 className={`w-80 h-auto object-cover rounded-lg shadow-lg transition-opacity duration-500 ease-in-out ${

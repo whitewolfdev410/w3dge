@@ -1,7 +1,7 @@
 import WontToLearn from "./WontToLearn";
 import PureComponent from "../charts/SimpleRadialBarChart";
 import CounterAnimation from "../animation/counterAnimation";
-import { FooterData, PayoutData } from "../../assets/footerdata";
+import { PayoutData } from "../../assets/footerdata";
 
 function W3NodeFooter({
   networkStats,
