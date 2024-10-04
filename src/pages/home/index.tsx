@@ -117,17 +117,17 @@ function HomePage() {
     }
   }, [isConnected, address]);
   return (
-    <div className="section-home p-5 ">
-      <div className="grid hidden xl:grid">
+    <div className="section-home p-7 ">
+      <div className=" hidden xl:grid">
         <HeroHeading text={"Network"} />
       </div>
       <div className="block pt-16">
         <div className="grid grid-cols-1 xl:grid-cols-[20%_60%_20%] ">
-          <div className="mt-0 xl:mt-20 xl:mb-16 mb-0 p-3 flex md:grid">
+          <div className="mt-0 xl:mt-20 xl:mb-16 mb-0  flex md:grid">
             <Heading1 text="Distribution" isHidden={true} />
             <div className="grid justify-center md:flex md:justify-between mt-6 md:mt-0">
               {!isLoadingNet && (
-                <div className="  relative mt-0 h-[11.25rem] w-[11.25rem] xl:hidden flex">
+                <div className="  relative mt-0 h-[10.5rem] w-[10.5rem] xl:hidden flex justify-start">
                   <PureComponent />
                   <div className="grid absolute top-[22%] left-[25%] justify-center w-[4.25rem]">
                     <p className="font-GRegular font-normal text-[0.75rem] text-white text-center -mb-3">
@@ -149,7 +149,7 @@ function HomePage() {
                 </div>
               )}
             </div>
-            <div className="w-full">
+            <div className="w-full pl-12">
               {!isLoading &&
                 locationCountData &&
                 (() => {
@@ -188,7 +188,7 @@ function HomePage() {
             ))}
           </div>
           {!isLoadingNet && (
-            <div className=" gap-7 grid grid-cols-2 justify-around pt-0 xl:hidden flex xl:pr-10 pl-4">
+            <div className=" gap-7 grid grid-cols-2 justify-around pt-0 xl:hidden flex xl:pr-10 pl-6">
               <div>
                 <p className="font-GBold font-normal text-sm text-white">
                   Active Validators

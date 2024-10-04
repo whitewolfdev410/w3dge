@@ -12,7 +12,7 @@ const MobileDrawer: React.FC = () => {
   return (
     <div>
       {/* Header Section */}
-      <header className="flex justify-between items-center  h-fit py-4 px-5 w-full bg-gray-900">
+      <header className="flex justify-between items-center  h-fit py-4 px-3 w-full bg-gray-900">
         <img src={LogoText} />
         <button
           onClick={toggleDrawer}

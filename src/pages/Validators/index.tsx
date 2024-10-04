@@ -83,7 +83,7 @@ function Validators() {
   console.log("here is validatorPayoutdata: ", validatorPayoutdata);
   return (
     <div className="section-validators p-5 ">
-      <div className="grid pt-4 md:pt-0 hidden md:flex">
+      <div className="hidden pt-4 md:pt-0  md:flex">
         <HeroHeading text={"Validator Pools"} />
       </div>
       <div className="block pt-16">
@@ -91,7 +91,7 @@ function Validators() {
           <div className="h-full w-full relative"></div>
           <div className="flex gap-4 flex-wrap justify-center xl:justify-between">
             {userData &&
-              userData.staking_pools.map((item: any, index: any) => (
+              userData?.staking_pools?.map((item: any, index: any) => (
                 <BoostPayout
                   title={
                     item.amount_locked > 0 ? "Your share" : "Network share"
@@ -120,7 +120,7 @@ function Validators() {
           <WontToLearn />
         </div>
         <div className="flex gap-5 flex-wrap justify-center xl:justify-between">
-          <div className="w-80 h-72 grid bg-dark-main p-4 rounded-xl">
+          <div className=" w-[80%] lg:w-80 h-72 grid bg-dark-main p-4 rounded-xl">
             <Bodoy1 text="Network Contribution" style={"!pb-3"} />
             <StokedBorChartComponent boxViewPayoutData={boxViewPayoutData} />
           </div>

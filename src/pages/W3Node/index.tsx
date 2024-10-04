@@ -9,8 +9,10 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import W3NodeFooter from "../../components/footer/W3NodeFooter";
 import NodeBackground from "../../assets/images/node_background.png";
+import MobileNode from "../../assets/images/mobileNode.png";
 import PureComponent from "../../components/charts/SimpleRadialBarChart";
 import CounterAnimation from "../../components/animation/counterAnimation";
+import { PayoutData } from "../../assets/footerdata";
 
 function W3Node() {
   const { address, isConnected } = useAccount();
@@ -126,8 +128,49 @@ function W3Node() {
             </div>
           </div>
         )}
+
+        <div className=" flex justify-between gap-52 md:gap-96 mb-0 lg:hidden">
+          <div>
+            <p className="font-normal font-GRegular text-[0.87rem] text-white">
+              Box Identification
+            </p>
+            <p className="font-normal font-GRegular text-[1.43rem] text-white">
+              box001
+            </p>
+          </div>
+          <div>
+            <p className="font-normal font-GRegular text-[0.87rem] text-white">
+              Location
+            </p>
+            <p className="font-normal font-GRegular text-[1.43rem] text-white">
+              indonesia
+            </p>
+          </div>
+        </div>
+        <div className="grid grid-cols-[35%_65%] items-start lg:hidden justify-center">
+          <div className="  relative mt-8 md:mt-0 h-[11.25rem] w-[11.25rem] xl:flex">
+            <PureComponent />
+            <div className="grid absolute top-[22%] left-[25%] justify-center w-[4.25rem]">
+              <p className="font-GRegular font-normal text-[0.75rem] text-white text-center -mb-3">
+                {" "}
+                Payout
+              </p>
+              <CounterAnimation
+                style="font-GBold font-bold text-[2.5rem] text-white text-center"
+                step={10}
+                countSteps={1}
+                duration={1000}
+              />
+              <p className="font-GRegular font-normal text-[0.75rem] text-white text-center -mt-3">
+                {PayoutData.token}
+              </p>
+            </div>
+          </div>
+          <img src={MobileNode} className="w-80 mt-[40px] ml-10" />
+        </div>
+
         <div
-          className="flex-1 grid items-center  gl:pt-0  bg-center bg-no-repeat mt-10 xl:mt-0"
+          className="flex-1 lg:grid items-center hidden  gl:pt-0  bg-center bg-no-repeat mt-10 xl:mt-0"
           style={{
             backgroundImage: `url(${NodeBackground})`,
             backgroundSize: "130% 130%",

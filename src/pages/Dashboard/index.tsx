@@ -80,6 +80,7 @@ function Dashboard() {
       setData(response.data);
       setIsLoading(false);
     } catch (err: any) {
+      console.log("error", err);
       setError(err.message);
     } finally {
       setIsLoading(false);
@@ -175,25 +176,25 @@ function Dashboard() {
         </div>
         <div className="bg-contain bg-center bg-no-repeat relative grid xl:hidden mt-16 justify-around">
           <HeroHeadingTwo text="Total Earning" isCenter={true} />
-          <div className="grid grid-cols-2 gap-x-20 gap-y-6 mt-5">
+          <div className="grid grid-cols-2 gap-x-0 gap-y-6 mt-5 px-6">
             <Earn title="Today" amount={12} />
             <Earn title="This Week" amount={142} isEnd={true} />
             <Earn title="This Month" amount={1242} />
           </div>
-          <div className="w-full justify-center flex">
+          {/* <div className="w-full justify-center flex">
             <div className="bg-dark-main rounded-md py-2 px-7 flex justify-center transition-all duration-300 ease-linear mt-3 items-center w-fit text-primary-main cursor-pointer  hover:bg-primary-main hover:text-white">
               <p className="font-bold font-GBold text-[0.93rem]  hover:text-white">
                 Go to Wallet
               </p>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="">
-          <div className="grid justify-center">
+          <div className="grid justify-center mt-10">
             <HeroHeadingTwo text="Validator Pools" />
           </div>
           <div className="flex flex-wrap justify-center">
-            {userData?.staking_pools.map((item: any) => (
+            {userData?.staking_pools?.map((item: any) => (
               <div className="w-[9.5rem] h-[9.5rem] grid relative">
                 <PieChartComponent
                   color={item.amount_locked != 0 ? "#00B649" : "#949596"}
@@ -224,13 +225,13 @@ function Dashboard() {
                 />
               </>
             )}
-            <div className="bg-dark-main w-[10.43rem] py-3 h-fit transition-all duration-300 ease-linear justify-center rounded-lg cursor-pointer text-primary-main hover:bg-primary-main hover hover:text-white">
+            <div className="bg-dark-main w-[10.43rem] mt-5 md:mt-0 py-3 h-fit transition-all duration-300 ease-linear justify-center rounded-lg cursor-pointer text-primary-main hover:bg-primary-main hover hover:text-white">
               <p className="font-bold font-GBold text-[0.93rem] text-center">
                 Claim Reward
               </p>
             </div>
           </div>
-          <div className="flex gap-7 mt-16 flex-wrap justify-center xl:gap-7 xl:justify-center">
+          <div className="flex gap-7 mt-16 flex-wrap justify-center xl:gap-7 xl:justify-center px-8">
             <div className="xl:w-[17rem] w-[23rem] h-72 grid bg-dark-main p-4 rounded-xl">
               <Bodoy1 text="Network Contribution" style={"!pb-3"} />
               <StokedBorChartComponent boxViewPayoutData={boxViewPayoutData} />
@@ -273,12 +274,12 @@ function Dashboard() {
                 </div>
               </>
             ) : (
-              <>
-                <div className="grid justify-center xl:justify-start w-full mt-10 lg:mt-0">
+              <div className="">
+                <div className="grid justify-center xl:justify-start w-full mt-10 mb-5 lg:mt-0 ">
                   <HeroHeadingTwo text="3dge Box " />
                 </div>
-                <div className="flex row gap-5 xl:gap-10 w-full justify-start">
-                  <div className="h-[12.5rem] w-[12.5rem] relative ">
+                <div className="flex row gap-5 xl:gap-10 w-full justify-start px-6">
+                  <div className="h-[11.5rem] w-[11.5rem] relative ">
                     <PureComponent />
                     {!isFading && selectedBoxData && (
                       <div className="grid absolute top-[22%] left-[22%] justify-center w-[4.25rem]">
@@ -316,9 +317,9 @@ function Dashboard() {
                     </div>
                   </div>
                 </div>
-              </>
+              </div>
             )}
-            <div className="grid grid-cols-2 gap-5 xl:gap-10 pl-2">
+            <div className="grid grid-cols-2 gap-3 xl:gap-10  px-8">
               {!isLoadingNet && (
                 <>
                   <Earned
