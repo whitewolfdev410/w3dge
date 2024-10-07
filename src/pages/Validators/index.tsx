@@ -80,7 +80,6 @@ function Validators() {
   useEffect(() => {
     if (boxViewData) handleBoxSelect(boxViewData[0]?.box_id);
   }, [boxViewData]);
-  console.log("here is validatorPayoutdata: ", validatorPayoutdata);
   return (
     <div className="section-validators p-5 ">
       <div className="hidden pt-4 md:pt-0  md:flex">
@@ -91,27 +90,43 @@ function Validators() {
           <div className="h-full w-full relative"></div>
           <div className="flex gap-4 flex-wrap justify-center xl:justify-between">
             {userData &&
-              userData?.staking_pools?.map((item: any, index: any) => (
-                <BoostPayout
-                  title={
-                    item.amount_locked > 0 ? "Your share" : "Network share"
-                  }
-                  precentage={item.pool_type}
-                  amount={item.amount_locked}
-                  earned={item.reward_earned}
-                  stockNow={false}
-                  subtitle={
-                    item.amount_locked > 0
-                      ? "of Network"
-                      : "for Validator reward"
-                  }
-                  validators
-                  level={index + 1}
-                  is_piechart={item.amount_locked > 0 ? true : false}
-                  key={index}
-                />
-              ))}
+              userData?.staking_pools?.map((item: any, index: any) => {
+                const lastUpdateDate = new Date(userData?.last_updated);
+                const today = new Date();
+                const timeDifference = Math.abs(
+                  today.getTime() - lastUpdateDate.getTime()
+                );
+                const daysDifference = Math.ceil(
+                  timeDifference / (1000 * 3600 * 24)
+                );
+                const isPieChart =
+                  item.amount_locked > 0 ||
+                  (item.amount_locked === 0 && daysDifference < 7);
+
+                return (
+                  <BoostPayout
+                    title={
+                      item.amount_locked > 0 ? "Your share" : "Network share"
+                    }
+                    percentage={item.pool_type}
+                    amount={item.amount_locked}
+                    earned={item.reward_earned}
+                    lastupdate={userData.last_updated}
+                    stockNow={false}
+                    subtitle={
+                      item.amount_locked > 0
+                        ? "of Network"
+                        : "for Validator reward"
+                    }
+                    validators
+                    level={index + 1}
+                    is_piechart={isPieChart}
+                    key={index}
+                  />
+                );
+              })}
           </div>
+
           <div className="h-full w-full relative "></div>
         </div>
       </div>

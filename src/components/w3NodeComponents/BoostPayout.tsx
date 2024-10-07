@@ -6,10 +6,11 @@ import Tooltip from "../Tooltip";
 import CounterAnimation from "../animation/counterAnimation";
 import PieChartComponent from "../charts/PipChartComponent";
 import PieChartContent from "../dashboardComponent/pieChartContent";
+import { useEffect, useState } from "react";
 
 interface IPropsBoostPayout {
   title: string;
-  precentage: any;
+  percentage: any;
   subtitle?: string;
   amount: string;
   stockNow?: boolean;
@@ -17,19 +18,113 @@ interface IPropsBoostPayout {
   level?: string;
   is_piechart?: boolean;
   earned?: any;
+  lastupdate?: any;
 }
 
 function BoostPayout({
   amount,
-  precentage,
+  percentage,
   title,
   validators,
+  lastupdate,
   stockNow,
   subtitle,
   level,
   is_piechart,
   earned,
 }: IPropsBoostPayout) {
+  const [isHovered, setIsHovered] = useState(false);
+  const getStepBasedOnPercentage = (percentage: any) => {
+    switch (parseInt(percentage)) {
+      case 2:
+        return 500;
+      case 3:
+        return 800;
+      case 5:
+        return 1000;
+      case 10:
+        return 2000;
+      default:
+        return amount; // Default to amount if no specific percentage is matched
+    }
+  };
+  const [timeRemaining, setTimeRemaining] = useState("");
+  useEffect(() => {
+    const lastUpdateDate = new Date(lastupdate);
+
+    const calculateTimeRemaining = () => {
+      const today = new Date();
+      const timeDifference = today.getTime() - lastUpdateDate.getTime();
+      const sevenDaysInMs = 6 * 24 * 60 * 60 * 1000;
+      if (timeDifference <= sevenDaysInMs) {
+        const remainingTime = sevenDaysInMs - timeDifference;
+        const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const minutes = Math.floor(
+          (remainingTime % (1000 * 60 * 60)) / (1000 * 60)
+        );
+        const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+        setTimeRemaining(
+          `${String(days).padStart(2, "0")}:${String(hours).padStart(
+            2,
+            "0"
+          )}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
+            2,
+            "0"
+          )}`
+        );
+      } else {
+        setTimeRemaining("00:00:00:00");
+      }
+    };
+    const interval = setInterval(calculateTimeRemaining, 1000);
+    return () => clearInterval(interval);
+  }, [lastupdate]);
+  const lastUpdateDate = new Date(lastupdate!);
+  const today = new Date();
+  const timeDifference = Math.abs(today.getTime() - lastUpdateDate.getTime());
+  const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
+
+  const handleUnstake = (percentage: any) => {
+    let unstake_amount = getStepBasedOnPercentage(percentage);
+    console.log("here is unstake clicked: ", unstake_amount);
+  };
+  function HoveredComponent(percentage: any) {
+    return (
+      <div
+        className="bg-[#00551899] p-2 rounded-full shadow-lg text-center absolute top-[1.4rem] left-[1.5rem] justify-center items-center w-[7rem] h-[7rem] flex "
+        style={{
+          background:
+            "linear-gradient(to top, rgba(0, 85, 24, 0.6), rgba(0, 187, 53, 0.6))",
+        }}
+        onClick={() => handleUnstake(percentage)}
+      >
+        <p className="font-bold font-GBold text-[1rem] text-white ">
+          Unstake Now
+        </p>
+      </div>
+    );
+  }
+
+  function LockedContent() {
+    return (
+      <div
+        className="absolute top-[3.2rem] left-[2.5rem] flex flex-col justify-center "
+        style={{ minWidth: "45px" }}
+      >
+        <Clock style={{ width: "1.5rem", margin: "auto" }} />
+        <p className="font-bold font-GBold text-[0.93rem] text-[#BABABA] text-center">
+          {timeRemaining}
+        </p>
+        <p className="font-bold font-GBold text-[0.62rem] text-[#767676] text-center">
+          Unlocking
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div
       className="bg-cover bg-center bg-no-repeat  rounded-xl w-[19rem]"
@@ -47,7 +142,7 @@ function BoostPayout({
             <Heading5 text={is_piechart ? "Your Share" : title} />
             <CounterAnimation
               style="font-bold font-GBold text-[2.5rem] text-primary-main"
-              step={parseInt(precentage)}
+              step={parseInt(percentage)}
               countSteps={0.3}
               duration={500}
               tagText="%"
@@ -87,24 +182,35 @@ function BoostPayout({
           )}
         </div>
         {is_piechart ? (
-          <div className="w-[9.5rem] h-[9.5rem] grid relative mx-auto">
+          <div
+            className="w-[9.5rem] h-[9.5rem] grid relative mx-auto"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
             <PieChartComponent color={"#00B649"} />
-            <PieChartContent amount={amount} title="Staked" />
+            {parseInt(amount) == 0 && daysDifference < 7 ? (
+              <LockedContent />
+            ) : isHovered ? (
+              <HoveredComponent percentage={percentage} />
+            ) : (
+              <PieChartContent amount={amount} title="Unstake" />
+            )}
           </div>
         ) : (
           <>
             <div className="bg-black flex justify-between px-3 py-1 gap-12 items-center mt-8 rounded-md">
-              <div className="flex gap-2 items-center ">
+              <div className="flex gap-2 items-center">
                 <div
-                  className="w-[1.62rem] h-[1.25rem] "
+                  className="w-[1.62rem] h-[1.25rem]"
                   style={{
                     backgroundImage: `url(${LogoIcon})`,
                   }}
                 ></div>
+
                 <CounterAnimation
                   style="text-primary-main font-GBold font-bold text-[1.25rem]"
-                  step={amount}
-                  countSteps={1}
+                  step={getStepBasedOnPercentage(percentage)}
+                  countSteps={10}
                   duration={1000}
                 />
               </div>
@@ -116,16 +222,16 @@ function BoostPayout({
               <Tooltip text="details ">
                 <div className="flex gap-3 border border-[#AAAAAA] rounded-md items-center py-1 px-2 cursor-pointer transition-all duration-300 ease-linear hover:bg-primary-main hover:border-primary-main">
                   <Clock />
-                  <p className="font-normal font-GRegular text-[0.62rem] text-white">
-                    no exparation
+                  <p className="font-normal font-GRegular text-[0.62rem] text-white pr-4">
+                    7 Days
                   </p>
                 </div>
               </Tooltip>
               <Tooltip text="details">
                 <div className="flex gap-5 border border-[#AAAAAA] rounded-md items-center py-1 px-2 cursor-pointer transition-all duration-300 ease-linear hover:bg-primary-main hover:border-primary-main">
                   <Lock />
-                  <p className="font-normal font-GRegular text-[0.62rem] text-white">
-                    168 hours
+                  <p className="font-normal font-GRegular text-[0.62rem] text-white pr-4">
+                    Stake
                   </p>
                 </div>
               </Tooltip>
