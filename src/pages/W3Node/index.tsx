@@ -208,7 +208,7 @@ function W3Node() {
             <div className="max-w-80 w-fit">
               <BoostPayout
                 title="Boost your payout"
-                precentage={BoostData.percentage}
+                percentage={BoostData.percentage}
                 amount={BoostData.amount}
                 stockNow
                 validators={false}
