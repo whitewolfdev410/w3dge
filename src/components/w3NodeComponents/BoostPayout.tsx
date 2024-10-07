@@ -94,7 +94,7 @@ function BoostPayout({
   function HoveredComponent(percentage: any) {
     return (
       <div
-        className="bg-[#00551899] p-2 rounded-full shadow-lg text-center absolute top-[1.4rem] left-[1.5rem] justify-center items-center w-[7rem] h-[7rem] flex "
+        className="bg-[#00551899] p-2 rounded-full shadow-lg text-center absolute top-[1.45rem] left-[1.4rem] justify-center items-center w-[7rem] h-[7rem] flex "
         style={{
           background:
             "linear-gradient(to top, rgba(0, 85, 24, 0.6), rgba(0, 187, 53, 0.6))",
