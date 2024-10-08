@@ -7,6 +7,9 @@ import CounterAnimation from "../animation/counterAnimation";
 import PieChartComponent from "../charts/PipChartComponent";
 import PieChartContent from "../dashboardComponent/pieChartContent";
 import { useEffect, useState } from "react";
+import ToastMessage from "../toast/toastmessage";
+import { toast } from "react-toastify";
+import { useAccount } from "wagmi";
 
 interface IPropsBoostPayout {
   title: string;
@@ -34,6 +37,7 @@ function BoostPayout({
   earned,
 }: IPropsBoostPayout) {
   const [isHovered, setIsHovered] = useState(false);
+  const [isLocked, setIsLocked] = useState(false);
   const getStepBasedOnPercentage = (percentage: any) => {
     switch (parseInt(percentage)) {
       case 2:
@@ -85,26 +89,80 @@ function BoostPayout({
   const lastUpdateDate = new Date(lastupdate!);
   const today = new Date();
   const timeDifference = Math.abs(today.getTime() - lastUpdateDate.getTime());
-  const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
+  let daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
+  const { address } = useAccount();
 
-  const handleUnstake = (percentage: any) => {
-    let unstake_amount = getStepBasedOnPercentage(percentage);
-    console.log("here is unstake clicked: ", unstake_amount);
+  const handleUnstake = async (percentage: any) => {
+    console.log("here is unstake clicked: ", percentage);
+    setIsLocked(true);
+    toast.info("this is test", { position: "top-right" });
+    const apiUrl =
+      "https://gygxr53i33.execute-api.ap-southeast-2.amazonaws.com/Prod/unstake";
+    const data = {
+      wallet_id: address,
+      pool_id: percentage,
+    };
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      console.log("HTTP error, status = " + response.status);
+    } else {
+      const jsonResponse = await response.json();
+      console.log(jsonResponse);
+    }
   };
-  function HoveredComponent(percentage: any) {
+  const handleStake = async (percentage: any) => {
+    let stakeAmount = getStepBasedOnPercentage(percentage);
+    const apiUrl =
+      "https://gygxr53i33.execute-api.ap-southeast-2.amazonaws.com/Prod/ButtonStake";
+    const data = {
+      wallet_id: address,
+      pool_id: percentage,
+      value: stakeAmount,
+    };
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      console.log("HTTP error, status = " + response.status);
+    } else {
+      const jsonResponse = await response.json();
+      console.log(jsonResponse);
+    }
+  };
+  function HoveredComponent(data: any) {
     return (
-      <div
-        className="bg-[#00551899] p-2 rounded-full shadow-lg text-center absolute top-[1.45rem] left-[1.4rem] justify-center items-center w-[7rem] h-[7rem] flex "
-        style={{
-          background:
-            "linear-gradient(to top, rgba(0, 85, 24, 0.6), rgba(0, 187, 53, 0.6))",
-        }}
-        onClick={() => handleUnstake(percentage)}
-      >
-        <p className="font-bold font-GBold text-[1rem] text-white ">
-          Unstake Now
-        </p>
-      </div>
+      <>
+        <div
+          className="bg-[#00551899] p-2 rounded-full shadow-lg text-center absolute top-[1.45rem] left-[1.4rem] justify-center items-center w-[7rem] h-[7rem] flex "
+          style={{
+            background:
+              "linear-gradient(to top, rgba(0, 85, 24, 0.6), rgba(0, 187, 53, 0.6))",
+          }}
+          onClick={() => handleUnstake(data.percentage)}
+        >
+          <p className="font-bold font-GBold text-[1rem] text-white ">
+            Unstake Now
+          </p>
+        </div>
+        <div className="absolute bottom-[-2rem] right-[-2rem]">
+          <div className="flex gap-1 border border-[#AAAAAA] rounded-md items-center py-1 w-[5rem] cursor-pointer transition-all duration-300 ease-linear hover:bg-primary-main hover:border-primary-main px-1">
+            <Clock style={{ width: "1.5rem", margin: "auto" }} />
+            <p className="font-normal font-GRegular text-[0.62rem] text-white">
+              7 Days Cooldown
+            </p>
+          </div>
+        </div>
+      </>
     );
   }
 
@@ -188,7 +246,7 @@ function BoostPayout({
             onMouseLeave={() => setIsHovered(false)}
           >
             <PieChartComponent color={"#00B649"} />
-            {parseInt(amount) == 0 && daysDifference < 7 ? (
+            {(parseInt(amount) == 0 && daysDifference < 7) || isLocked ? (
               <LockedContent />
             ) : isHovered ? (
               <HoveredComponent percentage={percentage} />
@@ -228,7 +286,10 @@ function BoostPayout({
                 </div>
               </Tooltip>
               <Tooltip text="details">
-                <div className="flex gap-5 border border-[#AAAAAA] rounded-md items-center py-1 px-2 cursor-pointer transition-all duration-300 ease-linear hover:bg-primary-main hover:border-primary-main">
+                <div
+                  className="flex gap-5 border border-[#AAAAAA] rounded-md items-center py-1 px-2 cursor-pointer transition-all duration-300 ease-linear hover:bg-primary-main hover:border-primary-main"
+                  onClick={() => handleStake(percentage)}
+                >
                   <Lock />
                   <p className="font-normal font-GRegular text-[0.62rem] text-white pr-4">
                     Stake
