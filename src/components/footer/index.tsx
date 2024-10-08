@@ -71,8 +71,8 @@ function Footer(data: any) {
           </div>
         </div>
       </div>
-      <div className="grid justify-center md:flex md:justify-between mt-10 mr-4">
-        <div className="mt-10 md:mt-0 flex justify-center xl:hidden">
+      <div className="grid justify-center md:flex md:justify-between md:mt-10 mt-0">
+        <div className="md:mt-10 mt-0 md:mt-0 flex justify-center xl:hidden">
           <WontToLearn />
         </div>
         <div className="  relative mt-8 md:mt-0 h-[11.25rem] w-[11.25rem] xl:flex hidden">

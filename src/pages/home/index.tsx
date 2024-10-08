@@ -163,7 +163,7 @@ function HomePage() {
     }
   }, [isConnected, address]);
   return (
-    <div className="section-home p-7 ">
+    <div className="section-home md:p-7 p-2">
       <div className=" hidden xl:grid">
         <HeroHeading text={"Network"} />
       </div>
@@ -173,7 +173,7 @@ function HomePage() {
             <Heading1 text="Distribution" isHidden={true} />
             <div className="grid justify-center md:flex md:justify-between mt-6 md:mt-0">
               {!isLoadingNet && (
-                <div className="  relative mt-0 h-[10.5rem] w-[10.5rem] xl:hidden flex justify-start">
+                <div className="  relative mt-0 h-[9.5rem] w-[9.5rem] xl:hidden flex justify-start">
                   <PureComponent />
                   <div className="grid absolute top-[22%] left-[25%] justify-center w-[4.25rem]">
                     <p className="font-GRegular font-normal text-[0.75rem] text-white text-center -mb-3">
@@ -224,7 +224,7 @@ function HomePage() {
             <div className="w-fit h-fit  bg-contain bg-center bg-no-repeat relative ">
               <img
                 src={BackgroundImage}
-                className="xl:h-[31.25rem] h-[20.25rem]"
+                className="xl:h-[31.25rem] h-[13.25rem]"
               />
               {blinkingPointsMobile?.map((item) => (
                 <div

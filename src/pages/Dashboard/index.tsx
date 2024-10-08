@@ -136,7 +136,7 @@ function Dashboard() {
       <div className="grid pt-4 md:pt-0 hidden xl:grid">
         <HeroHeading text={"Cockpit"} />
       </div>
-      <div className="row grid grid-cols-1 lg:grid-cols-[60%_40%] xl:grid-cols-[30%_40%_30%] justify-between pt-16">
+      <div className="row grid grid-cols-1 lg:grid-cols-[60%_40%] xl:grid-cols-[30%_40%_30%] justify-between md:pt-16 pt-0">
         <div className="bg-contain bg-center bg-no-repeat relative hidden xl:grid h-fit pt-12">
           <div className="xl:pl-28">
             <HeroHeadingTwo text="Total Earning" />
@@ -189,7 +189,7 @@ function Dashboard() {
             </div>
           </div> */}
         </div>
-        <div className="">
+        <div className="mt-6 md:mt-0">
           <div className="grid justify-center mt-[-1rem]">
             <HeroHeadingTwo text="Validator Pools" />
           </div>
