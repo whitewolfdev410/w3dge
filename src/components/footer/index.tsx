@@ -1,7 +1,7 @@
 import WontToLearn from "./WontToLearn";
 import PureComponent from "../charts/SimpleRadialBarChart";
 import CounterAnimation from "../animation/counterAnimation";
-import { FooterData, PayoutData } from "../../assets/footerdata";
+import { PayoutData } from "../../assets/footerdata";
 
 function Footer(data: any) {
   return (
@@ -71,7 +71,7 @@ function Footer(data: any) {
           </div>
         </div>
       </div>
-      <div className="grid justify-center md:flex md:justify-between mt-10 ">
+      <div className="grid justify-center md:flex md:justify-between mt-10 mr-4">
         <div className="mt-10 md:mt-0 flex justify-center xl:hidden">
           <WontToLearn />
         </div>

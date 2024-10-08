@@ -135,11 +135,11 @@ function Validators() {
           <WontToLearn />
         </div>
         <div className="flex gap-5 flex-wrap justify-center xl:justify-between">
-          <div className=" w-[80%] lg:w-80 h-72 grid bg-dark-main p-4 rounded-xl">
+          <div className=" w-[24rem] lg:w-80 h-72 grid bg-dark-main p-4 rounded-xl">
             <Bodoy1 text="Network Contribution" style={"!pb-3"} />
             <StokedBorChartComponent boxViewPayoutData={boxViewPayoutData} />
           </div>
-          <div className="xl:w-[29rem] w-[80%] h-72 grid bg-dark-main p-4 rounded-xl">
+          <div className="xl:w-[29rem] w-[24rem] h-72 grid bg-dark-main p-4 rounded-xl">
             <Bodoy1 text="Payout History" style={"!pb-3"} />
             <LinePayoutChartComponent
               validatorPayoutdata={validatorPayoutdata}

@@ -146,7 +146,7 @@ function W3Node() {
             </>
           )}
         </div>
-        <div className="flex flex-wrap gap-5 flex-1 justify-around pt-8 xl:hidden">
+        <div className="flex flex-wrap gap-5 flex-1 justify-between pt-8 xl:hidden">
           {!isLoadingNet && (
             <>
               <div>
@@ -205,7 +205,7 @@ function W3Node() {
         </div>
         {boxViewData && boxViewData.length > 0 && (
           <div className=" mt-10 xl:mt-0 flex justify-center xl:justify-start items-center">
-            <div className="max-w-80 w-fit">
+            <div className="max-w-90 w-fit">
               <BoostPayout
                 title="Boost your payout"
                 percentage={BoostData.percentage}

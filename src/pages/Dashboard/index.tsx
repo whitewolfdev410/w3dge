@@ -190,7 +190,7 @@ function Dashboard() {
           </div> */}
         </div>
         <div className="">
-          <div className="grid justify-center mt-10">
+          <div className="grid justify-center mt-[-1rem]">
             <HeroHeadingTwo text="Validator Pools" />
           </div>
           <div className="flex flex-wrap justify-center">

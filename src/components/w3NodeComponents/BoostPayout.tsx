@@ -86,14 +86,13 @@ function BoostPayout({
     const interval = setInterval(calculateTimeRemaining, 1000);
     return () => clearInterval(interval);
   }, [lastupdate]);
-  const lastUpdateDate = new Date(lastupdate!);
+  let lastUpdateDate = new Date(lastupdate!);
   const today = new Date();
-  const timeDifference = Math.abs(today.getTime() - lastUpdateDate.getTime());
+  let timeDifference = Math.abs(today.getTime() - lastUpdateDate.getTime());
   let daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
   const { address } = useAccount();
 
   const handleUnstake = async (percentage: any) => {
-    console.log("here is unstake clicked: ", percentage);
     setIsLocked(true);
     const apiUrl =
       "https://gygxr53i33.execute-api.ap-southeast-2.amazonaws.com/Prod/unstake";
@@ -184,7 +183,7 @@ function BoostPayout({
 
   return (
     <div
-      className="bg-cover bg-center bg-no-repeat  rounded-xl w-[19rem]"
+      className="bg-cover bg-center bg-no-repeat  rounded-xl md:w-[19rem] w-[24rem]"
       style={{
         background:
           "linear-gradient(0deg, rgba(26,26,26,1) 0%, rgba(26,26,26,1) 100%)",

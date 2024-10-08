@@ -8,7 +8,7 @@ function TabMain() {
     setTab(event.currentTarget?.id);
   };
   return (
-    <div className="grid max-w-[27rem] w-[80%]">
+    <div className="grid max-w-[27rem] w-[23rem]">
       <div className="grid grid-cols-2 border-b border-primary-main h-fit">
         <div
           className={`py-3 rounded-md ${

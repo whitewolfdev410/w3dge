@@ -195,7 +195,7 @@ function HomePage() {
                 </div>
               )}
             </div>
-            <div className="w-full pl-12">
+            <div className="w-full">
               {!isLoading &&
                 locationCountData &&
                 (() => {
