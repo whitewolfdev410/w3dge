@@ -7,8 +7,8 @@ import CounterAnimation from "../animation/counterAnimation";
 import PieChartComponent from "../charts/PipChartComponent";
 import PieChartContent from "../dashboardComponent/pieChartContent";
 import { useEffect, useState } from "react";
-import ToastMessage from "../toast/toastmessage";
-import { toast } from "react-toastify";
+// import ToastMessage from "../toast/toastmessage";
+// import { toast } from "react-toastify";
 import { useAccount } from "wagmi";
 
 interface IPropsBoostPayout {
@@ -95,7 +95,6 @@ function BoostPayout({
   const handleUnstake = async (percentage: any) => {
     console.log("here is unstake clicked: ", percentage);
     setIsLocked(true);
-    toast.info("this is test", { position: "top-right" });
     const apiUrl =
       "https://gygxr53i33.execute-api.ap-southeast-2.amazonaws.com/Prod/unstake";
     const data = {
