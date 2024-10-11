@@ -61,7 +61,9 @@ function Validators() {
       setIsLoading(true);
       const initializeData = async () => {
         const boxData = await fetchData("BoxView");
-        const pendingUnstakeData = await fetchData("PendingUnstake", {});
+        const pendingUnstakeData = await fetchData("PendingUnstake", {
+          wallet_address: address,
+        });
         setPendingUnstake(pendingUnstakeData);
         const userData = await fetchData("UserData", {
           wallet_address: address,

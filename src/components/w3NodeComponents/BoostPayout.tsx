@@ -53,18 +53,23 @@ function BoostPayout({
     }
   };
   const [timeRemaining, setTimeRemaining] = useState("");
-  const matchingUnstake = pendingUnstake.find((item: any) =>
-    item.pool_id.includes("%")
-  );
-  const unstakeDate = new Date(matchingUnstake.unstake_date);
+  const matchingUnstake = pendingUnstake
+    ? pendingUnstake.find((item: any) => item.pool_id.includes("%"))
+    : null;
+  const unstakeDate = matchingUnstake
+    ? new Date(matchingUnstake.unstake_date)
+    : null;
 
   useEffect(() => {
+    if (!unstakeDate) {
+      setTimeRemaining("00:00:00:00");
+      return;
+    }
     const lastUpdateDate = new Date(unstakeDate);
-
     const calculateTimeRemaining = () => {
       const today = new Date();
       const timeDifference = today.getTime() - lastUpdateDate.getTime();
-      const sevenDaysInMs = 6 * 24 * 60 * 60 * 1000;
+      const sevenDaysInMs = 7 * 24 * 60 * 60 * 1000;
       if (timeDifference <= sevenDaysInMs) {
         const remainingTime = sevenDaysInMs - timeDifference;
         const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
@@ -249,7 +254,8 @@ function BoostPayout({
             onMouseLeave={() => setIsHovered(false)}
           >
             <PieChartComponent color={"#00B649"} />
-            {pendingUnstake.some((item: any) => item.pool_id == percentage) ? (
+            {pendingUnstake &&
+            pendingUnstake.some((item: any) => item.pool_id == percentage) ? (
               <LockedContent />
             ) : isHovered ? (
               <HoveredComponent percentage={percentage} />
