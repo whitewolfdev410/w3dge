@@ -8,7 +8,6 @@ import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import CounterAnimation from "../../components/animation/counterAnimation";
-import WontToLearn from "../../components/footer/WontToLearn";
 import PureComponent from "../../components/charts/SimpleRadialBarChart";
 
 const blinkingPoints = [
@@ -114,22 +113,28 @@ function HomePage() {
   const [boxPayoutList, setBoxPayoutList] = useState<any>(null);
   const [averageDailyRevenue, setAverageDailyRevenue] = useState<any>(null);
 
-  const fetchData = async (
-    url: string,
-    setData: any,
-    setError: any,
-    setIsLoading: any
-  ) => {
+  const parseResponseBody = (responseBody: any) => {
     try {
-      const todayDate = new Date().toISOString().split("T")[0];
-      const response = await axios.get(`${url}/${todayDate}`);
-      setData(response.data);
-      console.log("here is error: ", error);
-      console.log("here is averageDailyRevenue: ", averageDailyRevenue);
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setIsLoading(false);
+      return typeof responseBody === "string"
+        ? JSON.parse(responseBody)
+        : responseBody;
+    } catch (e) {
+      console.error("Error parsing response data:", e);
+      return null;
+    }
+  };
+  const fetchDataFromAWS = async (path: string, query = {}) => {
+    try {
+      const apiUrl = import.meta.env.VITE_AWS_API_URL;
+      const { data } = await axios.post(apiUrl, {
+        path: `w3dgeData/${path}`,
+        operation: "find",
+        query,
+      });
+      return parseResponseBody(data.body);
+    } catch (err) {
+      console.error(`Error fetching data from ${path}:`, err);
+      return null;
     }
   };
 
@@ -137,29 +142,53 @@ function HomePage() {
     if (isConnected && address) {
       setIsLoading(true);
       setIsLoadingNet(true);
+      const fetchNetworkData = async () => {
+        setIsLoading(true);
+        try {
+          const networkStatsDataRes = await fetchDataFromAWS("NetworkStats");
+          const latestNetworkStats = networkStatsDataRes.sort(
+            (a: any, b: any) =>
+              new Date(b.date).getTime() - new Date(a.date).getTime()
+          )[0];
+          const cumulativeTotalsData = await fetchDataFromAWS("NetworkStats", {
+            type: "cumulative_totals",
+          });
 
-      fetchData(
-        import.meta.env.VITE_API_URL + "/networkStats",
-        (data: any) => {
-          setNetworkStats(data);
-          setAverageDailyRevenue(data.average_daily_revenue);
-          setLocationCountData(
-            Object.entries(data.location_count).map(([name, amount]) => ({
-              name,
-              amount,
-            }))
-          );
-        },
-        setError,
-        setIsLoadingNet
-      );
-
-      fetchData(
-        import.meta.env.VITE_API_URL + "/boxPayoutList",
-        (data: any) => setBoxPayoutList(data.transactions),
-        setError,
-        setIsLoading
-      );
+          if (latestNetworkStats && cumulativeTotalsData) {
+            const data = {
+              ...latestNetworkStats,
+              total_earnings: cumulativeTotalsData?.[0].total_earnings,
+              total_bandwidth: cumulativeTotalsData?.[0].total_bandwidth,
+            };
+            setNetworkStats(data);
+            setAverageDailyRevenue(data.average_daily_revenue);
+            setLocationCountData(
+              Object.entries(data.location_count).map(([name, amount]) => ({
+                name,
+                amount,
+              }))
+            );
+          } else {
+            setError("No data found");
+          }
+        } catch (err) {
+          setError("Error fetching data");
+          console.error(err);
+        } finally {
+          setIsLoading(false);
+        }
+        setIsLoadingNet(false);
+      };
+      const fetchBoxPayoutListData = async () => {
+        const res = await fetchDataFromAWS("BoxPayoutList");
+        const latestBoxPayoutList = res.sort(
+          (a: any, b: any) =>
+            new Date(b.date).getTime() - new Date(a.date).getTime()
+        )[0];
+        setBoxPayoutList(latestBoxPayoutList.transactions);
+      };
+      fetchNetworkData();
+      fetchBoxPayoutListData();
     }
   }, [isConnected, address]);
   return (

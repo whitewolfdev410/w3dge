@@ -1,4 +1,3 @@
-import LineChartComponent from "../../components/charts/lineChart";
 import StokedBorChartComponent from "../../components/charts/stackedBarChart";
 import { Bodoy1, HeroHeading } from "../../components/FontComponent";
 import WontToLearn from "../../components/footer/WontToLearn";
@@ -18,63 +17,57 @@ function Validators() {
   const [validatorPayoutdata, setValidatorPayoutdata] = useState<any>(null);
   const [selectedBoxId, setSelectedBoxId] = useState<string | null>(null);
   const [userData, setUserData] = useState<any>(null);
-
-  const handleBoxSelect = (boxId: string) => {
-    fetchData(
-      import.meta.env.VITE_API_URL + "/boxPayout/" + boxId,
-      (data: any) => setBoxViewPayoutData(data),
-      setError,
-      setIsLoading,
-      false
-    );
-    fetchData(
-      import.meta.env.VITE_API_URL + "/validator_payouts",
-      (data: any) => setValidatorPayoutdata(data),
-      setError,
-      setIsLoading,
-      false
-    );
-    console.log("here is error: ", error);
-    console.log("here is selectedBoxId: ", selectedBoxId);
-    console.log("here is isLoading: ", isLoading);
-    setSelectedBoxId(boxId);
-  };
-  const fetchData = async (
-    url: string,
-    setData: any,
-    setError: any,
-    setIsLoading: any,
-    isdate: boolean
-  ) => {
+  const parseResponseBody = (responseBody: any) => {
     try {
-      const todayDate = new Date().toISOString().split("T")[0];
-      let reqUrl = isdate ? `${url}/${todayDate}` : url;
-      const response = await axios.get(reqUrl);
-      setData(response.data);
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setIsLoading(false);
+      return typeof responseBody === "string"
+        ? JSON.parse(responseBody)
+        : responseBody;
+    } catch (e) {
+      console.error("Error parsing response data:", e);
+      return null;
     }
   };
-
+  const fetchData = async (path: string, query = {}) => {
+    try {
+      const apiUrl = import.meta.env.VITE_AWS_API_URL;
+      const { data } = await axios.post(apiUrl, {
+        path: `w3dgeData/${path}`,
+        operation: "find",
+        query,
+      });
+      return parseResponseBody(data.body);
+    } catch (err) {
+      console.error(`Error fetching data from ${path}:`, err);
+      setError(err);
+      return null;
+    }
+  };
+  const handleBoxSelect = async (boxId: string) => {
+    const payoutData = await fetchData("BoxPayout", { box_id: boxId });
+    setBoxViewPayoutData(payoutData?.[0] || null);
+    const validatorData = await fetchData("ValidatorPayouts", {
+      date: {
+        $gte: new Date(new Date().setDate(new Date().getDate() - 7))
+          .toISOString()
+          .split("T")[0],
+      },
+    });
+    setValidatorPayoutdata(validatorData || []);
+    setSelectedBoxId(boxId);
+  };
   useEffect(() => {
     if (isConnected && address) {
       setIsLoading(true);
-      fetchData(
-        import.meta.env.VITE_API_URL + "/boxView",
-        (data: any) => setBoxViewData(data),
-        setError,
-        setIsLoading,
-        false
-      );
-      fetchData(
-        import.meta.env.VITE_API_URL + "/users/" + address,
-        (data: any) => setUserData(data),
-        setError,
-        setIsLoading,
-        false
-      );
+      const initializeData = async () => {
+        const boxData = await fetchData("BoxView");
+        const userData = await fetchData("UserData", {
+          wallet_address: address,
+        });
+        setBoxViewData(boxData);
+        setUserData(userData?.[0] || null);
+        setIsLoading(false);
+      };
+      initializeData();
     }
   }, [isConnected, address]);
   useEffect(() => {
@@ -137,7 +130,9 @@ function Validators() {
         <div className="flex gap-5 flex-wrap justify-center xl:justify-between">
           <div className=" w-[24rem] lg:w-80 h-72 grid bg-dark-main p-4 rounded-xl">
             <Bodoy1 text="Network Contribution" style={"!pb-3"} />
-            <StokedBorChartComponent boxViewPayoutData={boxViewPayoutData} />
+            {boxViewPayoutData && (
+              <StokedBorChartComponent boxViewPayoutData={boxViewPayoutData} />
+            )}
           </div>
           <div className="xl:w-[29rem] w-[24rem] h-72 grid bg-dark-main p-4 rounded-xl">
             <Bodoy1 text="Payout History" style={"!pb-3"} />

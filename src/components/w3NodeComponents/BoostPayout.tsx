@@ -7,8 +7,8 @@ import CounterAnimation from "../animation/counterAnimation";
 import PieChartComponent from "../charts/PipChartComponent";
 import PieChartContent from "../dashboardComponent/pieChartContent";
 import { useEffect, useState } from "react";
-// import ToastMessage from "../toast/toastmessage";
-// import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify"; // Import toast functions
+import "react-toastify/dist/ReactToastify.css";
 import { useAccount } from "wagmi";
 
 interface IPropsBoostPayout {
@@ -109,8 +109,10 @@ function BoostPayout({
     });
     if (!response.ok) {
       console.log("HTTP error, status = " + response.status);
+      toast.error("Error to unstake: " + response);
     } else {
       const jsonResponse = await response.json();
+      toast.success("Unstake successful!");
       console.log(jsonResponse);
     }
   };
@@ -132,8 +134,10 @@ function BoostPayout({
     });
     if (!response.ok) {
       console.log("HTTP error, status = " + response.status);
+      toast.error("Error to stake: " + response);
     } else {
       const jsonResponse = await response.json();
+      toast.success("Stake successful!");
       console.log(jsonResponse);
     }
   };
@@ -152,6 +156,7 @@ function BoostPayout({
             Unstake Now
           </p>
         </div>
+        <ToastContainer position="top-right" autoClose={7000} hideProgressBar />
         <div className="absolute bottom-[-2rem] right-[-2rem]">
           <div className="flex gap-1 border border-[#AAAAAA] rounded-md items-center py-1 w-[5rem] cursor-pointer transition-all duration-300 ease-linear hover:bg-primary-main hover:border-primary-main px-1">
             <Clock style={{ width: "1.5rem", margin: "auto" }} />

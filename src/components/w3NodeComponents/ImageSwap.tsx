@@ -56,7 +56,10 @@ const ImageSwap: React.FC<ImageSwapProps> = ({
               <p className="font-normal font-GRegular text-[0.87rem] text-white">
                 Box Identification
               </p>
-              <p className="font-normal font-GRegular text-[1.43rem] text-white">
+              <p
+                className="font-normal font-GRegular text-[1.43rem] text-white"
+                style={{ maxWidth: "13rem", overflowWrap: "break-word" }}
+              >
                 {boxViewData[currentIndex]?.box_id}
               </p>
             </div>

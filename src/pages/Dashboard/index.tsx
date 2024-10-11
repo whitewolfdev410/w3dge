@@ -9,7 +9,6 @@ import PieChartComponent from "../../components/charts/PipChartComponent";
 import PieChartContent from "../../components/dashboardComponent/pieChartContent";
 import Earned from "../../components/dashboardComponent/Earned";
 import StokedBorChartComponent from "../../components/charts/stackedBarChart";
-import LineChartComponent from "../../components/charts/lineChart";
 import PureComponent from "../../components/charts/SimpleRadialBarChart";
 import CounterAnimation from "../../components/animation/counterAnimation";
 import { useAccount } from "wagmi";
@@ -17,12 +16,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { ArrowRight } from "../../icons";
 import EarnedWithString from "../../components/dashboardComponent/EarnedWithString";
+import LinePayoutChartComponent from "../../components/charts/linePayoutChart";
 
 function Dashboard() {
   const { address, isConnected } = useAccount();
   const [userData, setUserData] = useState<any>(); // State to store fetched data
   const [loading, setLoading] = useState(true); // Loading state
-  const [error, setError] = useState(null); // Error state
   const [boxViewData, setBoxViewData] = useState<any>(null);
   const [boxViewPayoutData, setBoxViewPayoutData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -32,59 +31,61 @@ function Dashboard() {
   const [selectedBoxData, setSelectedBoxData] = useState<any>();
   const [isLoadingNet, setIsLoadingNet] = useState<boolean>(true);
   const [networkStats, setNetworkStats] = useState<any>();
-  const handleBoxSelect = (boxId: string) => {
-    fetchData(
-      import.meta.env.VITE_API_URL + "/boxPayout/" + boxId,
-      (data: any) => setBoxViewPayoutData(data),
-      setError,
-      setIsLoading,
-      false
-    );
-    setIsLoadingNet(true);
-    fetchData(
-      import.meta.env.VITE_API_URL +
-        `/boxView/address/${boxId}?wallet_address=${address}`,
-      (data: any) => {
-        setNetworkStats({
-          average_daily_revenue: data?.average_daily_income,
-          total_bandwidth: data?.total_bandwidth,
-          total_bandwidth_daily: data?.total_bandwidth
-            ? data?.total_bandwidth * 0.1
-            : 0,
-          unique_validator_count: data?.uptime_in_days
-            ? data?.uptime_in_days * 24
-            : 0,
-          total_earnings: data?.total_income_per_box,
-        });
-      },
-      setError,
-      setIsLoadingNet,
-      false
-    );
-    console.log("here is error: ", error);
-    console.log("here is selectedBoxId: ", selectedBoxId);
-    console.log("here is isLoading: ", isLoading);
-    setSelectedBoxId(boxId);
-  };
-  const fetchData = async (
-    url: string,
-    setData: any,
-    setError: any,
-    setIsLoading: any,
-    isdate: boolean
-  ) => {
+  const [validatorPayoutdata, setValidatorPayoutdata] = useState<any>(null);
+  const parseResponseBody = (responseBody: any) => {
     try {
-      const todayDate = new Date().toISOString().split("T")[0];
-      let reqUrl = isdate ? `${url}/${todayDate}` : url;
-      const response = await axios.get(reqUrl);
-      setData(response.data);
-      setIsLoading(false);
-    } catch (err: any) {
-      console.log("error", err);
-      setError(err.message);
-    } finally {
-      setIsLoading(false);
+      return typeof responseBody === "string"
+        ? JSON.parse(responseBody)
+        : responseBody;
+    } catch (e) {
+      console.error("Error parsing response data:", e);
+      return null;
     }
+  };
+  const fetchDataFromAWS = async (path: string, query = {}) => {
+    try {
+      const apiUrl = import.meta.env.VITE_AWS_API_URL;
+      const { data } = await axios.post(apiUrl, {
+        path: `w3dgeData/${path}`,
+        operation: "find",
+        query,
+      });
+      return parseResponseBody(data.body);
+    } catch (err) {
+      console.error(`Error fetching data from ${path}:`, err);
+      return null;
+    }
+  };
+  const handleBoxSelect = async (boxId: string) => {
+    const res = await fetchDataFromAWS("BoxPayout", { box_id: boxId });
+    setBoxViewPayoutData(res?.[0]);
+    const validatorData = await fetchDataFromAWS("ValidatorPayouts", {
+      date: {
+        $gte: new Date(new Date().setDate(new Date().getDate() - 7))
+          .toISOString()
+          .split("T")[0],
+      },
+    });
+    setValidatorPayoutdata(validatorData || []);
+    setIsLoadingNet(true);
+    const boxViewRes = await fetchDataFromAWS("BoxView", {
+      box_id: boxId,
+      wallet_address: address,
+    });
+    console.log("boxViewRes:::", boxViewRes);
+    setNetworkStats({
+      average_daily_revenue: boxViewRes?.[0]?.average_daily_income,
+      total_bandwidth: boxViewRes?.[0]?.total_bandwidth,
+      total_bandwidth_daily: boxViewRes?.[0]?.total_bandwidth
+        ? boxViewRes?.[0]?.total_bandwidth * 0.1
+        : 0,
+      unique_validator_count: boxViewRes?.[0]?.uptime_in_days
+        ? boxViewRes?.[0]?.uptime_in_days * 24
+        : 0,
+      total_earnings: boxViewRes?.[0]?.total_income_per_box,
+    });
+    setIsLoadingNet(false);
+    setSelectedBoxId(boxId);
   };
   useEffect(() => {
     if (boxViewData) {
@@ -95,27 +96,20 @@ function Dashboard() {
 
   useEffect(() => {
     if (isConnected && address) {
-      fetchData(
-        import.meta.env.VITE_API_URL + "/boxView/wallet/" + address,
-        (data: any) => setBoxViewData(data),
-        setError,
-        setIsLoading,
-        false
-      );
-      const fetchUserData = async () => {
-        try {
-          const response = await axios.get(
-            `${import.meta.env.VITE_API_URL}/users/${address}`
-          );
-          setUserData(response.data);
-          setLoading(false);
-        } catch (err: any) {
-          setError(err.message);
-        } finally {
-          setLoading(false);
-        }
+      const initializeData = async () => {
+        setIsLoading(true);
+        const res = await fetchDataFromAWS("UserData", {
+          wallet_address: address,
+        });
+        const boxData = await fetchDataFromAWS("BoxView", {
+          box_id: { $in: res?.[0].boxes },
+        });
+        setUserData(res?.[0] || null);
+        setBoxViewData(boxData);
+        setIsLoading(false);
+        setLoading(false);
       };
-      fetchUserData();
+      initializeData();
     }
   }, [isConnected, address]);
   const handleNext = (): void => {
@@ -140,7 +134,7 @@ function Dashboard() {
         <div className="bg-contain bg-center bg-no-repeat relative hidden xl:grid h-fit pt-12">
           <div className="xl:pl-28">
             <HeroHeadingTwo text="Total Earning" />
-            {!loading && (
+            {userData && (
               <div className="grid grid-cols-2 gap-x-0 gap-y-6 mt-5 justify-start">
                 <Earn
                   title="Today"
@@ -194,8 +188,8 @@ function Dashboard() {
             <HeroHeadingTwo text="Validator Pools" />
           </div>
           <div className="flex flex-wrap justify-center">
-            {userData?.staking_pools?.map((item: any) => (
-              <div className="w-[9.5rem] h-[9.5rem] grid relative">
+            {userData?.staking_pools?.map((item: any, index: number) => (
+              <div className="w-[9.5rem] h-[9.5rem] grid relative" key={index}>
                 <PieChartComponent
                   color={item.amount_locked != 0 ? "#00B649" : "#949596"}
                 />
@@ -238,7 +232,9 @@ function Dashboard() {
             </div>
             <div className="xl:w-[17rem] w-[23rem] h-72 grid bg-dark-main p-4 rounded-xl">
               <Bodoy1 text="Payout History" style={"!pb-3"} />
-              <LineChartComponent boxViewPayoutData={boxViewPayoutData} />
+              <LinePayoutChartComponent
+                validatorPayoutdata={validatorPayoutdata}
+              />
             </div>
           </div>
         </div>

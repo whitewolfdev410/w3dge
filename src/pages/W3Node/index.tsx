@@ -8,7 +8,6 @@ import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import W3NodeFooter from "../../components/footer/W3NodeFooter";
-import NodeBackground from "../../assets/images/node_background.png";
 import CounterAnimation from "../../components/animation/counterAnimation";
 
 function W3Node() {
@@ -22,44 +21,55 @@ function W3Node() {
   const [selectedBoxId, setSelectedBoxId] = useState<string | null>(null);
   const [averageDailyRevenue, setAverageDailyRevenue] = useState<any>(null);
   const [locationCountData, setLocationCountData] = useState<any>(null);
+  const parseResponseBody = (responseBody: any) => {
+    try {
+      return typeof responseBody === "string"
+        ? JSON.parse(responseBody)
+        : responseBody;
+    } catch (e) {
+      console.error("Error parsing response data:", e);
+      return null;
+    }
+  };
+  const fetchDataFromAWS = async (path: string, query = {}) => {
+    try {
+      const apiUrl = import.meta.env.VITE_AWS_API_URL;
+      const { data } = await axios.post(apiUrl, {
+        path: `w3dgeData/${path}`,
+        operation: "find",
+        query,
+      });
+      return parseResponseBody(data.body);
+    } catch (err) {
+      console.error(`Error fetching data from ${path}:`, err);
+      return null;
+    }
+  };
 
-  const handleBoxSelect = (boxId: string) => {
+  const handleBoxSelect = async (boxId: string) => {
     setIsLoadingNet(false);
     setIsLoadingNet(true);
-    fetchData(
-      import.meta.env.VITE_API_URL + "/boxPayout/" + boxId,
-      (data: any) => setBoxViewPayoutData(data),
-      setError,
-      setIsLoading,
-      false
-    );
-    fetchData(
-      import.meta.env.VITE_API_URL +
-        `/boxView/address/${boxId}?wallet_address=${address}`,
-      (data: any) => {
-        setNetworkStats({
-          average_daily_revenue: data?.average_daily_income ?? 0,
-          total_bandwidth: data?.total_bandwidth,
-          total_bandwidth_daily: data?.total_bandwidth
-            ? data?.total_bandwidth * 0.1
-            : 0,
-          unique_validator_count: data?.uptime_in_days
-            ? data?.uptime_in_days * 24
-            : 0,
-          total_earnings: data?.total_income_per_box,
-        });
-        setAverageDailyRevenue(data.average_daily_revenue);
-        setLocationCountData(
-          Object.entries(data.location_count).map(([name, amount]) => ({
-            name,
-            amount,
-          }))
-        );
-      },
-      setError,
-      setIsLoadingNet,
-      false
-    );
+    const res = await fetchDataFromAWS("BoxPayout", { box_id: boxId });
+    setBoxViewPayoutData(res?.[0]);
+    setIsLoadingNet(true);
+    const boxViewRes = await fetchDataFromAWS("BoxView", {
+      box_id: boxId,
+      wallet_address: address,
+    });
+    console.log("***********", boxViewRes?.[0]);
+    setNetworkStats({
+      average_daily_revenue: boxViewRes?.[0]?.average_daily_income,
+      total_bandwidth: boxViewRes?.[0]?.total_bandwidth,
+      total_bandwidth_daily: boxViewRes?.[0]?.total_bandwidth
+        ? boxViewRes?.[0]?.total_bandwidth * 0.1
+        : 0,
+      unique_validator_count: boxViewRes?.[0]?.uptime_in_days
+        ? boxViewRes?.[0]?.uptime_in_days * 24
+        : 0,
+      total_earnings: boxViewRes?.[0]?.total_income_per_box,
+    });
+    setAverageDailyRevenue(boxViewRes?.[0].average_daily_revenue);
+    setIsLoadingNet(false);
     console.log("here is error: ", error);
     console.log("here is isLoading: ", isLoading);
     console.log("here is selectedBoxId: ", selectedBoxId);
@@ -67,35 +77,20 @@ function W3Node() {
     console.log("here is locationCountData: ", locationCountData);
     setSelectedBoxId(boxId);
   };
-  const fetchData = async (
-    url: string,
-    setData: any,
-    setError: any,
-    setChangeStatus: any,
-    isdate: boolean
-  ) => {
-    try {
-      const todayDate = new Date().toISOString().split("T")[0];
-      let reqUrl = isdate ? `${url}/${todayDate}` : url;
-      const response = await axios.get(reqUrl);
-      setData(response.data);
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setChangeStatus(false);
-    }
-  };
-
   useEffect(() => {
     if (isConnected && address) {
-      setIsLoading(true);
-      fetchData(
-        import.meta.env.VITE_API_URL + "/boxView/wallet/" + address,
-        (data: any) => setBoxViewData(data),
-        setError,
-        setIsLoading,
-        false
-      );
+      const initializeData = async () => {
+        setIsLoading(true);
+        const res = await fetchDataFromAWS("UserData", {
+          wallet_address: address,
+        });
+        const boxData = await fetchDataFromAWS("BoxView", {
+          box_id: { $in: res?.[0].boxes },
+        });
+        setBoxViewData(boxData);
+        setIsLoading(false);
+      };
+      initializeData();
     }
   }, [isConnected, address]);
   useEffect(() => {
