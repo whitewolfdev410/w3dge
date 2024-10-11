@@ -89,17 +89,29 @@ function Validators() {
           <div className="flex gap-4 flex-wrap justify-center xl:justify-between">
             {userData &&
               userData?.staking_pools?.map((item: any, index: any) => {
-                const lastUpdateDate = new Date(userData?.last_updated);
+                const matchingUnstake = pendingUnstake
+                  ? pendingUnstake.find(
+                      (data: any) => data.pool_id == item.pool_type
+                    )
+                  : null;
+                const lastUpdateDate = matchingUnstake
+                  ? new Date(matchingUnstake.unstake_date)
+                  : null;
                 const today = new Date();
-                const timeDifference = Math.abs(
-                  today.getTime() - lastUpdateDate.getTime()
-                );
-                const daysDifference = Math.ceil(
-                  timeDifference / (1000 * 3600 * 24)
-                );
-                const isPieChart =
-                  item.amount_locked > 0 ||
-                  (item.amount_locked === 0 && daysDifference < 7);
+                let isPieChart, timeDifference, daysDifference;
+                if (!lastUpdateDate) {
+                  isPieChart = false;
+                } else {
+                  timeDifference = Math.abs(
+                    today.getTime() - lastUpdateDate.getTime()
+                  );
+                  daysDifference = Math.ceil(
+                    timeDifference / (1000 * 3600 * 24)
+                  );
+                  isPieChart =
+                    item.amount_locked > 0 ||
+                    (item.amount_locked === 0 && daysDifference < 7);
+                }
 
                 return (
                   <BoostPayout

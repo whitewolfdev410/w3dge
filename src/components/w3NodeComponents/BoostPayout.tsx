@@ -54,7 +54,7 @@ function BoostPayout({
   };
   const [timeRemaining, setTimeRemaining] = useState("");
   const matchingUnstake = pendingUnstake
-    ? pendingUnstake.find((item: any) => item.pool_id.includes("%"))
+    ? pendingUnstake.find((item: any) => item.pool_id == percentage)
     : null;
   const unstakeDate = matchingUnstake
     ? new Date(matchingUnstake.unstake_date)
@@ -260,14 +260,7 @@ function BoostPayout({
             ) : isHovered ? (
               <HoveredComponent percentage={percentage} />
             ) : (
-              <PieChartContent
-                amount={
-                  parseInt(amount) != 0
-                    ? amount
-                    : getStepBasedOnPercentage(percentage)
-                }
-                title="Unstake"
-              />
+              <PieChartContent amount={amount} title="Unstake" />
             )}
           </div>
         ) : (
