@@ -16,6 +16,7 @@ function Validators() {
   const [boxViewPayoutData, setBoxViewPayoutData] = useState<any>(null);
   const [validatorPayoutdata, setValidatorPayoutdata] = useState<any>(null);
   const [selectedBoxId, setSelectedBoxId] = useState<string | null>(null);
+  const [pendingUnstake, setPendingUnstake] = useState<any>(null);
   const [userData, setUserData] = useState<any>(null);
   const parseResponseBody = (responseBody: any) => {
     try {
@@ -60,6 +61,8 @@ function Validators() {
       setIsLoading(true);
       const initializeData = async () => {
         const boxData = await fetchData("BoxView");
+        const pendingUnstakeData = await fetchData("PendingUnstake", {});
+        setPendingUnstake(pendingUnstakeData);
         const userData = await fetchData("UserData", {
           wallet_address: address,
         });
@@ -104,7 +107,6 @@ function Validators() {
                     percentage={item.pool_type}
                     amount={item.amount_locked}
                     earned={item.reward_earned}
-                    lastupdate={userData.last_updated}
                     stockNow={false}
                     subtitle={
                       item.amount_locked > 0
@@ -115,6 +117,7 @@ function Validators() {
                     level={index + 1}
                     is_piechart={isPieChart}
                     key={index}
+                    pendingUnstake={pendingUnstake}
                   />
                 );
               })}

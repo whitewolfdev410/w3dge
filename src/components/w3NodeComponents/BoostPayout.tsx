@@ -21,7 +21,7 @@ interface IPropsBoostPayout {
   level?: string;
   is_piechart?: boolean;
   earned?: any;
-  lastupdate?: any;
+  pendingUnstake?: any;
 }
 
 function BoostPayout({
@@ -29,16 +29,16 @@ function BoostPayout({
   percentage,
   title,
   validators,
-  lastupdate,
   stockNow,
   subtitle,
   level,
   is_piechart,
   earned,
+  pendingUnstake,
 }: IPropsBoostPayout) {
   const [isHovered, setIsHovered] = useState(false);
-  const [isLocked, setIsLocked] = useState(false);
   const getStepBasedOnPercentage = (percentage: any) => {
+    console.log("here****", parseInt(percentage));
     switch (parseInt(percentage)) {
       case 2:
         return 500;
@@ -53,8 +53,13 @@ function BoostPayout({
     }
   };
   const [timeRemaining, setTimeRemaining] = useState("");
+  const matchingUnstake = pendingUnstake.find((item: any) =>
+    item.pool_id.includes("%")
+  );
+  const unstakeDate = new Date(matchingUnstake.unstake_date);
+
   useEffect(() => {
-    const lastUpdateDate = new Date(lastupdate);
+    const lastUpdateDate = new Date(unstakeDate);
 
     const calculateTimeRemaining = () => {
       const today = new Date();
@@ -85,15 +90,10 @@ function BoostPayout({
     };
     const interval = setInterval(calculateTimeRemaining, 1000);
     return () => clearInterval(interval);
-  }, [lastupdate]);
-  let lastUpdateDate = new Date(lastupdate!);
-  const today = new Date();
-  let timeDifference = Math.abs(today.getTime() - lastUpdateDate.getTime());
-  let daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
+  }, [unstakeDate]);
   const { address } = useAccount();
 
   const handleUnstake = async (percentage: any) => {
-    setIsLocked(true);
     const apiUrl =
       "https://gygxr53i33.execute-api.ap-southeast-2.amazonaws.com/Prod/unstake";
     const data = {
@@ -249,7 +249,7 @@ function BoostPayout({
             onMouseLeave={() => setIsHovered(false)}
           >
             <PieChartComponent color={"#00B649"} />
-            {(parseInt(amount) == 0 && daysDifference < 7) || isLocked ? (
+            {pendingUnstake.some((item: any) => item.pool_id == percentage) ? (
               <LockedContent />
             ) : isHovered ? (
               <HoveredComponent percentage={percentage} />
