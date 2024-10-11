@@ -260,7 +260,14 @@ function BoostPayout({
             ) : isHovered ? (
               <HoveredComponent percentage={percentage} />
             ) : (
-              <PieChartContent amount={amount} title="Unstake" />
+              <PieChartContent
+                amount={
+                  parseInt(amount) != 0
+                    ? amount
+                    : getStepBasedOnPercentage(percentage)
+                }
+                title="Unstake"
+              />
             )}
           </div>
         ) : (
