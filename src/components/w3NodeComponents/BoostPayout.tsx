@@ -37,6 +37,7 @@ function BoostPayout({
   pendingUnstake,
 }: IPropsBoostPayout) {
   const [isHovered, setIsHovered] = useState(false);
+  const [isLocked, setIsLocked] = useState(false);
   const getStepBasedOnPercentage = (percentage: any) => {
     console.log("here****", parseInt(percentage));
     switch (parseInt(percentage)) {
@@ -99,6 +100,7 @@ function BoostPayout({
   const { address } = useAccount();
 
   const handleUnstake = async (percentage: any) => {
+    setIsLocked(true);
     const apiUrl =
       "https://gygxr53i33.execute-api.ap-southeast-2.amazonaws.com/Prod/unstake";
     const data = {
@@ -254,8 +256,9 @@ function BoostPayout({
             onMouseLeave={() => setIsHovered(false)}
           >
             <PieChartComponent color={"#00B649"} />
-            {pendingUnstake &&
-            pendingUnstake.some((item: any) => item.pool_id == percentage) ? (
+            {(pendingUnstake &&
+              pendingUnstake.some((item: any) => item.pool_id == percentage)) ||
+            isLocked ? (
               <LockedContent />
             ) : isHovered ? (
               <HoveredComponent percentage={percentage} />
