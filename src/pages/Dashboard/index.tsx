@@ -8,7 +8,6 @@ import WontToLearn from "../../components/footer/WontToLearn";
 import PieChartComponent from "../../components/charts/PipChartComponent";
 import PieChartContent from "../../components/dashboardComponent/pieChartContent";
 import Earned from "../../components/dashboardComponent/Earned";
-import StokedBorChartComponent from "../../components/charts/stackedBarChart";
 import PureComponent from "../../components/charts/SimpleRadialBarChart";
 import CounterAnimation from "../../components/animation/counterAnimation";
 import { useAccount } from "wagmi";
@@ -17,6 +16,7 @@ import axios from "axios";
 import { ArrowRight } from "../../icons";
 import EarnedWithString from "../../components/dashboardComponent/EarnedWithString";
 import LinePayoutChartComponent from "../../components/charts/linePayoutChart";
+import StokedPayoutBorChartComponent from "../../components/charts/stackedPayoutBarChart";
 
 function Dashboard() {
   const { address, isConnected } = useAccount();
@@ -228,7 +228,9 @@ function Dashboard() {
           <div className="flex gap-7 mt-16 flex-wrap justify-center xl:gap-7 xl:justify-center px-8">
             <div className="xl:w-[17rem] w-[23rem] h-72 grid bg-dark-main p-4 rounded-xl">
               <Bodoy1 text="Network Contribution" style={"!pb-3"} />
-              <StokedBorChartComponent boxViewPayoutData={boxViewPayoutData} />
+              <StokedPayoutBorChartComponent
+                validatorPayoutdata={validatorPayoutdata}
+              />
             </div>
             <div className="xl:w-[17rem] w-[23rem] h-72 grid bg-dark-main p-4 rounded-xl">
               <Bodoy1 text="Payout History" style={"!pb-3"} />

@@ -1,4 +1,3 @@
-import StokedBorChartComponent from "../../components/charts/stackedBarChart";
 import { Bodoy1, HeroHeading } from "../../components/FontComponent";
 import WontToLearn from "../../components/footer/WontToLearn";
 import BoostPayout from "../../components/w3NodeComponents/BoostPayout";
@@ -7,6 +6,7 @@ import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import LinePayoutChartComponent from "../../components/charts/linePayoutChart";
+import StokedPayoutBorChartComponent from "../../components/charts/stackedPayoutBarChart";
 
 function Validators() {
   const { address, isConnected } = useAccount();
@@ -147,9 +147,12 @@ function Validators() {
         <div className="flex gap-5 flex-wrap justify-center xl:justify-between">
           <div className=" w-[24rem] lg:w-80 h-72 grid bg-dark-main p-4 rounded-xl">
             <Bodoy1 text="Network Contribution" style={"!pb-3"} />
-            {boxViewPayoutData && (
+            {/* {boxViewPayoutData && (
               <StokedBorChartComponent boxViewPayoutData={boxViewPayoutData} />
-            )}
+            )} */}
+            <StokedPayoutBorChartComponent
+              validatorPayoutdata={validatorPayoutdata}
+            />
           </div>
           <div className="xl:w-[29rem] w-[24rem] h-72 grid bg-dark-main p-4 rounded-xl">
             <Bodoy1 text="Payout History" style={"!pb-3"} />
