@@ -107,9 +107,11 @@ function BoostPayout({
   const handleUnstake = async (percentage: any) => {
     const apiUrl =
       "https://gygxr53i33.execute-api.ap-southeast-2.amazonaws.com/Prod/unstake";
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; // Get the user's timezone
     const data = {
       wallet_id: address,
       pool_id: percentage,
+      time_zone: timeZone,
     };
     try {
       const response = await fetch(apiUrl, {
