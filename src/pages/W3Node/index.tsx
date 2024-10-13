@@ -56,7 +56,6 @@ function W3Node() {
       box_id: boxId,
       wallet_address: address,
     });
-    console.log("***********", boxViewRes?.[0]);
     setNetworkStats({
       average_daily_revenue: boxViewRes?.[0]?.average_daily_income,
       total_bandwidth: boxViewRes?.[0]?.total_bandwidth,

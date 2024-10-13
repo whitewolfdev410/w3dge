@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify"; // Import toast functions
 import "react-toastify/dist/ReactToastify.css";
 import { useAccount } from "wagmi";
+import CounterAnimationWithInput from "../animation/counterAnimationWithInput";
 
 interface IPropsBoostPayout {
   title: string;
@@ -39,7 +40,6 @@ function BoostPayout({
   const [isHovered, setIsHovered] = useState(false);
   const [isLocked, setIsLocked] = useState(false);
   const getStepBasedOnPercentage = (percentage: any) => {
-    console.log("here****", parseInt(percentage));
     switch (parseInt(percentage)) {
       case 2:
         return 500;
@@ -50,10 +50,13 @@ function BoostPayout({
       case 10:
         return 2000;
       default:
-        return amount; // Default to amount if no specific percentage is matched
+        return 0; // Default to amount if no specific percentage is matched
     }
   };
   const [timeRemaining, setTimeRemaining] = useState("");
+  const [inputValue, setInputValue] = useState<number>(
+    getStepBasedOnPercentage(percentage)
+  );
   const matchingUnstake = pendingUnstake
     ? pendingUnstake.find((item: any) => item.pool_id == percentage)
     : null;
@@ -115,16 +118,18 @@ function BoostPayout({
       body: JSON.stringify(data),
     });
     if (!response.ok) {
-      console.log("HTTP error, status = " + response.status);
       toast.error("Error to unstake: " + response);
     } else {
       const jsonResponse = await response.json();
-      toast.success("Unstake successful!");
-      console.log(jsonResponse);
+      toast.success(jsonResponse);
     }
   };
   const handleStake = async (percentage: any) => {
     let stakeAmount = getStepBasedOnPercentage(percentage);
+    if (inputValue < stakeAmount) {
+      toast.error("Amount " + stakeAmount + " is minimum required value");
+      return false;
+    }
     const apiUrl =
       "https://gygxr53i33.execute-api.ap-southeast-2.amazonaws.com/Prod/ButtonStake";
     const data = {
@@ -140,13 +145,15 @@ function BoostPayout({
       body: JSON.stringify(data),
     });
     if (!response.ok) {
-      console.log("HTTP error, status = " + response.status);
       toast.error("Error to stake: " + response);
     } else {
       const jsonResponse = await response.json();
-      toast.success("Stake successful!");
-      console.log(jsonResponse);
+      toast.success(jsonResponse);
     }
+  };
+
+  const handleValueChange = (value: number) => {
+    setInputValue(value); // Update the parent state
   };
   function HoveredComponent(data: any) {
     return (
@@ -163,7 +170,6 @@ function BoostPayout({
             Unstake Now
           </p>
         </div>
-        <ToastContainer position="top-right" autoClose={7000} hideProgressBar />
         <div className="absolute bottom-[-2rem] right-[-2rem]">
           <div className="flex gap-1 border border-[#AAAAAA] rounded-md items-center py-1 w-[5rem] cursor-pointer transition-all duration-300 ease-linear hover:bg-primary-main hover:border-primary-main px-1">
             <Clock style={{ width: "1.5rem", margin: "auto" }} />
@@ -205,6 +211,7 @@ function BoostPayout({
         className="p-9"
         style={{ paddingBottom: is_piechart ? 0 : "2.8rem" }}
       >
+        <ToastContainer position="top-right" autoClose={7000} hideProgressBar />
         <div className="flex justify-between gap-8">
           <div>
             <Heading5 text={is_piechart ? "Your Share" : title} />
@@ -269,19 +276,21 @@ function BoostPayout({
         ) : (
           <>
             <div className="bg-black flex justify-between px-3 py-1 gap-12 items-center mt-8 rounded-md">
-              <div className="flex gap-2 items-center">
+              <div className="flex gap-2 items-center w-[100%]">
                 <div
-                  className="w-[1.62rem] h-[1.25rem]"
+                  className="w-[5.62rem] h-[1.25rem]"
                   style={{
                     backgroundImage: `url(${LogoIcon})`,
                   }}
                 ></div>
 
-                <CounterAnimation
-                  style="text-primary-main font-GBold font-bold text-[1.25rem]"
+                <CounterAnimationWithInput
+                  style="text-primary-main font-GBold font-bold text-[1.25rem] w-[100%]"
                   step={getStepBasedOnPercentage(percentage)}
                   countSteps={10}
-                  duration={1000}
+                  duration={5000}
+                  tagText=" items"
+                  onValueChange={handleValueChange} // Pass the callback function
                 />
               </div>
               <p className="text-white font-GRegular font-normal text-[0.62rem]">

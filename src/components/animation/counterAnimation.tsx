@@ -30,7 +30,7 @@ const CounterAnimation: React.FC<IPropsCounterAnimation> = ({
       setNum(currentStep); // Update the number
       currentStep = currentStep + countSteps;
       if (currentStep > steps) {
-        setNum(step)
+        setNum(step);
         clearInterval(interval); // Stop when we reach 100
       }
     }, intervalTime);
