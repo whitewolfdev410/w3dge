@@ -13,7 +13,8 @@ function Validators() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<any>(null);
   const [boxViewData, setBoxViewData] = useState<any>(null);
-  const [boxViewPayoutData, setBoxViewPayoutData] = useState<any>(null);
+  const [isStaked, setIsStaked] = useState<boolean>(false);
+  // const [boxViewPayoutData, setBoxViewPayoutData] = useState<any>(null);
   const [validatorPayoutdata, setValidatorPayoutdata] = useState<any>(null);
   const [selectedBoxId, setSelectedBoxId] = useState<string | null>(null);
   const [pendingUnstake, setPendingUnstake] = useState<any>(null);
@@ -44,8 +45,8 @@ function Validators() {
     }
   };
   const handleBoxSelect = async (boxId: string) => {
-    const payoutData = await fetchData("BoxPayout", { box_id: boxId });
-    setBoxViewPayoutData(payoutData?.[0] || null);
+    // const payoutData = await fetchData("BoxPayout", { box_id: boxId });
+    // setBoxViewPayoutData(payoutData?.[0] || null);
     const validatorData = await fetchData("ValidatorPayouts", {
       date: {
         $gte: new Date(new Date().setDate(new Date().getDate() - 7))
@@ -74,7 +75,7 @@ function Validators() {
       };
       initializeData();
     }
-  }, [isConnected, address]);
+  }, [isConnected, address, isStaked]);
   useEffect(() => {
     if (boxViewData) handleBoxSelect(boxViewData[0]?.box_id);
   }, [boxViewData]);
@@ -136,8 +137,7 @@ function Validators() {
                     is_piechart={isPieChart}
                     key={index}
                     pendingUnstake={pendingUnstake}
-                    handleBoxSelect={handleBoxSelect}
-                    selectedBoxId={selectedBoxId}
+                    setIsStaked={setIsStaked}
                   />
                 );
               })}

@@ -23,8 +23,7 @@ interface IPropsBoostPayout {
   is_piechart?: boolean;
   earned?: any;
   pendingUnstake?: any;
-  handleBoxSelect?: any;
-  selectedBoxId?: any;
+  setIsStaked?: any;
 }
 
 function BoostPayout({
@@ -38,8 +37,7 @@ function BoostPayout({
   is_piechart,
   earned,
   pendingUnstake,
-  handleBoxSelect,
-  selectedBoxId,
+  setIsStaked,
 }: IPropsBoostPayout) {
   const [isHovered, setIsHovered] = useState(false);
   const [isLocked, setIsLocked] = useState(false);
@@ -149,6 +147,7 @@ function BoostPayout({
       pool_id: percentage,
       value: inputValue,
     };
+    setIsStaked(true);
     try {
       const response = await fetch(apiUrl, {
         method: "POST",
@@ -162,7 +161,6 @@ function BoostPayout({
       } else {
         const jsonResponse = await response.json();
         toast.success(jsonResponse);
-        handleBoxSelect(selectedBoxId);
       }
     } catch (error: any) {
       toast.error(`An error occurred: ${error.message}`);
