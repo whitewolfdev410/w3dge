@@ -49,8 +49,20 @@ function W3Node() {
   const handleBoxSelect = async (boxId: string) => {
     setIsLoadingNet(false);
     setIsLoadingNet(true);
-    const res = await fetchDataFromAWS("BoxPayout", { box_id: boxId });
-    setBoxViewPayoutData(res?.[0]);
+    const res = await fetchDataFromAWS("BoxPayout", {
+      box_id: boxId,
+    });
+    const today = new Date();
+    const sevenDaysAgo = new Date(today);
+    sevenDaysAgo.setDate(today.getDate() - 7);
+    const updatedData = res.map((item: any) => ({
+      ...item,
+      daily_payouts: item.daily_payouts.filter((payout: any) => {
+        const payoutDate = new Date(payout.date);
+        return payoutDate >= sevenDaysAgo && payoutDate <= today;
+      }),
+    }));
+    setBoxViewPayoutData(updatedData[0]);
     setIsLoadingNet(true);
     const boxViewRes = await fetchDataFromAWS("BoxView", {
       box_id: boxId,

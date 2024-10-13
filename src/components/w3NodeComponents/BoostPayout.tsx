@@ -211,7 +211,7 @@ function BoostPayout({
         className="p-9"
         style={{ paddingBottom: is_piechart ? 0 : "2.8rem" }}
       >
-        <ToastContainer position="top-right" autoClose={7000} hideProgressBar />
+        <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
         <div className="flex justify-between gap-8">
           <div>
             <Heading5 text={is_piechart ? "Your Share" : title} />
