@@ -102,7 +102,6 @@ function BoostPayout({
     return () => clearInterval(interval);
   }, [unstakeDate]);
   const { address } = useAccount();
-
   const handleUnstake = async (percentage: any) => {
     const apiUrl =
       "https://gygxr53i33.execute-api.ap-southeast-2.amazonaws.com/Prod/unstake";
@@ -110,21 +109,29 @@ function BoostPayout({
       wallet_id: address,
       pool_id: percentage,
     };
-    const response = await fetch(apiUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    if (!response.ok) {
-      toast.error("Error to unstake: " + response);
-    } else {
+    try {
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          `Error to unstake: ${response.status} ${response.statusText}`
+        );
+      }
       const jsonResponse = await response.json();
-      toast.success(jsonResponse);
+      toast.success("Unstake successful!");
+      toast.info(`Response: ${JSON.stringify(jsonResponse)}`);
       setIsLocked(true);
+    } catch (error: any) {
+      toast.error(`An error occurred: ${error.message}`);
     }
   };
+
   const handleStake = async (percentage: any) => {
     let stakeAmount = getStepBasedOnPercentage(percentage);
     if (inputValue < stakeAmount) {
@@ -138,18 +145,22 @@ function BoostPayout({
       pool_id: percentage,
       value: stakeAmount,
     };
-    const response = await fetch(apiUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    if (!response.ok) {
-      toast.error("Error to stake: " + response);
-    } else {
-      const jsonResponse = await response.json();
-      toast.success(jsonResponse);
+    try {
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        toast.error("Error to stake: " + response);
+      } else {
+        const jsonResponse = await response.json();
+        toast.success(jsonResponse);
+      }
+    } catch (error: any) {
+      toast.error(`An error occurred: ${error.message}`);
     }
   };
 

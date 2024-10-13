@@ -11,7 +11,7 @@ function PieChartContent({ amount, title }: { amount?: any; title?: string }) {
         <CounterAnimation
           style="font-bold font-GBold text-[0.93rem] text-[#BABABA] text-center"
           step={amount}
-          countSteps={1}
+          countSteps={10}
           duration={1000}
         />
       ) : (
