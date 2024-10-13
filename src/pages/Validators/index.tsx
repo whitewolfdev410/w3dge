@@ -100,7 +100,11 @@ function Validators() {
                 const today = new Date();
                 let isPieChart, timeDifference, daysDifference;
                 if (!lastUpdateDate) {
-                  isPieChart = false;
+                  if (item.amount_locked > 0) {
+                    isPieChart = true;
+                  } else {
+                    isPieChart = false;
+                  }
                 } else {
                   timeDifference = Math.abs(
                     today.getTime() - lastUpdateDate.getTime()

@@ -60,13 +60,14 @@ function BoostPayout({
   const matchingUnstake = pendingUnstake
     ? pendingUnstake.find((item: any) => item.pool_id == percentage)
     : null;
-  const unstakeDate = matchingUnstake
+  let unstakeDate = matchingUnstake
     ? new Date(matchingUnstake.unstake_date)
     : null;
 
   useEffect(() => {
     if (!unstakeDate) {
-      setTimeRemaining("00:00:00:00");
+      unstakeDate = new Date();
+      setTimeRemaining("07:00:00:00");
       return;
     }
     const lastUpdateDate = new Date(unstakeDate);
@@ -103,7 +104,6 @@ function BoostPayout({
   const { address } = useAccount();
 
   const handleUnstake = async (percentage: any) => {
-    setIsLocked(true);
     const apiUrl =
       "https://gygxr53i33.execute-api.ap-southeast-2.amazonaws.com/Prod/unstake";
     const data = {
@@ -122,6 +122,7 @@ function BoostPayout({
     } else {
       const jsonResponse = await response.json();
       toast.success(jsonResponse);
+      setIsLocked(true);
     }
   };
   const handleStake = async (percentage: any) => {

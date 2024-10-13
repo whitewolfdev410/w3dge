@@ -43,13 +43,7 @@ const CounterAnimationWithInput: React.FC<IPropsCounterAnimationWithInput> = ({
 
   return (
     <div>
-      <input
-        type="number"
-        className={style}
-        value={num}
-        min={num}
-        onChange={handleChange}
-      />
+      <input className={style} value={num} min={num} onChange={handleChange} />
     </div>
   );
 };
