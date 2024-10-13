@@ -143,7 +143,7 @@ function BoostPayout({
     const data = {
       wallet_id: address,
       pool_id: percentage,
-      value: stakeAmount,
+      value: inputValue,
     };
     try {
       const response = await fetch(apiUrl, {
