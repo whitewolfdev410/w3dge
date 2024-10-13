@@ -240,9 +240,12 @@ function BoostPayout({
               tagText="%"
             />
             {subtitle ? (
-              <p className="font-normal font-GRegular text-[0.75rem] text-grey-grey1">
-                {subtitle}
-              </p>
+              <p
+                className="font-normal font-GRegular text-[0.75rem] text-grey-grey1"
+                dangerouslySetInnerHTML={{
+                  __html: subtitle.replace("reward", "<br/>reward"),
+                }}
+              />
             ) : (
               <p className="font-normal font-GRegular text-[0.75rem] text-grey-grey1">
                 Higher{" "}
@@ -318,18 +321,18 @@ function BoostPayout({
               <Tooltip text="details ">
                 <div className="flex gap-3 border border-[#AAAAAA] rounded-md items-center py-1 px-2 cursor-pointer transition-all duration-300 ease-linear hover:bg-primary-main hover:border-primary-main">
                   <Clock />
-                  <p className="font-normal font-GRegular text-[0.62rem] text-white pr-4">
+                  <p className="font-normal font-GRegular text-[0.62rem] text-white pr-8">
                     7 Days
                   </p>
                 </div>
               </Tooltip>
               <Tooltip text="details">
                 <div
-                  className="flex gap-5 border border-[#AAAAAA] rounded-md items-center py-1 px-2 cursor-pointer transition-all duration-300 ease-linear hover:bg-primary-main hover:border-primary-main"
+                  className="flex gap-5 border border-[#AAAAAA] rounded-md items-center py-1 px-2 pr-6 cursor-pointer transition-all duration-300 ease-linear hover:bg-primary-main hover:border-primary-main"
                   onClick={() => handleStake(percentage)}
                 >
                   <Lock />
-                  <p className="font-normal font-GRegular text-[0.62rem] text-white pr-4">
+                  <p className="font-normal font-GRegular text-[0.62rem] text-white pr-6">
                     Stake
                   </p>
                 </div>
@@ -360,7 +363,7 @@ function BoostPayout({
               countSteps={1}
               duration={300}
             />
-            <div>
+            <div className="pl-1">
               <p className="font-normal font-GRegular text-[0.75rem] text-white pb-0 -mb-1">
                 Level
               </p>

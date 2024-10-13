@@ -36,14 +36,28 @@ const CounterAnimationWithInput: React.FC<IPropsCounterAnimationWithInput> = ({
   }, [step, countSteps, duration]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = parseFloat(event.target.value);
-    setNum(newValue);
-    onValueChange(newValue);
+    const newValue = event.target.value;
+    if (newValue === "" || isNaN(Number(newValue))) {
+      setNum(0);
+    } else {
+      setNum(parseInt(newValue));
+      onValueChange(parseFloat(newValue));
+    }
+  };
+
+  const handleFocus = () => {
+    setNum(0);
   };
 
   return (
     <div>
-      <input className={style} value={num} min={num} onChange={handleChange} />
+      <input
+        className={style}
+        value={num}
+        min={num}
+        onChange={handleChange}
+        onFocus={handleFocus}
+      />
     </div>
   );
 };

@@ -129,7 +129,7 @@ function Validators() {
                     stockNow={false}
                     subtitle={
                       item.amount_locked > 0
-                        ? "of Network"
+                        ? "of Network<br/><br/>"
                         : "for Validator reward"
                     }
                     validators

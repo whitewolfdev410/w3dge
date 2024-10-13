@@ -124,7 +124,6 @@ function Dashboard() {
       setIsFading(false);
     }, 500); // 500ms fade duration
   };
-
   return (
     <div className="section-dashboard p-5 ">
       <div className="grid pt-4 md:pt-0 hidden xl:grid">
@@ -154,6 +153,12 @@ function Dashboard() {
                   currency="CDN"
                   key={2}
                 />
+                <Earn
+                  title="Total Balance"
+                  amount={userData?.balance ?? 0}
+                  currency="CDN"
+                  key={2}
+                />
               </div>
             )}
             <div className="flex justify-start pl-14">
@@ -174,6 +179,7 @@ function Dashboard() {
             <Earn title="Today" amount={12} />
             <Earn title="This Week" amount={142} isEnd={true} />
             <Earn title="This Month" amount={1242} />
+            <Earn title="Total Balance" amount={1242} />
           </div>
           {/* <div className="w-full justify-center flex">
             <div className="bg-dark-main rounded-md py-2 px-7 flex justify-center transition-all duration-300 ease-linear mt-3 items-center w-fit text-primary-main cursor-pointer  hover:bg-primary-main hover:text-white">
@@ -205,6 +211,7 @@ function Dashboard() {
                   amount={parseFloat(userData?.staking_rewards).toFixed(2)}
                   percentage={"13.6%"}
                   key={0}
+                  currency="CDN"
                   showPrecentage={false}
                 />
                 <Earned
