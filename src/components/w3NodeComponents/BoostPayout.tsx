@@ -23,6 +23,8 @@ interface IPropsBoostPayout {
   is_piechart?: boolean;
   earned?: any;
   pendingUnstake?: any;
+  handleBoxSelect?: any;
+  selectedBoxId?: any;
 }
 
 function BoostPayout({
@@ -36,6 +38,8 @@ function BoostPayout({
   is_piechart,
   earned,
   pendingUnstake,
+  handleBoxSelect,
+  selectedBoxId,
 }: IPropsBoostPayout) {
   const [isHovered, setIsHovered] = useState(false);
   const [isLocked, setIsLocked] = useState(false);
@@ -158,6 +162,7 @@ function BoostPayout({
       } else {
         const jsonResponse = await response.json();
         toast.success(jsonResponse);
+        handleBoxSelect(selectedBoxId);
       }
     } catch (error: any) {
       toast.error(`An error occurred: ${error.message}`);

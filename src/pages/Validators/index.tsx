@@ -136,6 +136,8 @@ function Validators() {
                     is_piechart={isPieChart}
                     key={index}
                     pendingUnstake={pendingUnstake}
+                    handleBoxSelect={handleBoxSelect}
+                    selectedBoxId={selectedBoxId}
                   />
                 );
               })}
