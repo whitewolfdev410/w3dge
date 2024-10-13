@@ -147,7 +147,6 @@ function BoostPayout({
       pool_id: percentage,
       value: inputValue,
     };
-    setIsStaked(true);
     try {
       const response = await fetch(apiUrl, {
         method: "POST",
@@ -161,6 +160,7 @@ function BoostPayout({
       } else {
         const jsonResponse = await response.json();
         toast.success(jsonResponse);
+        setIsStaked(true);
       }
     } catch (error: any) {
       toast.error(`An error occurred: ${error.message}`);
