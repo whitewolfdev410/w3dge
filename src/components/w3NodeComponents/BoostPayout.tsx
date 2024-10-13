@@ -155,10 +155,10 @@ function BoostPayout({
         },
         body: JSON.stringify(data),
       });
+      const jsonResponse = await response.json();
       if (!response.ok) {
-        toast.error("Error to stake: " + response);
+        toast.error("Error to stake: " + jsonResponse);
       } else {
-        const jsonResponse = await response.json();
         toast.success(jsonResponse);
         setIsStaked(true);
       }
