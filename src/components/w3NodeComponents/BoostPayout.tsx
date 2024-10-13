@@ -270,7 +270,7 @@ function BoostPayout({
         </div>
         {is_piechart ? (
           <div
-            className="w-[9.5rem] h-[9.5rem] grid relative mx-auto"
+            className="w-[9.5rem] h-[9.5rem] grid relative mx-auto cursor-pointer"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
