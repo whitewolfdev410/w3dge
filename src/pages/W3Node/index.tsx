@@ -96,7 +96,7 @@ function W3Node() {
           wallet_address: address,
         });
         const boxData = await fetchDataFromAWS("BoxView", {
-          box_id: { $in: res?.[0].boxes },
+          box_id: { $in: res?.[0]?.boxes },
         });
         setBoxViewData(boxData);
         setIsLoading(false);
