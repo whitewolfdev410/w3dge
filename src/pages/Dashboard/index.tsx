@@ -104,7 +104,32 @@ function Dashboard() {
         const boxData = await fetchDataFromAWS("BoxView", {
           box_id: { $in: res?.[0]?.boxes },
         });
-        setUserData(res?.[0] || null);
+        setUserData(
+          res?.[0] || {
+            staking_pools: [
+              {
+                pool_type: "2%",
+                amount_locked: 0,
+                reward_earned: 0,
+              },
+              {
+                pool_type: "3%",
+                amount_locked: 0,
+                reward_earned: 0,
+              },
+              {
+                pool_type: "5%",
+                amount_locked: 0,
+                reward_earned: 0,
+              },
+              {
+                pool_type: "10%",
+                amount_locked: 0,
+                reward_earned: 0,
+              },
+            ],
+          }
+        );
         setBoxViewData(boxData);
         setIsLoading(false);
         setLoading(false);
@@ -194,14 +219,18 @@ function Dashboard() {
             <HeroHeadingTwo text="Validator Pools" />
           </div>
           <div className="flex flex-wrap justify-center">
-            {userData?.staking_pools?.map((item: any, index: number) => (
-              <div className="w-[9.5rem] h-[9.5rem] grid relative" key={index}>
-                <PieChartComponent
-                  color={item.amount_locked != 0 ? "#00B649" : "#949596"}
-                />
-                <PieChartContent amount={item.amount_locked} />
-              </div>
-            ))}
+            {userData &&
+              userData?.staking_pools?.map((item: any, index: number) => (
+                <div
+                  className="w-[9.5rem] h-[9.5rem] grid relative"
+                  key={index}
+                >
+                  <PieChartComponent
+                    color={item.amount_locked != 0 ? "#00B649" : "#949596"}
+                  />
+                  <PieChartContent amount={item.amount_locked} />
+                </div>
+              ))}
           </div>
           <div className="flex flex-wrap xl:gap-12 gap-x-20 justify-center  my-7 items-center">
             {!loading && (
