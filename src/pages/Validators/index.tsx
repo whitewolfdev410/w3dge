@@ -105,7 +105,6 @@ function Validators() {
   useEffect(() => {
     if (boxViewData) handleBoxSelect(boxViewData[0]?.box_id);
   }, [boxViewData]);
-  console.log("here is userdata: ", userData[0]);
   return (
     <div className="section-validators p-5 ">
       <div className="hidden pt-4 md:pt-0  md:flex">
