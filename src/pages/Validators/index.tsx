@@ -70,7 +70,33 @@ function Validators() {
           wallet_address: address,
         });
         setBoxViewData(boxData);
-        setUserData(userData?.[0] || null);
+        setUserData(
+          userData?.[0] || {
+            staking_pools: [
+              {
+                pool_type: "2%",
+                amount_locked: 0,
+                reward_earned: 0,
+              },
+              {
+                pool_type: "3%",
+                amount_locked: 0,
+                reward_earned: 0,
+              },
+              {
+                pool_type: "5%",
+                amount_locked: 0,
+                reward_earned: 0,
+              },
+              {
+                pool_type: "10%",
+                amount_locked: 0,
+                reward_earned: 0,
+              },
+            ],
+          }
+        );
+
         setIsLoading(false);
       };
       initializeData();
@@ -79,6 +105,7 @@ function Validators() {
   useEffect(() => {
     if (boxViewData) handleBoxSelect(boxViewData[0]?.box_id);
   }, [boxViewData]);
+  console.log("here is userdata: ", userData[0]);
   return (
     <div className="section-validators p-5 ">
       <div className="hidden pt-4 md:pt-0  md:flex">
