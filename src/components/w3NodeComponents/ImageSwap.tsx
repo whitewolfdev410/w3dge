@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { ArrowLeft, ArrowRight } from "../../icons";
 import PureComponent from "../charts/SimpleRadialBarChart";
 import CounterAnimation from "../animation/counterAnimation";
+import CounterAnimationWithInput from "../animation/counterAnimationWithInput";
+import LogoIcon from "../../assets/images/logo.png";
+import { useAccount } from "wagmi";
+import { toast, ToastContainer } from "react-toastify";
 interface ImageSwapProps {
   boxViewData: any;
   onBoxSelect: (boxId: string) => void;
@@ -17,6 +21,38 @@ const ImageSwap: React.FC<ImageSwapProps> = ({
 }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [isFading, setIsFading] = useState<boolean>(false);
+  const [inputValue, setInputValue] = useState<string>("");
+  const handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    let value = event.target.value;
+    setInputValue(value);
+  };
+  const { address } = useAccount();
+  const handleSubmit = async () => {
+    let data = {
+      identifier_code: inputValue,
+      wallet_address: address,
+    };
+    console.log("here is handle clicked::", data);
+    const apiUrl =
+      "https://gygxr53i33.execute-api.ap-southeast-2.amazonaws.com/Prod/Activate";
+    try {
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      const jsonResponse = await response.json();
+      if (!response.ok) {
+        toast.error("Error to activate: " + jsonResponse);
+      } else {
+        toast.success(jsonResponse);
+      }
+    } catch (error: any) {
+      toast.error(`An error occurred: ${error.message}`);
+    }
+  };
 
   const handleNext = (): void => {
     if (isFading) return;
@@ -45,10 +81,10 @@ const ImageSwap: React.FC<ImageSwapProps> = ({
       setIsFading(false);
     }, 500); // 500ms fade duration
   };
-  console.log("here is boxview: ", networkStats);
 
   return (
     <div className="flex flex-col items-center space-y-4 h-fit">
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
       {boxViewData && boxViewData.length > 0 ? (
         <>
           <div className=" flex justify-between gap-52 md:gap-96 mb-0 md:mb-14">
@@ -134,11 +170,35 @@ const ImageSwap: React.FC<ImageSwapProps> = ({
               />
             </div>
           </div>
+          <div className="bg-black flex justify-between px-3 py-1 gap-12 items-center mt-8 rounded-md">
+            <div className="flex gap-2 items-center w-[100%]">
+              <div
+                className="w-[1.62rem] h-[1.25rem]"
+                style={{
+                  backgroundImage: `url(${LogoIcon})`,
+                  backgroundRepeat: "no-repeat", // Prevent the background image from repeating
+                  backgroundSize: "contain", // Adjusts the image to fit within the element
+                }}
+              ></div>
+              <input
+                className="text-primary-main font-GBold font-bold text-[1.25rem] w-[100%]"
+                type="text"
+                onChange={handleValueChange} // Pass the callback function
+              />
+            </div>
+            <p className="text-white font-GRegular font-normal text-[0.62rem]">
+              required
+            </p>
+          </div>
+
           <div
             className={`py-3 rounded-md bg-primary-main -ml-2 cursor-pointer transition-all duration-300 ease-linear px-4`}
           >
-            <p className="text-center font-bold font-GBold text-white text-[1.25rem]">
-              Get W3DGE Box
+            <p
+              className="text-center font-bold font-GBold text-white text-[1.25rem]"
+              onClick={handleSubmit}
+            >
+              Activate
             </p>
           </div>
         </>
