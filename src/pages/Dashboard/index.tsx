@@ -17,21 +17,18 @@ import { ArrowRight } from "../../icons";
 import EarnedWithString from "../../components/dashboardComponent/EarnedWithString";
 import LinePayoutChartComponent from "../../components/charts/linePayoutChart";
 import StokedPayoutBorChartComponent from "../../components/charts/stackedPayoutBarChart";
+import { useSelector } from "react-redux";
 
 function Dashboard() {
-  const { address, isConnected } = useAccount();
-  const [userData, setUserData] = useState<any>(); // State to store fetched data
-  const [loading, setLoading] = useState(true); // Loading state
-  const [boxViewData, setBoxViewData] = useState<any>(null);
-  const [boxViewPayoutData, setBoxViewPayoutData] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [selectedBoxId, setSelectedBoxId] = useState<string | null>(null);
+  const { address } = useAccount();
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [isFading, setIsFading] = useState<boolean>(false);
   const [selectedBoxData, setSelectedBoxData] = useState<any>();
   const [isLoadingNet, setIsLoadingNet] = useState<boolean>(true);
   const [networkStats, setNetworkStats] = useState<any>();
-  const [validatorPayoutdata, setValidatorPayoutdata] = useState<any>(null);
+  const { userData, validatorPayoutdata, boxViewData, isLoading } = useSelector(
+    (state: any) => state.boxData
+  );
   const parseResponseBody = (responseBody: any) => {
     try {
       return typeof responseBody === "string"
@@ -57,22 +54,11 @@ function Dashboard() {
     }
   };
   const handleBoxSelect = async (boxId: string) => {
-    const res = await fetchDataFromAWS("BoxPayout", { box_id: boxId });
-    setBoxViewPayoutData(res?.[0]);
-    const validatorData = await fetchDataFromAWS("ValidatorPayouts", {
-      date: {
-        $gte: new Date(new Date().setDate(new Date().getDate() - 7))
-          .toISOString()
-          .split("T")[0],
-      },
-    });
-    setValidatorPayoutdata(validatorData || []);
     setIsLoadingNet(true);
     const boxViewRes = await fetchDataFromAWS("BoxView", {
       box_id: boxId,
       wallet_address: address,
     });
-    console.log("boxViewRes:::", boxViewRes);
     setNetworkStats({
       average_daily_revenue: boxViewRes?.[0]?.average_daily_income,
       total_bandwidth: boxViewRes?.[0]?.total_bandwidth,
@@ -85,7 +71,6 @@ function Dashboard() {
       total_earnings: boxViewRes?.[0]?.total_income_per_box,
     });
     setIsLoadingNet(false);
-    setSelectedBoxId(boxId);
   };
   useEffect(() => {
     if (boxViewData) {
@@ -94,49 +79,6 @@ function Dashboard() {
     }
   }, [boxViewData]);
 
-  useEffect(() => {
-    if (isConnected && address) {
-      const initializeData = async () => {
-        setIsLoading(true);
-        const res = await fetchDataFromAWS("UserData", {
-          wallet_address: address,
-        });
-        const boxData = await fetchDataFromAWS("BoxView", {
-          box_id: { $in: res?.[0]?.boxes },
-        });
-        setUserData(
-          res?.[0] || {
-            staking_pools: [
-              {
-                pool_type: "2%",
-                amount_locked: 0,
-                reward_earned: 0,
-              },
-              {
-                pool_type: "3%",
-                amount_locked: 0,
-                reward_earned: 0,
-              },
-              {
-                pool_type: "5%",
-                amount_locked: 0,
-                reward_earned: 0,
-              },
-              {
-                pool_type: "10%",
-                amount_locked: 0,
-                reward_earned: 0,
-              },
-            ],
-          }
-        );
-        setBoxViewData(boxData);
-        setIsLoading(false);
-        setLoading(false);
-      };
-      initializeData();
-    }
-  }, [isConnected, address]);
   const handleNext = (): void => {
     if (isFading) return;
     setIsFading(true);
@@ -233,7 +175,7 @@ function Dashboard() {
               ))}
           </div>
           <div className="flex flex-wrap xl:gap-12 gap-x-20 justify-center  my-7 items-center">
-            {!loading && (
+            {!isLoading && (
               <>
                 <Earned
                   title="Total Earned"

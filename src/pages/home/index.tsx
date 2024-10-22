@@ -9,6 +9,18 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import CounterAnimation from "../../components/animation/counterAnimation";
 import PureComponent from "../../components/charts/SimpleRadialBarChart";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setBoxPayoutList,
+  setBoxViewData,
+  setIsLoading,
+  setIsLoadingNet,
+  setLocationCountData,
+  setNetworkStats,
+  setPendingUnstake,
+  setUserData,
+  setValidatorPayoutdata,
+} from "../../context/boxDataSlice";
 
 const blinkingPoints = [
   // {
@@ -105,13 +117,15 @@ const blinkingPointsMobile = [
 
 function HomePage() {
   const { address, isConnected } = useAccount();
-  const [networkStats, setNetworkStats] = useState<any>();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isLoadingNet, setIsLoadingNet] = useState<boolean>(true);
   const [error, setError] = useState<any>(null);
-  const [locationCountData, setLocationCountData] = useState<any>(null);
-  const [boxPayoutList, setBoxPayoutList] = useState<any>(null);
-  const [averageDailyRevenue, setAverageDailyRevenue] = useState<any>(null);
+  const dispatch = useDispatch();
+  const {
+    networkStats,
+    isLoading,
+    isLoadingNet,
+    locationCountData,
+    boxPayoutList,
+  } = useSelector((state: any) => state.boxData);
 
   const parseResponseBody = (responseBody: any) => {
     try {
@@ -140,10 +154,10 @@ function HomePage() {
 
   useEffect(() => {
     if (isConnected && address) {
-      setIsLoading(true);
-      setIsLoadingNet(true);
+      dispatch(setIsLoading(true));
+      dispatch(setIsLoadingNet(true));
       const fetchNetworkData = async () => {
-        setIsLoading(true);
+        dispatch(setIsLoading(true));
         try {
           const networkStatsDataRes = await fetchDataFromAWS("NetworkStats");
           const latestNetworkStats = networkStatsDataRes.sort(
@@ -160,24 +174,75 @@ function HomePage() {
               total_earnings: cumulativeTotalsData?.[0].total_earnings,
               total_bandwidth: cumulativeTotalsData?.[0].total_bandwidth,
             };
-            setNetworkStats(data);
-            setAverageDailyRevenue(data.average_daily_revenue);
-            setLocationCountData(
-              Object.entries(data.location_count).map(([name, amount]) => ({
-                name,
-                amount,
-              }))
+            dispatch(setNetworkStats(data));
+            dispatch(
+              setLocationCountData(
+                Object.entries(data.location_count).map(([name, amount]) => ({
+                  name,
+                  amount,
+                }))
+              )
             );
           } else {
             setError("No data found");
           }
+          const res = await fetchDataFromAWS("UserData", {
+            wallet_address: address,
+          });
+          const boxData = await fetchDataFromAWS("BoxView", {
+            box_id: { $in: res?.[0]?.boxes },
+          });
+          dispatch(setBoxViewData(boxData));
+          const pendingUnstakeData = await fetchDataFromAWS("PendingUnstake", {
+            wallet_address: address,
+          });
+          dispatch(setPendingUnstake(pendingUnstakeData));
+          const userData = await fetchDataFromAWS("UserData", {
+            wallet_address: address,
+          });
+          dispatch(
+            setUserData(
+              userData?.[0] || {
+                staking_pools: [
+                  {
+                    pool_type: "2%",
+                    amount_locked: 0,
+                    reward_earned: 0,
+                  },
+                  {
+                    pool_type: "3%",
+                    amount_locked: 0,
+                    reward_earned: 0,
+                  },
+                  {
+                    pool_type: "5%",
+                    amount_locked: 0,
+                    reward_earned: 0,
+                  },
+                  {
+                    pool_type: "10%",
+                    amount_locked: 0,
+                    reward_earned: 0,
+                  },
+                ],
+              }
+            )
+          );
+          const validatorData = await fetchDataFromAWS("ValidatorPayouts", {
+            date: {
+              $gte: new Date(new Date().setDate(new Date().getDate() - 7))
+                .toISOString()
+                .split("T")[0],
+            },
+          });
+          dispatch(setValidatorPayoutdata(validatorData || []));
         } catch (err) {
           setError("Error fetching data");
           console.error(err);
         } finally {
-          setIsLoading(false);
+          dispatch(setIsLoading(false));
         }
-        setIsLoadingNet(false);
+        dispatch(setIsLoadingNet(false));
       };
       const fetchBoxPayoutListData = async () => {
         const res = await fetchDataFromAWS("BoxPayoutList");
@@ -185,7 +250,7 @@ function HomePage() {
           (a: any, b: any) =>
             new Date(b.date).getTime() - new Date(a.date).getTime()
         )[0];
-        setBoxPayoutList(latestBoxPayoutList.transactions);
+        dispatch(setBoxPayoutList(latestBoxPayoutList.transactions));
       };
       fetchNetworkData();
       fetchBoxPayoutListData();
@@ -232,7 +297,7 @@ function HomePage() {
                     (sum: number, item: any) => sum + item.amount,
                     0
                   );
-                  return locationCountData
+                  return [...locationCountData]
                     .sort((a: any, b: any) => b.amount - a.amount) // Reorder the data by 'amount' in descending order
                     .map((item: any, index: any) => {
                       const percentage =

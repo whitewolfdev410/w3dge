@@ -9,18 +9,25 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import W3NodeFooter from "../../components/footer/W3NodeFooter";
 import CounterAnimation from "../../components/animation/counterAnimation";
+import { useSelector } from "react-redux";
+import {
+  setBoxViewData,
+  setIsLoading,
+  setIsLoadingNet,
+  setNetworkStats,
+} from "../../context/boxDataSlice";
 
 function W3Node() {
   const { address, isConnected } = useAccount();
-  const [networkStats, setNetworkStats] = useState<any>();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isLoadingNet, setIsLoadingNet] = useState<boolean>(true);
-  const [error, setError] = useState<any>(null);
-  const [boxViewData, setBoxViewData] = useState<any>(null);
   const [boxViewPayoutData, setBoxViewPayoutData] = useState<any>(null);
-  const [selectedBoxId, setSelectedBoxId] = useState<string | null>(null);
-  const [averageDailyRevenue, setAverageDailyRevenue] = useState<any>(null);
-  const [locationCountData, setLocationCountData] = useState<any>(null);
+  const {
+    boxViewData,
+    networkStats,
+    isLoading,
+    isLoadingNet,
+    locationCountData,
+    boxPayoutList,
+  } = useSelector((state: any) => state.boxData);
   const parseResponseBody = (responseBody: any) => {
     try {
       return typeof responseBody === "string"
@@ -47,7 +54,6 @@ function W3Node() {
   };
 
   const handleBoxSelect = async (boxId: string) => {
-    setIsLoadingNet(false);
     setIsLoadingNet(true);
     const res = await fetchDataFromAWS("BoxPayout", {
       box_id: boxId,
@@ -79,31 +85,8 @@ function W3Node() {
         : 0,
       total_earnings: boxViewRes?.[0]?.total_income_per_box,
     });
-    setAverageDailyRevenue(boxViewRes?.[0].average_daily_revenue);
     setIsLoadingNet(false);
-    console.log("here is error: ", error);
-    console.log("here is isLoading: ", isLoading);
-    console.log("here is selectedBoxId: ", selectedBoxId);
-    console.log("here is averageDailyRevenue: ", averageDailyRevenue);
-    console.log("here is locationCountData: ", locationCountData);
-    setSelectedBoxId(boxId);
   };
-  useEffect(() => {
-    if (isConnected && address) {
-      const initializeData = async () => {
-        setIsLoading(true);
-        const res = await fetchDataFromAWS("UserData", {
-          wallet_address: address,
-        });
-        const boxData = await fetchDataFromAWS("BoxView", {
-          box_id: { $in: res?.[0]?.boxes },
-        });
-        setBoxViewData(boxData);
-        setIsLoading(false);
-      };
-      initializeData();
-    }
-  }, [isConnected, address]);
   useEffect(() => {
     if (boxViewData) handleBoxSelect(boxViewData[0]?.box_id);
   }, [boxViewData]);

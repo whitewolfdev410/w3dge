@@ -2,109 +2,16 @@ import { Bodoy1, HeroHeading } from "../../components/FontComponent";
 import WontToLearn from "../../components/footer/WontToLearn";
 import BoostPayout from "../../components/w3NodeComponents/BoostPayout";
 import TabMain from "../../components/tabs";
-import { useAccount } from "wagmi";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 import LinePayoutChartComponent from "../../components/charts/linePayoutChart";
 import StokedPayoutBorChartComponent from "../../components/charts/stackedPayoutBarChart";
+import { useSelector } from "react-redux";
 
 function Validators() {
-  const { address, isConnected } = useAccount();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<any>(null);
-  const [boxViewData, setBoxViewData] = useState<any>(null);
   const [isStaked, setIsStaked] = useState<boolean>(false);
-  // const [boxViewPayoutData, setBoxViewPayoutData] = useState<any>(null);
-  const [validatorPayoutdata, setValidatorPayoutdata] = useState<any>(null);
-  const [selectedBoxId, setSelectedBoxId] = useState<string | null>(null);
-  const [pendingUnstake, setPendingUnstake] = useState<any>(null);
-  const [userData, setUserData] = useState<any>(null);
-  const parseResponseBody = (responseBody: any) => {
-    try {
-      return typeof responseBody === "string"
-        ? JSON.parse(responseBody)
-        : responseBody;
-    } catch (e) {
-      console.error("Error parsing response data:", e);
-      return null;
-    }
-  };
-  const fetchData = async (path: string, query = {}) => {
-    try {
-      const apiUrl = import.meta.env.VITE_AWS_API_URL;
-      const { data } = await axios.post(apiUrl, {
-        path: `w3dgeData/${path}`,
-        operation: "find",
-        query,
-      });
-      return parseResponseBody(data.body);
-    } catch (err) {
-      console.error(`Error fetching data from ${path}:`, err);
-      setError(err);
-      return null;
-    }
-  };
-  const handleBoxSelect = async (boxId: string) => {
-    // const payoutData = await fetchData("BoxPayout", { box_id: boxId });
-    // setBoxViewPayoutData(payoutData?.[0] || null);
-    const validatorData = await fetchData("ValidatorPayouts", {
-      date: {
-        $gte: new Date(new Date().setDate(new Date().getDate() - 7))
-          .toISOString()
-          .split("T")[0],
-      },
-    });
-    setValidatorPayoutdata(validatorData || []);
-    setSelectedBoxId(boxId);
-  };
-  useEffect(() => {
-    if (isConnected && address) {
-      setIsLoading(true);
-      const initializeData = async () => {
-        const boxData = await fetchData("BoxView");
-        const pendingUnstakeData = await fetchData("PendingUnstake", {
-          wallet_address: address,
-        });
-        setPendingUnstake(pendingUnstakeData);
-        const userData = await fetchData("UserData", {
-          wallet_address: address,
-        });
-        setBoxViewData(boxData);
-        setUserData(
-          userData?.[0] || {
-            staking_pools: [
-              {
-                pool_type: "2%",
-                amount_locked: 0,
-                reward_earned: 0,
-              },
-              {
-                pool_type: "3%",
-                amount_locked: 0,
-                reward_earned: 0,
-              },
-              {
-                pool_type: "5%",
-                amount_locked: 0,
-                reward_earned: 0,
-              },
-              {
-                pool_type: "10%",
-                amount_locked: 0,
-                reward_earned: 0,
-              },
-            ],
-          }
-        );
-
-        setIsLoading(false);
-      };
-      initializeData();
-    }
-  }, [isConnected, address, isStaked]);
-  useEffect(() => {
-    if (boxViewData) handleBoxSelect(boxViewData[0]?.box_id);
-  }, [boxViewData]);
+  const { pendingUnstake, userData, validatorPayoutdata } = useSelector(
+    (state: any) => state.boxData
+  );
   return (
     <div className="section-validators p-5 ">
       <div className="hidden pt-4 md:pt-0  md:flex">

@@ -1,9 +1,11 @@
-import { configureStore } from '@reduxjs/toolkit';
-import walletReducer from './wallet';
+import { configureStore } from "@reduxjs/toolkit";
+import walletReducer from "./wallet";
+import boxDataReducer from "../context/boxDataSlice";
 
 const store = configureStore({
   reducer: {
     wallet: walletReducer,
+    boxData: boxDataReducer,
   },
 });
 
