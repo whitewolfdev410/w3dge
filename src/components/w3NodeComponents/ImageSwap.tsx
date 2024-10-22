@@ -45,7 +45,7 @@ const ImageSwap: React.FC<ImageSwapProps> = ({
       });
       const jsonResponse = await response.json();
       if (!response.ok) {
-        toast.error("Error to activate: " + jsonResponse);
+        toast.error("Error to activate: " + jsonResponse.error);
       } else {
         toast.success(jsonResponse);
       }
