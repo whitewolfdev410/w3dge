@@ -41,6 +41,7 @@ function BoostPayout({
 }: IPropsBoostPayout) {
   const [isHovered, setIsHovered] = useState(false);
   const [isLocked, setIsLocked] = useState(false);
+  const [handleStaked, setHandleStaked] = useState(false);
   const getStepBasedOnPercentage = (percentage: any) => {
     switch (parseInt(percentage)) {
       case 2:
@@ -137,9 +138,11 @@ function BoostPayout({
   };
 
   const handleStake = async (percentage: any) => {
+    setHandleStaked(true);
     let stakeAmount = getStepBasedOnPercentage(percentage);
     if (inputValue < stakeAmount) {
       toast.error("Amount " + stakeAmount + " is minimum required value");
+      setHandleStaked(false);
       return false;
     }
     const apiUrl =
@@ -161,16 +164,18 @@ function BoostPayout({
       if (!response.ok) {
         toast.error("Error to stake: " + jsonResponse);
       } else {
-        toast.success(jsonResponse);
+        toast.success("Staking successful!");
         setIsStaked(true);
       }
+      setHandleStaked(false);
     } catch (error: any) {
       toast.error(`An error occurred: ${error.message}`);
+      setTimeout(() => setHandleStaked(false), 3000);
     }
   };
 
   const handleValueChange = (value: number) => {
-    setInputValue(value); // Update the parent state
+    setInputValue(value);
   };
   function HoveredComponent(data: any) {
     return (
@@ -318,7 +323,7 @@ function BoostPayout({
               </p>
             </div>
             <div className="flex justify-between mt-2">
-              <Tooltip text="details ">
+              <Tooltip text="details">
                 <div className="flex gap-3 border border-[#AAAAAA] rounded-md items-center py-1 px-2 cursor-pointer transition-all duration-300 ease-linear hover:bg-primary-main hover:border-primary-main">
                   <Clock />
                   <p className="font-normal font-GRegular text-[0.62rem] text-white pr-8">
@@ -328,12 +333,14 @@ function BoostPayout({
               </Tooltip>
               <Tooltip text="details">
                 <div
-                  className="flex gap-5 border border-[#AAAAAA] rounded-md items-center py-1 px-2 pr-6 cursor-pointer transition-all duration-300 ease-linear hover:bg-primary-main hover:border-primary-main"
+                  className={`flex gap-5 border border-[#AAAAAA] rounded-md items-center py-1 px-2 pr-6 cursor-pointer transition-all duration-300 ease-linear hover:bg-primary-main hover:border-primary-main ${
+                    handleStaked ? "stake-loading" : ""
+                  }`}
                   onClick={() => handleStake(percentage)}
                 >
                   <Lock />
                   <p className="font-normal font-GRegular text-[0.62rem] text-white pr-6">
-                    Stake
+                    {handleStaked ? "" : "Stake"}
                   </p>
                 </div>
               </Tooltip>

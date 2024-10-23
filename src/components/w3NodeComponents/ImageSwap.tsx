@@ -22,12 +22,14 @@ const ImageSwap: React.FC<ImageSwapProps> = ({
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [isFading, setIsFading] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
+  const [isClicked, setIsClicked] = useState<boolean>(false);
   const handleValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     let value = event.target.value;
     setInputValue(value);
   };
   const { address } = useAccount();
   const handleSubmit = async () => {
+    setIsClicked(true);
     let data = {
       identifier_code: inputValue,
       wallet_address: address,
@@ -49,8 +51,10 @@ const ImageSwap: React.FC<ImageSwapProps> = ({
       } else {
         toast.success(jsonResponse);
       }
+      setTimeout(() => setIsClicked(false), 3000);
     } catch (error: any) {
       toast.error(`An error occurred: ${error.message}`);
+      setTimeout(() => setIsClicked(false), 3000);
     }
   };
 
@@ -192,13 +196,17 @@ const ImageSwap: React.FC<ImageSwapProps> = ({
           </div>
 
           <div
-            className={`py-3 rounded-md bg-primary-main -ml-2 cursor-pointer transition-all duration-300 ease-linear px-4`}
+            className={` ${
+              isClicked
+                ? "stake-loading"
+                : "py-3 rounded-md bg-primary-main -ml-2 cursor-pointer transition-all duration-300 ease-linear px-4"
+            } `}
           >
             <p
-              className="text-center font-bold font-GBold text-white text-[1.25rem]"
+              className={`text-center font-bold font-GBold text-white text-[1.25rem]`}
               onClick={handleSubmit}
             >
-              Activate
+              {isClicked ? "" : "Activate"}
             </p>
           </div>
         </>
