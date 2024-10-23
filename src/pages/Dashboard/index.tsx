@@ -29,6 +29,7 @@ function Dashboard() {
   const { userData, validatorPayoutdata, boxViewData, isLoading } = useSelector(
     (state: any) => state.boxData
   );
+  const [validatorCount, setValidatorCount] = useState<number>(0);
   const parseResponseBody = (responseBody: any) => {
     try {
       return typeof responseBody === "string"
@@ -71,7 +72,11 @@ function Dashboard() {
       total_earnings: boxViewRes?.[0]?.total_income_per_box,
     });
     setIsLoadingNet(false);
+    setValidatorCount(
+      boxViewRes?.[0]?.uptime_in_days ? boxViewRes?.[0]?.uptime_in_days * 24 : 0
+    );
   };
+  console.log("validatorCount:::", validatorCount);
   useEffect(() => {
     if (boxViewData) {
       handleBoxSelect(boxViewData[0]?.box_id);
@@ -296,42 +301,51 @@ function Dashboard() {
               </div>
             )}
             <div className="grid grid-cols-2 gap-3 xl:gap-10  px-8">
-              {!isLoadingNet && (
+              {
                 <>
-                  <Earned
-                    title={"Uptime in ViewBox"}
-                    amount={networkStats?.unique_validator_count ?? 0}
-                    percentage={"+13.6%"}
-                    dgeBox
-                    showPrecentage={false}
-                    className={"px-2"}
-                  />
-                  <Earned
-                    title={"Total Bandwidth"}
-                    amount={networkStats?.total_bandwidth ?? 0}
-                    percentage={"+13.6%"}
-                    dgeBox
-                    showPrecentage={false}
-                    className="pl-[3rem]"
-                  />
-                  <Earned
-                    title={"Network Contribution"}
-                    amount={networkStats?.total_bandwidth_daily ?? 0}
-                    percentage={"+13.6%"}
-                    dgeBox
-                    showPrecentage={false}
-                    className={"px-2"}
-                  />
-                  <Earned
-                    title={"Total Earning"}
-                    amount={networkStats?.total_earnings ?? 0}
-                    percentage={"CDN"}
-                    dgeBox
-                    showPrecentage={true}
-                    className="pl-[3rem]"
-                  />
+                  {!isLoading && (
+                    <EarnedWithString
+                      title="Uptime in ViewBox"
+                      amount={
+                        Math.floor(networkStats?.unique_validator_count) ?? 0
+                      }
+                      showPrecentage={false}
+                      dgeBox
+                      tagText="AXD"
+                    />
+                  )}
+                  {!isLoading && (
+                    <EarnedWithString
+                      title="Total Bandwidth"
+                      amount={Math.floor(networkStats?.total_bandwidth) ?? 0}
+                      showPrecentage={false}
+                      dgeBox
+                      tagText="AXD"
+                    />
+                  )}
+                  {!isLoading && (
+                    <EarnedWithString
+                      title="Network Contribution"
+                      amount={
+                        Math.floor(networkStats?.total_bandwidth_daily) ?? 0
+                      }
+                      showPrecentage={false}
+                      dgeBox
+                      tagText="AXD"
+                    />
+                  )}
+                  {!isLoading && (
+                    <EarnedWithString
+                      title="Total Earning"
+                      amount={Math.floor(networkStats?.total_earnings) ?? 0}
+                      showPrecentage={true}
+                      dgeBox
+                      tagText="AXD"
+                      percentage="CDN"
+                    />
+                  )}
                 </>
-              )}
+              }
             </div>
           </div>
         </div>

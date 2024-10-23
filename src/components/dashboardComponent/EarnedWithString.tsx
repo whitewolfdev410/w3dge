@@ -18,10 +18,7 @@ function EarnedWithString({
       <p className="font-normal font-GRegular text-[0.87rem] text-[#949596]">
         {title}
       </p>
-      <div
-        className="flex items-end gap-2"
-        style={{ maxWidth: "7rem", overflow: "hidden" }}
-      >
+      <div className="flex items-end gap-2" style={{ maxWidth: "7rem" }}>
         {/* <CounterAnimation
           style={`${
             dgeBox ? "font-normal font-GRegular" : "font-bold font-GBold"

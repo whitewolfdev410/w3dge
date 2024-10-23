@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { ArrowLeft, ArrowRight } from "../../icons";
 import PureComponent from "../charts/SimpleRadialBarChart";
 import CounterAnimation from "../animation/counterAnimation";
-import CounterAnimationWithInput from "../animation/counterAnimationWithInput";
 import LogoIcon from "../../assets/images/logo.png";
 import { useAccount } from "wagmi";
 import { toast, ToastContainer } from "react-toastify";
+import { HeroHeadingTwo } from "../FontComponent";
 interface ImageSwapProps {
   boxViewData: any;
   onBoxSelect: (boxId: string) => void;
@@ -174,24 +174,28 @@ const ImageSwap: React.FC<ImageSwapProps> = ({
               />
             </div>
           </div>
-          <div className="bg-black flex justify-between px-3 py-1 gap-12 items-center mt-8 rounded-md">
+          <HeroHeadingTwo text={"Bind your box"} />
+          <div className="bg-gray-700 flex justify-between px-3 py-1 gap-12 items-center mt-8 rounded-md">
             <div className="flex gap-2 items-center w-[100%]">
               <div
                 className="w-[1.62rem] h-[1.25rem]"
                 style={{
                   backgroundImage: `url(${LogoIcon})`,
-                  backgroundRepeat: "no-repeat", // Prevent the background image from repeating
-                  backgroundSize: "contain", // Adjusts the image to fit within the element
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "contain",
                 }}
               ></div>
               <input
-                className="text-primary-main font-GBold font-bold text-[1.25rem] w-[100%]"
-                type="text"
-                onChange={handleValueChange} // Pass the callback function
+                className="text-primary-main font-GBold font-bold text-[1.25rem] w-[100%] bg-gray-700"
+                type="password"
+                onChange={handleValueChange}
               />
             </div>
-            <p className="text-white font-GRegular font-normal text-[0.62rem]">
-              required
+            <p
+              className="text-white font-GRegular font-normal text-[0.62rem]"
+              style={{ whiteSpace: "nowrap" }}
+            >
+              enter code
             </p>
           </div>
 

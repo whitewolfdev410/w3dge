@@ -229,13 +229,10 @@ function HomePage() {
               }
             )
           );
-          const validatorData = await fetchDataFromAWS("ValidatorPayouts", {
-            date: {
-              $gte: new Date(new Date().setDate(new Date().getDate() - 7))
-                .toISOString()
-                .split("T")[0],
-            },
-          });
+          const allValidatorData = await fetchDataFromAWS("ValidatorPayouts");
+          const validatorData = allValidatorData
+            ? allValidatorData.slice(-7)
+            : [];
           dispatch(setValidatorPayoutdata(validatorData || []));
         } catch (err) {
           setError("Error fetching data");
