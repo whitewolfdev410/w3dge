@@ -21,6 +21,7 @@ import {
   setUserData,
   setValidatorPayoutdata,
 } from "../../context/boxDataSlice";
+import LoadingScreen from "../../components/loading/pageLoading";
 
 const blinkingPoints = [
   // {
@@ -258,6 +259,7 @@ function HomePage() {
   }, [isConnected, address]);
   return (
     <div className="section-home md:p-7 p-2">
+      <LoadingScreen />
       <div className=" hidden xl:grid">
         <HeroHeading text={"Network"} />
       </div>
