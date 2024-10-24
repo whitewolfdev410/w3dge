@@ -8,7 +8,7 @@ import { accessToken } from "./assets/constant";
 import LoginPage from "./pages/login";
 import { useAccount } from "wagmi";
 import { useDispatch } from "react-redux";
-import * as walletStore from './store/wallet';
+import * as walletStore from "./store/wallet";
 
 function App() {
   const location = useLocation();
@@ -16,10 +16,10 @@ function App() {
   const [loadingPage, setLoadingPage] = useState(true);
   const { address, isConnected } = useAccount();
   useEffect(() => {
-      if (address) {
-          dispatch(walletStore.setAddress(address));
-      }
-  }, [address])
+    if (address) {
+      dispatch(walletStore.setAddress(address));
+    }
+  }, [address]);
 
   useEffect(() => {
     const token = localStorage.getItem(accessToken);
@@ -42,22 +42,24 @@ function App() {
     <div>
       {isConnected ? (
         <main className="max-width-app pt-9">
-          {location.pathname !== "/" && location.pathname !== "/W3Node" && (
-            <div>
-              <div
-                className="h-full top-4 w-[50%] -left-[25%] bg-contain bg-center bg-no-repeat fixed -z-10"
-                style={{
-                  backgroundImage: `url(${ShadowValidators})`,
-                }}
-              ></div>
-              <div
-                className="h-full w-[50%] -right-[25%] bg-contain bg-center bg-no-repeat fixed top-4 -z-10"
-                style={{
-                  backgroundImage: `url(${ShadowValidators})`,
-                }}
-              ></div>
-            </div>
-          )}
+          {location.pathname !== "/" &&
+            location.pathname !== "/W3Node" &&
+            location.pathname !== "/Dashboard" && (
+              <div>
+                <div
+                  className="h-full top-4 w-[50%] -left-[25%] bg-contain bg-center bg-no-repeat fixed -z-10"
+                  style={{
+                    backgroundImage: `url(${ShadowValidators})`,
+                  }}
+                ></div>
+                <div
+                  className="h-full w-[50%] -right-[25%] bg-contain bg-center bg-no-repeat fixed top-4 -z-10"
+                  style={{
+                    backgroundImage: `url(${ShadowValidators})`,
+                  }}
+                ></div>
+              </div>
+            )}
           <Headers />
           <div className="section">
             <RoutersComponent />

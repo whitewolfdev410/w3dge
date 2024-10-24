@@ -10,6 +10,7 @@ const initialState = {
   pendingUnstake: [],
   userData: [],
   validatorPayoutdata: [],
+  isCalled: false,
 };
 
 const boxDataSlice = createSlice({
@@ -43,6 +44,9 @@ const boxDataSlice = createSlice({
     setValidatorPayoutdata(state, action) {
       state.validatorPayoutdata = action.payload;
     },
+    setIsCalled(state, action) {
+      state.isCalled = action.payload;
+    },
   },
 });
 
@@ -56,6 +60,7 @@ export const {
   setPendingUnstake,
   setUserData,
   setValidatorPayoutdata,
+  setIsCalled,
 } = boxDataSlice.actions;
 
 export default boxDataSlice.reducer;

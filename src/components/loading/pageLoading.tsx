@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import "./LoadingScreen.css";
+import BackgroundImage from "../../assets/images/loading.png";
 interface LoadingScreenOptions {
   speed?: number;
 }
@@ -102,6 +103,12 @@ const LoadingScreen: React.FC = () => {
 
   return (
     <div className="wdt-loading-screen">
+      <div
+        className="w-full xl:h-[31.25rem] h-[20.25rem] bg-contain bg-center bg-no-repeat relative hidden xl:flex "
+        style={{
+          backgroundImage: `url(${BackgroundImage})`,
+        }}
+      ></div>
       <div className="wdt-loading-phrases">
         <div className="wdt-loading-phrase-category" data-category="default">
           <div className="wdt-loading-phrase">

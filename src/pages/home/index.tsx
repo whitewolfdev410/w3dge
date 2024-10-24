@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setBoxPayoutList,
   setBoxViewData,
+  setIsCalled,
   setIsLoading,
   setIsLoadingNet,
   setLocationCountData,
@@ -126,6 +127,7 @@ function HomePage() {
     isLoadingNet,
     locationCountData,
     boxPayoutList,
+    isCalled,
   } = useSelector((state: any) => state.boxData);
 
   const parseResponseBody = (responseBody: any) => {
@@ -154,7 +156,7 @@ function HomePage() {
   };
 
   useEffect(() => {
-    if (isConnected && address) {
+    if (isConnected && address && !isCalled) {
       dispatch(setIsLoading(true));
       dispatch(setIsLoadingNet(true));
       const fetchNetworkData = async () => {
@@ -249,6 +251,9 @@ function HomePage() {
             new Date(b.date).getTime() - new Date(a.date).getTime()
         )[0];
         dispatch(setBoxPayoutList(latestBoxPayoutList.transactions));
+        setTimeout(() => {
+          dispatch(setIsCalled(true));
+        }, 3000);
       };
       fetchNetworkData();
       fetchBoxPayoutListData();
@@ -256,7 +261,7 @@ function HomePage() {
   }, [isConnected, address]);
   return (
     <div className="section-home md:p-7 p-2">
-      <LoadingScreen />
+      {!isCalled && <LoadingScreen />}
       <div className=" hidden xl:grid">
         <HeroHeading text={"Network"} />
       </div>

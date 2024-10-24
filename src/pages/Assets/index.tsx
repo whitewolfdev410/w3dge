@@ -53,8 +53,8 @@ function Assets() {
           <div className="relative w-fit">
             <video
               src="/src/assets/boxVideo.mp4"
-              className={`w-80 h-auto object-cover rounded-lg shadow-lg transition-opacity duration-500 ease-in-out ${"opacity-100"}`}
-              style={{ width: "30rem" }}
+              className={`w-100 h-auto object-cover rounded-lg shadow-lg transition-opacity duration-500 ease-in-out ${"opacity-100"}`}
+              style={{ width: "45rem" }}
               autoPlay
               loop
               muted
@@ -62,10 +62,10 @@ function Assets() {
           </div>
         </div>
         <HeroHeadingTwo text={"Bind your box"} />
-        <div className="bg-gray-700 flex justify-between px-3 py-1 gap-12 items-center mt-8 rounded-md">
+        <div className="bg-gray-700 flex justify-between px-3 py-1 gap-2 items-center mt-8 rounded-md h-[3rem]">
           <div className="flex gap-2 items-center w-[100%]">
             <div
-              className="w-[1.62rem] h-[1.25rem]"
+              className="w-[2rem] h-[1.8rem]"
               style={{
                 backgroundImage: `url(${LogoIcon})`,
                 backgroundRepeat: "no-repeat",
@@ -73,13 +73,13 @@ function Assets() {
               }}
             ></div>
             <input
-              className="text-primary-main font-GBold font-bold text-[1.25rem] w-[100%] bg-gray-700"
+              className="text-primary-main font-GBold font-bold text-[1.25rem] w-[7rem] bg-gray-700"
               type="password"
               onChange={handleValueChange}
             />
           </div>
           <p
-            className="text-white font-GRegular font-normal text-[0.62rem]"
+            className="text-white font-GRegular font-normal text-[0.85rem]"
             style={{ whiteSpace: "nowrap" }}
           >
             enter code
@@ -90,14 +90,14 @@ function Assets() {
           className={` ${
             isClicked
               ? "stake-loading"
-              : "py-3 rounded-md bg-primary-main -ml-2 cursor-pointer transition-all duration-300 ease-linear px-4"
+              : "py-2 rounded-md bg-primary-main -ml-2 cursor-pointer transition-all duration-300 ease-linear px-8"
           } `}
         >
           <p
-            className={`text-center font-bold font-GBold text-white text-[1.25rem]`}
+            className={`text-center font-bold font-GBold text-white text-[1.5rem]`}
             onClick={handleSubmit}
           >
-            {isClicked ? "" : "Activate"}
+            {isClicked ? "" : "activate"}
           </p>
         </div>
       </div>

@@ -96,6 +96,7 @@ function Dashboard() {
       setIsFading(false);
     }, 500); // 500ms fade duration
   };
+  console.log("networkStats:::", networkStats);
   return (
     <div className="section-dashboard p-5 ">
       <div className="grid pt-4 md:pt-0 hidden xl:grid">
@@ -248,7 +249,7 @@ function Dashboard() {
                   <div
                     className={`py-3 w-max rounded-md bg-primary-main -ml-2 cursor-pointer transition-all duration-300 ease-linear px-4`}
                   >
-                    <p className="text-center font-bold font-GBold text-white text-[1.25rem] w-max">
+                    <p className="text-center font-bold font-GBold text-white text-[em] w-max">
                       Get W3DGE Box
                     </p>
                   </div>
@@ -301,51 +302,54 @@ function Dashboard() {
               </div>
             )}
             <div className="grid grid-cols-2 gap-3 xl:gap-10  px-8">
-              {
-                <>
-                  {!isLoading && (
-                    <EarnedWithString
-                      title="Uptime in ViewBox"
-                      amount={
-                        Math.floor(networkStats?.unique_validator_count) ?? 0
-                      }
-                      showPrecentage={false}
-                      dgeBox
-                      tagText="AXD"
-                    />
-                  )}
-                  {!isLoading && (
-                    <EarnedWithString
-                      title="Total Bandwidth"
-                      amount={Math.floor(networkStats?.total_bandwidth) ?? 0}
-                      showPrecentage={false}
-                      dgeBox
-                      tagText="AXD"
-                    />
-                  )}
-                  {!isLoading && (
-                    <EarnedWithString
-                      title="Network Contribution"
-                      amount={
-                        Math.floor(networkStats?.total_bandwidth_daily) ?? 0
-                      }
-                      showPrecentage={false}
-                      dgeBox
-                      tagText="AXD"
-                    />
-                  )}
-                  {!isLoading && (
-                    <EarnedWithString
-                      title="Total Earning"
-                      amount={Math.floor(networkStats?.total_earnings) ?? 0}
-                      showPrecentage={true}
-                      dgeBox
-                      tagText="AXD"
-                      percentage="CDN"
-                    />
-                  )}
-                </>
-              }
+              {networkStats?.average_daily_revenue &&
+                networkStats?.total_bandwidth &&
+                networkStats?.total_bandwidth_daily && (
+                  <>
+                    {!isLoading && (
+                      <EarnedWithString
+                        title="Uptime in ViewBox"
+                        amount={
+                          Math.floor(networkStats?.unique_validator_count) ?? 0
+                        }
+                        showPrecentage={false}
+                        dgeBox
+                        tagText="AXD"
+                      />
+                    )}
+                    {!isLoading && (
+                      <EarnedWithString
+                        title="Total Bandwidth"
+                        amount={Math.floor(networkStats?.total_bandwidth) ?? 0}
+                        showPrecentage={false}
+                        dgeBox
+                        tagText="AXD"
+                      />
+                    )}
+                    {!isLoading && (
+                      <EarnedWithString
+                        title="Network Contribution"
+                        amount={
+                          Math.floor(networkStats?.total_bandwidth_daily) ?? 0
+                        }
+                        showPrecentage={true}
+                        dgeBox
+                        tagText="AXD"
+                        percentage="CDN"
+                      />
+                    )}
+                    {!isLoading && (
+                      <EarnedWithString
+                        title="Total Earning"
+                        amount={Math.floor(networkStats?.total_earnings) ?? 0}
+                        showPrecentage={true}
+                        dgeBox
+                        tagText="AXD"
+                        percentage="CDN"
+                      />
+                    )}
+                  </>
+                )}
             </div>
           </div>
         </div>

@@ -18,7 +18,7 @@ function EarnedWithString({
       <p className="font-normal font-GRegular text-[0.87rem] text-[#949596]">
         {title}
       </p>
-      <div className="flex items-end gap-2" style={{ maxWidth: "7rem" }}>
+      <div className="flex items-end gap-0" style={{ maxWidth: "7rem" }}>
         {/* <CounterAnimation
           style={`${
             dgeBox ? "font-normal font-GRegular" : "font-bold font-GBold"
@@ -36,7 +36,7 @@ function EarnedWithString({
           {amount}
         </p>
         {showPrecentage && (
-          <p className="font-bold font-GBold text-[16x] text-primary-main pb-2">
+          <p className="font-bold font-GBold text-[16x] text-primary-main pb-1">
             {percentage}
           </p>
         )}
