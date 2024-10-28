@@ -49,9 +49,6 @@ function Validators() {
                   isPieChart =
                     item.amount_locked > 0 ||
                     (item.amount_locked === 0 && daysDifference < 7);
-                  if (daysDifference > 7) {
-                    isPieChart = false;
-                  }
                 }
 
                 return (

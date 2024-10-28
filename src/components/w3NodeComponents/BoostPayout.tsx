@@ -12,7 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useAccount } from "wagmi";
 import CounterAnimationWithInput from "../animation/counterAnimationWithInput";
 import axios from "axios";
-import { setUserData } from "../../context/boxDataSlice";
+import { setPendingUnstake, setUserData } from "../../context/boxDataSlice";
 import { useDispatch } from "react-redux";
 
 interface IPropsBoostPayout {
@@ -135,6 +135,7 @@ function BoostPayout({
       const jsonResponse = await response.json();
       toast.success("Unstake successful!");
       toast.info(`Response: ${JSON.stringify(jsonResponse)}`);
+      handleGetUserData();
       setIsLocked(true);
     } catch (error: any) {
       toast.error(`An error occurred: ${error.message}`);
@@ -164,7 +165,43 @@ function BoostPayout({
       return null;
     }
   };
-
+  const handleGetUserData = async () => {
+    const pendingUnstakeData = await fetchDataFromAWS("PendingUnstake", {
+      wallet_address: address,
+    });
+    dispatch(setPendingUnstake(pendingUnstakeData));
+    const userData = await fetchDataFromAWS("UserData", {
+      wallet_address: address,
+    });
+    dispatch(
+      setUserData(
+        userData?.[0] || {
+          staking_pools: [
+            {
+              pool_type: "2%",
+              amount_locked: 0,
+              reward_earned: 0,
+            },
+            {
+              pool_type: "3%",
+              amount_locked: 0,
+              reward_earned: 0,
+            },
+            {
+              pool_type: "5%",
+              amount_locked: 0,
+              reward_earned: 0,
+            },
+            {
+              pool_type: "10%",
+              amount_locked: 0,
+              reward_earned: 0,
+            },
+          ],
+        }
+      )
+    );
+  };
   const handleStake = async (percentage: any) => {
     setHandleStaked(true);
     let stakeAmount = getStepBasedOnPercentage(percentage);
@@ -196,37 +233,7 @@ function BoostPayout({
         setIsStaked(true);
       }
       setHandleStaked(false);
-      const userData = await fetchDataFromAWS("UserData", {
-        wallet_address: address,
-      });
-      dispatch(
-        setUserData(
-          userData?.[0] || {
-            staking_pools: [
-              {
-                pool_type: "2%",
-                amount_locked: 0,
-                reward_earned: 0,
-              },
-              {
-                pool_type: "3%",
-                amount_locked: 0,
-                reward_earned: 0,
-              },
-              {
-                pool_type: "5%",
-                amount_locked: 0,
-                reward_earned: 0,
-              },
-              {
-                pool_type: "10%",
-                amount_locked: 0,
-                reward_earned: 0,
-              },
-            ],
-          }
-        )
-      );
+      handleGetUserData();
     } catch (error: any) {
       toast.error(`An error occurred: ${error.message}`);
       setTimeout(() => setHandleStaked(false), 3000);
