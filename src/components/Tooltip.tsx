@@ -3,14 +3,18 @@ import React, { useState } from "react";
 interface TooltipProps {
   text: string;
   children: React.ReactNode;
+  handleStaked?: boolean;
 }
 
-const Tooltip: React.FC<TooltipProps> = ({ text, children }) => {
+const Tooltip: React.FC<TooltipProps> = ({ text, children, handleStaked }) => {
   const [visible, setVisible] = useState(false);
+  console.log("handleStaked::: ", handleStaked);
 
   return (
     <div
-      className="relative flex items-center"
+      className={`relative flex items-center ${
+        handleStaked ? "w-[50%] justify-center" : ""
+      }`}
       onMouseEnter={() => setVisible(true)}
       onMouseLeave={() => setVisible(false)}
     >

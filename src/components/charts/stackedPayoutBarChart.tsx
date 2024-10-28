@@ -7,6 +7,7 @@ import {
   //   Tooltip,
   Legend,
   ResponsiveContainer,
+  Tooltip,
 } from "recharts";
 
 // Function to format the YAxis values to 1k, 2k, etc.
@@ -27,15 +28,16 @@ const transformData = (data: any[]) => {
       aggregatedData[month] = { amt: 0, legend: 0, uv: 0 };
     }
 
-    aggregatedData[month].amt += entry.total_payout;
-    aggregatedData[month].legend += entry.total_payout;
-    aggregatedData[month].uv += entry.total_payout * 0.3;
+    aggregatedData[month].amt += Math.floor(entry.total_payout * 100) / 100;
+    aggregatedData[month].legend += Math.floor(entry.total_payout * 100) / 100;
+    aggregatedData[month].uv +=
+      Math.floor(entry.total_payout * 100 * 0.3) / 100;
   });
   return Object.keys(aggregatedData).map((month) => ({
     name: month,
     amt: aggregatedData[month].amt,
     legend: aggregatedData[month].legend,
-    uv: aggregatedData[month].uv,
+    uv: Math.floor(aggregatedData[month].uv * 100) / 100,
   }));
 };
 export default function StokedPayoutBorChartComponent({
@@ -62,7 +64,7 @@ export default function StokedPayoutBorChartComponent({
         />
         <XAxis dataKey="name" />
         <YAxis width={20} tickFormatter={formatYAxis} />
-        {/* <Tooltip /> */}
+        <Tooltip />
         <Legend
           verticalAlign="bottom" // Places the legend at the bottom
           align="left" // Aligns the legend to the left side

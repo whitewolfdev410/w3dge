@@ -34,7 +34,7 @@ function Assets() {
       if (!response.ok) {
         toast.error("Error to activate: " + jsonResponse.error);
       } else {
-        toast.success(jsonResponse);
+        toast.success("Success to activate");
       }
       setTimeout(() => setIsClicked(false), 3000);
     } catch (error: any) {
@@ -74,7 +74,7 @@ function Assets() {
             ></div>
             <input
               className="text-primary-main font-GBold font-bold text-[1.25rem] w-[7rem] bg-gray-700"
-              type="password"
+              type="text"
               onChange={handleValueChange}
             />
           </div>

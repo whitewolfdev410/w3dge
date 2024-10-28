@@ -45,6 +45,7 @@ function BoostPayout({
   const [isHovered, setIsHovered] = useState(false);
   const [isLocked, setIsLocked] = useState(false);
   const [handleStaked, setHandleStaked] = useState(false);
+  const [handleUnStaked, setHandleUnstaked] = useState(false);
   const getStepBasedOnPercentage = (percentage: any) => {
     switch (parseInt(percentage)) {
       case 2:
@@ -110,6 +111,7 @@ function BoostPayout({
   const { address } = useAccount();
   const dispatch = useDispatch();
   const handleUnstake = async (percentage: any) => {
+    setHandleUnstaked(true);
     const apiUrl =
       "https://gygxr53i33.execute-api.ap-southeast-2.amazonaws.com/Prod/unstake";
     const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; // Get the user's timezone
@@ -132,13 +134,13 @@ function BoostPayout({
           `Error to unstake: ${response.status} ${response.statusText}`
         );
       }
-      const jsonResponse = await response.json();
       toast.success("Unstake successful!");
-      toast.info(`Response: ${JSON.stringify(jsonResponse)}`);
       handleGetUserData();
       setIsLocked(true);
+      setHandleUnstaked(false);
     } catch (error: any) {
       toast.error(`An error occurred: ${error.message}`);
+      setHandleUnstaked(false);
     }
   };
   const parseResponseBody = (responseBody: any) => {
@@ -247,7 +249,11 @@ function BoostPayout({
     return (
       <>
         <div
-          className="bg-[#00551899] p-2 rounded-full shadow-lg text-center absolute top-[1.45rem] left-[1.4rem] justify-center items-center w-[7rem] h-[7rem] flex "
+          className={`bg-[#00551899] p-2 rounded-full shadow-lg text-center absolute justify-center items-center w-[7rem] h-[7rem] flex ${
+            handleUnStaked
+              ? "unstake-loading top-[41%] left-[41%]"
+              : " top-[1.45rem] left-[1.4rem]"
+          }`}
           style={{
             background:
               "linear-gradient(to top, rgba(0, 85, 24, 0.6), rgba(0, 187, 53, 0.6))",
@@ -255,7 +261,7 @@ function BoostPayout({
           onClick={() => handleUnstake(data.percentage)}
         >
           <p className="font-bold font-GBold text-[1rem] text-white ">
-            Unstake Now
+            {handleUnStaked ? "" : "Unstake Now"}
           </p>
         </div>
         <div className="absolute bottom-[-2rem] right-[-2rem]">
@@ -397,7 +403,7 @@ function BoostPayout({
                   </p>
                 </div>
               </Tooltip>
-              <Tooltip text="details">
+              <Tooltip text="details" handleStaked={handleStaked}>
                 <div
                   className={`flex gap-5 border border-[#AAAAAA] rounded-md items-center py-1 px-2 pr-6 cursor-pointer transition-all duration-300 ease-linear hover:bg-primary-main hover:border-primary-main ${
                     handleStaked ? "stake-loading" : ""

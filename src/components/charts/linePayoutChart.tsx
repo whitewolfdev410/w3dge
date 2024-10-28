@@ -14,17 +14,20 @@ const formatYAxis = (tickItem: any) => {
 };
 
 const transformData = (data: any[]) => {
-  const aggregatedData: { [key: string]: { amt: number; Payout: number; uv: number } } = {};
+  const aggregatedData: {
+    [key: string]: { amt: number; Payout: number; uv: number };
+  } = {};
 
   data.forEach((entry) => {
-    const month = entry.date.slice(5)
+    const month = entry.date.slice(5);
     if (!aggregatedData[month]) {
       aggregatedData[month] = { amt: 0, Payout: 0, uv: 0 };
     }
-    
-    aggregatedData[month].amt += entry.total_payout;
-    aggregatedData[month].Payout += entry.total_payout;
-    aggregatedData[month].uv += entry.total_payout * 0.1;
+
+    aggregatedData[month].amt += Math.floor(entry.total_payout * 100) / 100;
+    aggregatedData[month].Payout += Math.floor(entry.total_payout * 100) / 100;
+    aggregatedData[month].uv +=
+      (Math.floor(entry.total_payout * 100) / 100) * 0.1;
   });
   return Object.keys(aggregatedData).map((month) => ({
     name: month,
@@ -40,7 +43,11 @@ export default function LinePayoutChartComponent({ validatorPayoutdata }: any) {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <LineChart data={transformedData}>
-        <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} />
+        <CartesianGrid
+          strokeDasharray="3 3"
+          horizontal={true}
+          vertical={false}
+        />
         <XAxis dataKey="name" />
         <YAxis width={20} tickFormatter={formatYAxis} />
         <Tooltip />
