@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import W3NodeFooter from "../../components/footer/W3NodeFooter";
 import CounterAnimation from "../../components/animation/counterAnimation";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   setBoxViewData,
   setIsLoading,
@@ -28,6 +28,7 @@ function W3Node() {
     locationCountData,
     boxPayoutList,
   } = useSelector((state: any) => state.boxData);
+  const dispatch = useDispatch();
   const parseResponseBody = (responseBody: any) => {
     try {
       return typeof responseBody === "string"
@@ -53,8 +54,7 @@ function W3Node() {
     }
   };
 
-  const handleBoxSelect = async (boxId: string) => {
-    setIsLoadingNet(true);
+  const handleInitialLoad = async (boxId: string) => {
     const res = await fetchDataFromAWS("BoxPayout", {
       box_id: boxId,
     });
@@ -69,26 +69,44 @@ function W3Node() {
       }),
     }));
     setBoxViewPayoutData(updatedData[0]);
-    setIsLoadingNet(true);
+  };
+  const handleBoxSelect = async (boxId: string) => {
+    const res = await fetchDataFromAWS("BoxPayout", {
+      box_id: boxId,
+    });
+    const today = new Date();
+    const sevenDaysAgo = new Date(today);
+    sevenDaysAgo.setDate(today.getDate() - 7);
+    const updatedData = res.map((item: any) => ({
+      ...item,
+      daily_payouts: item.daily_payouts.filter((payout: any) => {
+        const payoutDate = new Date(payout.date);
+        return payoutDate >= sevenDaysAgo && payoutDate <= today;
+      }),
+    }));
+    setBoxViewPayoutData(updatedData[0]);
+    dispatch(setIsLoadingNet(true));
     const boxViewRes = await fetchDataFromAWS("BoxView", {
       box_id: boxId,
       wallet_address: address,
     });
-    setNetworkStats({
-      average_daily_revenue: boxViewRes?.[0]?.average_daily_income,
-      total_bandwidth: boxViewRes?.[0]?.total_bandwidth,
-      total_bandwidth_daily: boxViewRes?.[0]?.total_bandwidth
-        ? boxViewRes?.[0]?.total_bandwidth * 0.1
-        : 0,
-      unique_validator_count: boxViewRes?.[0]?.uptime_in_days
-        ? boxViewRes?.[0]?.uptime_in_days * 24
-        : 0,
-      total_earnings: boxViewRes?.[0]?.total_income_per_box,
-    });
-    setIsLoadingNet(false);
+    dispatch(
+      setNetworkStats({
+        average_daily_revenue: boxViewRes?.[0]?.average_daily_income,
+        total_bandwidth: boxViewRes?.[0]?.total_bandwidth,
+        total_bandwidth_daily: boxViewRes?.[0]?.total_bandwidth
+          ? boxViewRes?.[0]?.total_bandwidth * 0.1
+          : 0,
+        unique_validator_count: boxViewRes?.[0]?.uptime_in_days
+          ? boxViewRes?.[0]?.uptime_in_days * 24
+          : 0,
+        total_earnings: boxViewRes?.[0]?.total_income_per_box,
+      })
+    );
+    dispatch(setIsLoadingNet(false));
   };
   useEffect(() => {
-    if (boxViewData) handleBoxSelect(boxViewData[0]?.box_id);
+    if (boxViewData) handleInitialLoad(boxViewData[0]?.box_id);
   }, [boxViewData]);
   return (
     <div className="section-node p-10 xl:p-5">

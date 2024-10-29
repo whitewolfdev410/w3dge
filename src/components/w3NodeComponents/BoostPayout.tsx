@@ -14,6 +14,7 @@ import CounterAnimationWithInput from "../animation/counterAnimationWithInput";
 import axios from "axios";
 import { setPendingUnstake, setUserData } from "../../context/boxDataSlice";
 import { useDispatch } from "react-redux";
+import PrimaryLogo from "../../assets/images/logo-chart-primary.png";
 
 interface IPropsBoostPayout {
   title: string;
@@ -43,6 +44,7 @@ function BoostPayout({
   setIsStaked,
 }: IPropsBoostPayout) {
   const [isHovered, setIsHovered] = useState(false);
+  const [isHoveredSec, setIsHoveredSec] = useState(false);
   const [isLocked, setIsLocked] = useState(false);
   const [handleStaked, setHandleStaked] = useState(false);
   const [handleUnStaked, setHandleUnstaked] = useState(false);
@@ -64,6 +66,11 @@ function BoostPayout({
   const [inputValue, setInputValue] = useState<number>(
     getStepBasedOnPercentage(percentage)
   );
+  const [increaseValue, setIncreaseValue] = useState<number>(0);
+  const handleIncreaseChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setIncreaseValue(value ? parseFloat(value) : 0);
+  };
   const matchingUnstake = pendingUnstake
     ? pendingUnstake.find((item: any) => item.pool_id == percentage)
     : null;
@@ -204,6 +211,10 @@ function BoostPayout({
       )
     );
   };
+  const handleIncreaseStake = async (percentage: any) => {
+    setInputValue(increaseValue);
+    handleStake(percentage);
+  };
   const handleStake = async (percentage: any) => {
     setHandleStaked(true);
     let stakeAmount = getStepBasedOnPercentage(percentage);
@@ -264,11 +275,11 @@ function BoostPayout({
             {handleUnStaked ? "" : "Unstake Now"}
           </p>
         </div>
-        <div className="absolute bottom-[-2rem] right-[-2rem]">
-          <div className="flex gap-1 border border-[#AAAAAA] rounded-md items-center py-1 w-[5rem] cursor-pointer transition-all duration-300 ease-linear hover:bg-primary-main hover:border-primary-main px-1">
+        <div className="absolute bottom-[0rem] right-[-3rem]">
+          <div className="flex gap-1 border border-[#AAAAAA] rounded-md items-center py-1 w-[4rem] cursor-pointer transition-all duration-300 ease-linear hover:bg-primary-main hover:border-primary-main px-1">
             <Clock style={{ width: "1.5rem", margin: "auto" }} />
-            <p className="font-normal font-GRegular text-[0.62rem] text-white">
-              7 Days Cooldown
+            <p className="font-normal font-GRegular text-[0.52rem] text-white">
+              7 Days
             </p>
           </div>
         </div>
@@ -367,7 +378,9 @@ function BoostPayout({
             ) : isHovered ? (
               <HoveredComponent percentage={percentage} />
             ) : (
-              <PieChartContent amount={amount} title="Unstake" />
+              <>
+                <PieChartContent amount={amount} title="Unstake" />
+              </>
             )}
           </div>
         ) : (
@@ -435,20 +448,45 @@ function BoostPayout({
               backgroundImage: `url(${ValedateImage})`,
             }}
           ></div>
-          <div className="flex items-end h-fit">
-            <CounterAnimation
-              style="font-bold font-GBold text-[2.5rem] text-white leading-10"
-              step={level}
-              countSteps={1}
-              duration={300}
-            />
-            <div className="pl-1">
-              <p className="font-normal font-GRegular text-[0.75rem] text-white pb-0 -mb-1">
-                Level
-              </p>
-              <p className="font-normal font-GRegular text-[0.75rem] text-white pt-0">
-                Validator
-              </p>
+          <div className="w-full grid justify-center pl-[3rem]">
+            {is_piechart && (
+              <div className="w-full">
+                <p className="font-normal font-GRegular text-[0.75rem] text-white pb-1 text-end">
+                  {isHoveredSec ? "Press send" : "Increase Stake"}
+                </p>
+                <div
+                  className="flex gap-1 border border-[#AAAAAA] rounded-md items-center py-1 w-[6.5rem] cursor-pointer transition-all duration-300 ease-linear px-1"
+                  onMouseEnter={() => setIsHoveredSec(true)}
+                  onMouseLeave={() => setIsHoveredSec(false)}
+                >
+                  <img
+                    src={PrimaryLogo}
+                    style={{ width: "1.87rem", margin: "auto" }}
+                    onClick={() => handleIncreaseStake(percentage)}
+                  />
+                  <input
+                    className="text-primary-main font-GBold font-bold text-[1.25rem] w-[3.5rem] bg-transparent"
+                    type="number"
+                    onChange={handleIncreaseChange}
+                  />
+                </div>
+              </div>
+            )}
+            <div className="flex items-end h-fit">
+              <CounterAnimation
+                style="font-bold font-GBold text-[2.5rem] text-white leading-10"
+                step={level}
+                countSteps={1}
+                duration={300}
+              />
+              <div className="pl-1">
+                <p className="font-normal font-GRegular text-[0.75rem] text-white pb-0 -mb-1">
+                  Level
+                </p>
+                <p className="font-normal font-GRegular text-[0.75rem] text-white pt-0">
+                  Validator
+                </p>
+              </div>
             </div>
           </div>
         </div>
