@@ -15,6 +15,7 @@ import axios from "axios";
 import { setPendingUnstake, setUserData } from "../../context/boxDataSlice";
 import { useDispatch } from "react-redux";
 import PrimaryLogo from "../../assets/images/logo-chart-primary.png";
+import SendIcon from "../../assets/images/Send.png";
 
 interface IPropsBoostPayout {
   title: string;
@@ -449,29 +450,36 @@ function BoostPayout({
             }}
           ></div>
           <div className="w-full grid justify-center pl-[3rem]">
-            {is_piechart && (
-              <div className="w-full">
-                <p className="font-normal font-GRegular text-[0.75rem] text-white pb-1 text-end">
-                  {isHoveredSec ? "Press send" : "Increase Stake"}
-                </p>
-                <div
-                  className="flex gap-1 border border-[#AAAAAA] rounded-md items-center py-1 w-[6.5rem] cursor-pointer transition-all duration-300 ease-linear px-1"
-                  onMouseEnter={() => setIsHoveredSec(true)}
-                  onMouseLeave={() => setIsHoveredSec(false)}
-                >
-                  <img
-                    src={PrimaryLogo}
-                    style={{ width: "1.87rem", margin: "auto" }}
-                    onClick={() => handleIncreaseStake(percentage)}
-                  />
-                  <input
-                    className="text-white font-GBold font-bold text-[1.25rem] w-[3.5rem] bg-transparent"
-                    type="number"
-                    onChange={handleIncreaseChange}
-                  />
+            {is_piechart &&
+              !(
+                (pendingUnstake &&
+                  pendingUnstake.some(
+                    (item: any) => item.pool_id == percentage
+                  )) ||
+                isLocked
+              ) && (
+                <div className="w-full">
+                  <p className="font-normal font-GRegular text-[0.75rem] text-white pb-1 text-end">
+                    {isHoveredSec ? "Press send" : "Increase Stake"}
+                  </p>
+                  <div
+                    className="flex gap-1 border border-[#AAAAAA] rounded-md items-center py-1 w-[6.5rem] cursor-pointer transition-all duration-300 ease-linear px-1"
+                    onMouseEnter={() => setIsHoveredSec(true)}
+                    onMouseLeave={() => setIsHoveredSec(false)}
+                  >
+                    <img
+                      src={isHoveredSec ? SendIcon : PrimaryLogo}
+                      style={{ width: "1.87rem", margin: "auto" }}
+                      onClick={() => handleIncreaseStake(percentage)}
+                    />
+                    <input
+                      className="text-white text-[1.25rem] w-[2rem] mr-[1rem] bg-transparent"
+                      type="number"
+                      onChange={handleIncreaseChange}
+                    />
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
             <div className="flex items-end h-fit">
               <CounterAnimation
                 style="font-bold font-GBold text-[2.5rem] text-white leading-10"
