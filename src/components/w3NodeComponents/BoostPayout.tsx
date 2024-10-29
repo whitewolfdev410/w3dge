@@ -465,7 +465,7 @@ function BoostPayout({
                     onClick={() => handleIncreaseStake(percentage)}
                   />
                   <input
-                    className="text-primary-main font-GBold font-bold text-[1.25rem] w-[3.5rem] bg-transparent"
+                    className="text-white font-GBold font-bold text-[1.25rem] w-[3.5rem] bg-transparent"
                     type="number"
                     onChange={handleIncreaseChange}
                   />
