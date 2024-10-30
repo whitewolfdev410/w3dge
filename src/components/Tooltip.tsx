@@ -8,7 +8,6 @@ interface TooltipProps {
 
 const Tooltip: React.FC<TooltipProps> = ({ text, children, handleStaked }) => {
   const [visible, setVisible] = useState(false);
-  console.log("handleStaked::: ", handleStaked);
 
   return (
     <div

@@ -9,6 +9,7 @@ import LoginPage from "./pages/login";
 import { useAccount } from "wagmi";
 import { useDispatch } from "react-redux";
 import * as walletStore from "./store/wallet";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const location = useLocation();
@@ -60,6 +61,11 @@ function App() {
                 ></div>
               </div>
             )}
+          <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar
+          />
           <Headers />
           <div className="section">
             <RoutersComponent />

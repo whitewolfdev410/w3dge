@@ -1,7 +1,7 @@
 import { HeroHeading, HeroHeadingTwo } from "../../components/FontComponent";
 import LogoIcon from "../../assets/images/logo.png";
 import { useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { useAccount } from "wagmi";
 import WontToLearn from "../../components/footer/WontToLearn";
 
@@ -48,7 +48,6 @@ function Assets() {
         <HeroHeading text={"Activate"} />
       </div>
       <div className="flex flex-col items-center space-y-4 h-fit">
-        <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
         <div className="relative w-full h-70 flex justify-center">
           <div className="relative w-fit">
             <video

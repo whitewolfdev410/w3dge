@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { ArrowLeft, ArrowRight } from "../../icons";
 import PureComponent from "../charts/SimpleRadialBarChart";
 import CounterAnimation from "../animation/counterAnimation";
-import { ToastContainer } from "react-toastify";
 interface ImageSwapProps {
   boxViewData: any;
   onBoxSelect: (boxId: string) => void;
@@ -53,7 +52,6 @@ const ImageSwap: React.FC<ImageSwapProps> = ({
 
   return (
     <div className="flex flex-col items-center space-y-4 h-fit">
-      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
       {boxViewData && boxViewData.length > 0 ? (
         <>
           <div className=" flex justify-between gap-52 md:gap-96 mb-0 md:mb-14">
