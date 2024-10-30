@@ -217,7 +217,9 @@ function BoostPayout({
     setInputValue(increaseValue);
     setIsClickedButton(true);
     await handleStake(percentage);
-    setIsClickedButton(false);
+    setTimeout(() => {
+      setIsClickedButton(false);
+    }, 2000);
   };
   const handleStake = async (percentage: any) => {
     setHandleStaked(true);
