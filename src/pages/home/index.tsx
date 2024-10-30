@@ -41,44 +41,44 @@ const blinkingPoints = [
   //   y: "top-[190px]",
   // },
   {
-    x: "right-[193px]",
-    y: "top-[141px]",
+    x: "right-[168px]",
+    y: "top-[116px]",
+  },
+  // {
+  //   x: "right-[219px]",
+  //   y: "top-[158px]",
+  // },
+  // {
+  //   x: "right-[236px]",
+  //   y: "top-[158px]",
+  // },
+  {
+    x: "right-[245px]",
+    y: "top-[178px]",
+  },
+  // {
+  //   x: "right-[323px]",
+  //   y: "top-[193px]",
+  // },
+  // {
+  //   x: "right-[290px]",
+  //   y: "top-[168px]",
+  // },
+  {
+    x: "right-[185px]",
+    y: "top-[166px]",
+  },
+  // {
+  //   x: "right-[263px]",
+  //   y: "top-[202px]",
+  // },
+  {
+    x: "right-[212px]",
+    y: "top-[210px]",
   },
   {
-    x: "right-[219px]",
-    y: "top-[158px]",
-  },
-  {
-    x: "right-[236px]",
-    y: "top-[158px]",
-  },
-  {
-    x: "right-[270px]",
-    y: "top-[158px]",
-  },
-  {
-    x: "right-[323px]",
-    y: "top-[193px]",
-  },
-  {
-    x: "right-[290px]",
-    y: "top-[168px]",
-  },
-  {
-    x: "right-[237px]",
-    y: "top-[168px]",
-  },
-  {
-    x: "right-[263px]",
-    y: "top-[202px]",
-  },
-  {
-    x: "right-[263px]",
-    y: "top-[238px]",
-  },
-  {
-    x: "right-[230px]",
-    y: "top-[238px]",
+    x: "right-[150px]",
+    y: "top-[227px]",
   },
 ];
 const blinkingPointsMobile = [
@@ -368,7 +368,7 @@ function HomePage() {
               >
                 <Player
                   src={LottieFile}
-                  className="player w-10 h-10"
+                  className="player w-[6rem] h-[6rem]"
                   loop
                   autoplay
                   // onEvent={handleEventPlayer}
