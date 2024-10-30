@@ -302,66 +302,68 @@ function Dashboard() {
               </div>
             )}
             <div className="grid grid-cols-2 gap-3 xl:gap-10  px-8">
-              {/* {networkStats?.average_daily_revenue &&
+              {networkStats?.average_daily_revenue &&
                 networkStats?.total_bandwidth &&
-                networkStats?.total_bandwidth_daily && ( */}
-              <>
-                {!isLoading && (
-                  <EarnedWithString
-                    title="Uptime in ViewBox"
-                    amount={
-                      isNaN(Math.floor(networkStats?.unique_validator_count))
-                        ? 0
-                        : Math.floor(networkStats?.unique_validator_count)
-                    }
-                    showPrecentage={false}
-                    dgeBox
-                    tagText="AXD"
-                  />
+                networkStats?.total_bandwidth_daily && (
+                  <>
+                    {!isLoading && (
+                      <EarnedWithString
+                        title="Uptime in ViewBox"
+                        amount={
+                          isNaN(
+                            Math.floor(networkStats?.unique_validator_count)
+                          )
+                            ? 0
+                            : Math.floor(networkStats?.unique_validator_count)
+                        }
+                        showPrecentage={false}
+                        dgeBox
+                        tagText="AXD"
+                      />
+                    )}
+                    {!isLoading && (
+                      <EarnedWithString
+                        title="Total Bandwidth"
+                        amount={
+                          isNaN(Math.floor(networkStats?.total_bandwidth))
+                            ? 0
+                            : Math.floor(networkStats?.total_bandwidth)
+                        }
+                        showPrecentage={false}
+                        dgeBox
+                        tagText="AXD"
+                      />
+                    )}
+                    {!isLoading && (
+                      <EarnedWithString
+                        title="Network Contribution"
+                        amount={
+                          isNaN(Math.floor(networkStats?.total_bandwidth_daily))
+                            ? 0
+                            : Math.floor(networkStats?.total_bandwidth_daily)
+                        }
+                        showPrecentage={true}
+                        dgeBox
+                        tagText="AXD"
+                        percentage="CDN"
+                      />
+                    )}
+                    {!isLoading && (
+                      <EarnedWithString
+                        title="Total Earning"
+                        amount={
+                          isNaN(Math.floor(networkStats?.total_earnings))
+                            ? 0
+                            : Math.floor(networkStats?.total_earnings)
+                        }
+                        showPrecentage={true}
+                        dgeBox
+                        tagText="AXD"
+                        percentage="CDN"
+                      />
+                    )}
+                  </>
                 )}
-                {!isLoading && (
-                  <EarnedWithString
-                    title="Total Bandwidth"
-                    amount={
-                      isNaN(Math.floor(networkStats?.total_bandwidth))
-                        ? 0
-                        : Math.floor(networkStats?.total_bandwidth)
-                    }
-                    showPrecentage={false}
-                    dgeBox
-                    tagText="AXD"
-                  />
-                )}
-                {!isLoading && (
-                  <EarnedWithString
-                    title="Network Contribution"
-                    amount={
-                      isNaN(Math.floor(networkStats?.total_bandwidth_daily))
-                        ? 0
-                        : Math.floor(networkStats?.total_bandwidth_daily)
-                    }
-                    showPrecentage={true}
-                    dgeBox
-                    tagText="AXD"
-                    percentage="CDN"
-                  />
-                )}
-                {!isLoading && (
-                  <EarnedWithString
-                    title="Total Earning"
-                    amount={
-                      isNaN(Math.floor(networkStats?.total_earnings))
-                        ? 0
-                        : Math.floor(networkStats?.total_earnings)
-                    }
-                    showPrecentage={true}
-                    dgeBox
-                    tagText="AXD"
-                    percentage="CDN"
-                  />
-                )}
-              </>
-              {/* )} */}
             </div>
           </div>
         </div>

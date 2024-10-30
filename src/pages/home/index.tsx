@@ -264,7 +264,7 @@ function HomePage() {
         dispatch(setBoxPayoutList(latestBoxPayoutList.transactions));
         setTimeout(() => {
           dispatch(setIsCalled(true));
-        }, 3000);
+        }, 7000);
       };
       fetchNetworkData();
       fetchBoxPayoutListData();
