@@ -68,6 +68,7 @@ function BoostPayout({
     getStepBasedOnPercentage(percentage)
   );
   const [increaseValue, setIncreaseValue] = useState<number>(0);
+  const [isClickedButton, setIsClickedButton] = useState<boolean>(true);
   const handleIncreaseChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setIncreaseValue(value ? parseFloat(value) : 0);
@@ -214,6 +215,7 @@ function BoostPayout({
   };
   const handleIncreaseStake = async (percentage: any) => {
     setInputValue(increaseValue);
+    setIsClickedButton(true);
     handleStake(percentage);
   };
   const handleStake = async (percentage: any) => {
@@ -460,20 +462,28 @@ function BoostPayout({
               ) && (
                 <div className="w-full">
                   <p className="font-normal font-GRegular text-[0.75rem] text-white pb-1 text-end">
-                    {isHoveredSec ? "Press send" : "Increase Stake"}
+                    {isClickedButton
+                      ? "Sending"
+                      : isHoveredSec
+                      ? "Press send"
+                      : "Increase Stake"}
                   </p>
                   <div
-                    className="flex gap-1 border border-[#AAAAAA] rounded-md items-center py-1 w-[6.5rem] cursor-pointer transition-all duration-300 ease-linear px-1"
+                    className="flex gap-1 border border-[#AAAAAA] rounded-md items-center py-1 w-[7rem] cursor-pointer transition-all duration-300 ease-linear px-1"
                     onMouseEnter={() => setIsHoveredSec(true)}
                     onMouseLeave={() => setIsHoveredSec(false)}
                   >
-                    <img
-                      src={isHoveredSec ? SendIcon : PrimaryLogo}
-                      style={{ width: "1.87rem", margin: "auto" }}
-                      onClick={() => handleIncreaseStake(percentage)}
-                    />
+                    {isClickedButton ? (
+                      <div className="stake-loading"></div>
+                    ) : (
+                      <img
+                        src={isHoveredSec ? SendIcon : PrimaryLogo}
+                        style={{ width: "1.87rem", margin: "auto" }}
+                        onClick={() => handleIncreaseStake(percentage)}
+                      />
+                    )}
                     <input
-                      className="text-white text-[1.25rem] w-[2rem] mr-[1rem] bg-transparent"
+                      className="text-white text-[1.25rem] w-[3.3rem] mr-[1rem] bg-transparent"
                       type="number"
                       onChange={handleIncreaseChange}
                     />
