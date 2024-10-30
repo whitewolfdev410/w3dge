@@ -24,50 +24,61 @@ import {
 } from "../../context/boxDataSlice";
 import LoadingScreen from "../../components/loading/pageLoading";
 
+import { Player } from "@lottiefiles/react-lottie-player";
+import LottieFile from "../../assets/lotties/blinkingOnMap.json";
+
 const blinkingPoints = [
   // {
   //   x: "right-[298px]",
   //   y: "top-[180px]",
   // },
+  // {
+  //   x: "right-[332px]",
+  //   y: "top-[198px]",
+  // },
+  // {
+  //   x: "right-[420px]",
+  //   y: "top-[190px]",
+  // },
   {
-    x: "right-[332px]",
-    y: "top-[198px]",
+    x: "right-[193px]",
+    y: "top-[141px]",
   },
   {
-    x: "right-[420px]",
-    y: "top-[190px]",
-  },
-  {
-    x: "right-[205px]",
-    y: "top-[147px]",
+    x: "right-[219px]",
+    y: "top-[158px]",
   },
   {
     x: "right-[236px]",
-    y: "top-[172px]",
-  },
-  // {
-  //   x: "right-[256px]",
-  //   y: "top-[172px]",
-  // },
-  {
-    x: "right-[256px]",
-    y: "top-[188px]",
-  },
-  // {
-  //   x: "right-[280px]",
-  //   y: "top-[172px]",
-  // },
-  {
-    x: "right-[280px]",
-    y: "top-[216px]",
+    y: "top-[158px]",
   },
   {
-    x: "right-[280px]",
-    y: "top-[258px]",
+    x: "right-[270px]",
+    y: "top-[158px]",
+  },
+  {
+    x: "right-[323px]",
+    y: "top-[193px]",
+  },
+  {
+    x: "right-[290px]",
+    y: "top-[168px]",
+  },
+  {
+    x: "right-[237px]",
+    y: "top-[168px]",
+  },
+  {
+    x: "right-[263px]",
+    y: "top-[202px]",
+  },
+  {
+    x: "right-[263px]",
+    y: "top-[238px]",
   },
   {
     x: "right-[230px]",
-    y: "top-[258px]",
+    y: "top-[238px]",
   },
 ];
 const blinkingPointsMobile = [
@@ -75,28 +86,28 @@ const blinkingPointsMobile = [
   //   x: "right-[298px]",
   //   y: "top-[180px]",
   // },
+  // {
+  //   x: "right-[5%]",
+  //   y: "top-[76%]",
+  // },
+  // {
+  //   x: "right-[15%]",
+  //   y: "top-[74%]",
+  // },
+  {
+    x: "right-[10%]",
+    y: "top-[50%]",
+  },
   {
     x: "right-[20%]",
-    y: "top-[76%]",
-  },
-  {
-    x: "right-[15%]",
-    y: "top-[74%]",
-  },
-  {
-    x: "right-[15%]",
-    y: "top-[70%]",
-  },
-  {
-    x: "right-[25%]",
-    y: "top-[40%]",
+    y: "top-[27%]",
   },
   // {
   //   x: "right-[256px]",
   //   y: "top-[172px]",
   // },
   {
-    x: "right-[35%]",
+    x: "right-[20%]",
     y: "top-[40%]",
   },
   // {
@@ -104,17 +115,17 @@ const blinkingPointsMobile = [
   //   y: "top-[172px]",
   // },
   {
-    x: "right-[25%]",
+    x: "right-[15%]",
     y: "top-[30%]",
   },
   {
-    x: "right-[30%]",
+    x: "right-[12%]",
     y: "top-[25%]",
   },
-  {
-    x: "right-[20%]",
-    y: "top-[57%]",
-  },
+  // {
+  //   x: "right-[20%]",
+  //   y: "top-[57%]",
+  // },
 ];
 
 function HomePage() {
@@ -259,6 +270,10 @@ function HomePage() {
       fetchBoxPayoutListData();
     }
   }, [isConnected, address]);
+
+  // const handleEventPlayer = (event: any) => {
+  //   console.log("event", event);
+  // };
   return (
     <div className="section-home md:p-7 p-2">
       {!isCalled && <LoadingScreen />}
@@ -327,8 +342,16 @@ function HomePage() {
               {blinkingPointsMobile?.map((item) => (
                 <div
                   key={item?.x + item?.y}
-                  className={`blinking-point absolute ${item?.y} ${item?.x} z-10`}
-                ></div>
+                  className={` absolute ${item?.y} ${item?.x} z-10`}
+                >
+                  <Player
+                    src={LottieFile}
+                    className="player w-10 h-10"
+                    loop
+                    autoplay
+                    // onEvent={handleEventPlayer}
+                  />
+                </div>
               ))}
             </div>
           </div>
@@ -341,8 +364,16 @@ function HomePage() {
             {blinkingPoints?.map((item) => (
               <div
                 key={item?.x + item?.y}
-                className={`blinking-point absolute ${item?.y} ${item?.x} z-10`}
-              ></div>
+                className={`w-fit absolute ${item?.y} ${item?.x} z-10`}
+              >
+                <Player
+                  src={LottieFile}
+                  className="player w-10 h-10"
+                  loop
+                  autoplay
+                  // onEvent={handleEventPlayer}
+                />
+              </div>
             ))}
           </div>
 
