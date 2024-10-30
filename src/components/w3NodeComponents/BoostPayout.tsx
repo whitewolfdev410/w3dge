@@ -68,7 +68,7 @@ function BoostPayout({
     getStepBasedOnPercentage(percentage)
   );
   const [increaseValue, setIncreaseValue] = useState<number>(0);
-  const [isClickedButton, setIsClickedButton] = useState<boolean>(true);
+  const [isClickedButton, setIsClickedButton] = useState<boolean>(false);
   const handleIncreaseChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setIncreaseValue(value ? parseFloat(value) : 0);
@@ -217,6 +217,7 @@ function BoostPayout({
     setInputValue(increaseValue);
     setIsClickedButton(true);
     handleStake(percentage);
+    setIsClickedButton(false);
   };
   const handleStake = async (percentage: any) => {
     setHandleStaked(true);
