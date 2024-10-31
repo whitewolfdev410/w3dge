@@ -10,24 +10,14 @@ import axios from "axios";
 import W3NodeFooter from "../../components/footer/W3NodeFooter";
 import CounterAnimation from "../../components/animation/counterAnimation";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setBoxViewData,
-  setIsLoading,
-  setIsLoadingNet,
-  setNetworkStats,
-} from "../../context/boxDataSlice";
+import { setIsLoadingNet, setNetworkStats } from "../../context/boxDataSlice";
 
 function W3Node() {
-  const { address, isConnected } = useAccount();
+  const { address } = useAccount();
   const [boxViewPayoutData, setBoxViewPayoutData] = useState<any>(null);
-  const {
-    boxViewData,
-    networkStats,
-    isLoading,
-    isLoadingNet,
-    locationCountData,
-    boxPayoutList,
-  } = useSelector((state: any) => state.boxData);
+  const { boxViewData, networkStats, isLoading, isLoadingNet } = useSelector(
+    (state: any) => state.boxData
+  );
   const dispatch = useDispatch();
   const parseResponseBody = (responseBody: any) => {
     try {
@@ -117,14 +107,20 @@ function W3Node() {
         className={`row grid lg:grid-cols-[${"30%_70%"}]  xl:grid-cols-[${"20%_60%_20%"}] pt-16`}
       >
         <div className="flex flex-wrap mt-10 xl:mt-0 justify-center xl:justify-start gap-8 hidden xl:flex">
-          <div className="w-80 h-60 grid bg-dark-main p-4 rounded-xl">
-            <Bodoy1 text="Payout History" style={"!pb-3"} />
-            <LineChartComponent boxViewPayoutData={boxViewPayoutData} />
-          </div>
-          <div className="w-80 h-60 grid bg-dark-main p-4 rounded-xl">
-            <Bodoy1 text="Network Contribution" style={"!pb-3"} />
-            <StokedBorChartComponent boxViewPayoutData={boxViewPayoutData} />
-          </div>
+          {boxViewData && boxViewData.length > 0 && (
+            <>
+              <div className="w-80 h-60 grid bg-dark-main p-4 rounded-xl">
+                <Bodoy1 text="Payout History" style={"!pb-3"} />
+                <LineChartComponent boxViewPayoutData={boxViewPayoutData} />
+              </div>
+              <div className="w-80 h-60 grid bg-dark-main p-4 rounded-xl">
+                <Bodoy1 text="Network Contribution" style={"!pb-3"} />
+                <StokedBorChartComponent
+                  boxViewPayoutData={boxViewPayoutData}
+                />
+              </div>
+            </>
+          )}
         </div>
 
         <div
@@ -204,16 +200,19 @@ function W3Node() {
             </>
           )}
         </div>
+
         <div className=" mt-10 xl:mt-0 flex justify-center xl:justify-start items-center">
-          <div className="max-w-90 w-fit">
-            <BoostPayout
-              title="Boost your payout"
-              percentage={BoostData.percentage}
-              amount={BoostData.amount}
-              stockNow
-              validators={false}
-            />
-          </div>
+          {boxViewData && boxViewData.length > 0 && (
+            <div className="max-w-90 w-fit">
+              <BoostPayout
+                title="Boost your payout"
+                percentage={BoostData.percentage}
+                amount={BoostData.amount}
+                stockNow
+                validators={false}
+              />
+            </div>
+          )}
         </div>
       </div>
       <div className="pt-16 grid  xl:pr-28">
