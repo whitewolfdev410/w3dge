@@ -5,6 +5,7 @@ import ArrowUp from "./arrowUp";
 import QuestionMark from "./questionMark";
 import Logo from "./logoIcon.jsx";
 import Clock from "./clock";
+import WhiteClock from "./whiteClock";
 import Lock from "./lock";
 import Validators from "./validate";
 import ArrowLeft from "./arrowLeft";
@@ -21,4 +22,5 @@ export {
   Validators,
   ArrowLeft,
   ArrowRight,
+  WhiteClock,
 };

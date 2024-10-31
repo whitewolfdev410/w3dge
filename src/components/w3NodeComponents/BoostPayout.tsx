@@ -1,6 +1,6 @@
 import { Heading5 } from "../FontComponent";
 import LogoIcon from "../../assets/images/logo.png";
-import { Clock, Lock } from "../../icons";
+import { Clock, Lock, WhiteClock } from "../../icons";
 import ValedateImage from "../../assets/images/validatore.png";
 import Tooltip from "../Tooltip";
 import CounterAnimation from "../animation/counterAnimation";
@@ -281,9 +281,9 @@ function BoostPayout({
             {handleUnStaked ? "" : "Unstake Now"}
           </p>
         </div>
-        <div className="absolute bottom-[0rem] right-[-3rem]">
-          <div className="flex gap-1 border border-[#AAAAAA] rounded-md items-center py-1 w-[4rem] cursor-pointer transition-all duration-300 ease-linear hover:bg-primary-main hover:border-primary-main px-1">
-            <Clock style={{ width: "1.5rem", margin: "auto" }} />
+        <div className="absolute bottom-[-1.2rem] right-[-4rem]">
+          <div className="flex gap-0 border border-[#AAAAAA] rounded-md items-center py-1 w-[3.8rem] cursor-pointer transition-all duration-300 ease-linear hover:bg-primary-main hover:border-primary-main pr-2">
+            <WhiteClock style={{ width: "1.5rem", margin: "auto" }} />
             <p className="font-normal font-GRegular text-[0.52rem] text-white">
               7 Days
             </p>
@@ -453,7 +453,7 @@ function BoostPayout({
               backgroundImage: `url(${ValedateImage})`,
             }}
           ></div>
-          <div className="w-full grid justify-center pl-[3rem]">
+          <div className="w-[40%] grid justify-center pl-[3rem]">
             {is_piechart &&
               !(
                 (pendingUnstake &&
@@ -463,7 +463,7 @@ function BoostPayout({
                 isLocked
               ) && (
                 <div className="w-full">
-                  <p className="font-normal font-GRegular text-[0.75rem] text-white pb-1 text-end">
+                  <p className="font-normal font-GRegular text-[0.62rem] text-[#767676] pb-1 text-end">
                     {isClickedButton
                       ? "Sending"
                       : isHoveredSec
@@ -471,7 +471,7 @@ function BoostPayout({
                       : "Increase Stake"}
                   </p>
                   <div
-                    className="flex gap-1 border border-[#AAAAAA] rounded-md items-center py-1 w-[7rem] cursor-pointer transition-all duration-300 ease-linear px-1"
+                    className="flex gap-1 border border-[#AAAAAA] rounded-md items-center py-[0.1rem] w-[5.5rem] cursor-pointer transition-all duration-300 ease-linear px-0"
                     onMouseEnter={() => setIsHoveredSec(true)}
                     onMouseLeave={() => setIsHoveredSec(false)}
                   >
@@ -480,12 +480,16 @@ function BoostPayout({
                     ) : (
                       <img
                         src={isHoveredSec ? SendIcon : PrimaryLogo}
-                        style={{ width: "1.87rem", margin: "auto" }}
+                        style={{
+                          width: "1.5rem",
+                          margin: "auto",
+                          height: "1rem",
+                        }}
                         onClick={() => handleIncreaseStake(percentage)}
                       />
                     )}
                     <input
-                      className="text-white text-[1.25rem] w-[3.3rem] mr-[1rem] bg-transparent"
+                      className="text-white text-[1rem] w-[2.7rem] mr-[0.5rem] bg-transparent"
                       type="number"
                       onChange={handleIncreaseChange}
                     />
