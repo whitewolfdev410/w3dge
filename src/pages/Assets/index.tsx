@@ -43,13 +43,21 @@ function Assets() {
       return null;
     }
   };
-
+  const countryMapping = {
+    th: "Thailand",
+    vn: "Vietnam",
+    my: "Malaysia",
+    id: "Indonesia",
+    kh: "Cambodia",
+    ph: "Philippines",
+  } as const;
   const handleSubmit = async () => {
     setIsClicked(true);
     let data = {
       identifier_code: inputValue,
       wallet_address: address,
-      location: activeLang,
+      location:
+        countryMapping[activeLang as keyof typeof countryMapping] || activeLang,
     };
     const apiUrl =
       "https://gygxr53i33.execute-api.ap-southeast-2.amazonaws.com/Prod/Activate";
