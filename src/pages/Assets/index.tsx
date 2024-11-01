@@ -7,6 +7,7 @@ import WontToLearn from "../../components/footer/WontToLearn";
 import { setBoxViewData, setUserData } from "../../context/boxDataSlice";
 import axios from "axios";
 import { useDispatch } from "react-redux";
+import LanguageSwitcher from "../../components/header/languageSwitcher";
 
 function Assets() {
   const [inputValue, setInputValue] = useState<string>("");
@@ -17,6 +18,7 @@ function Assets() {
   };
   const { address } = useAccount();
   const dispatch = useDispatch();
+  const [activeLang, setActiveLang] = useState("th");
   const parseResponseBody = (responseBody: any) => {
     try {
       return typeof responseBody === "string"
@@ -47,8 +49,8 @@ function Assets() {
     let data = {
       identifier_code: inputValue,
       wallet_address: address,
+      location: activeLang,
     };
-    console.log("here is handle clicked::", data);
     const apiUrl =
       "https://gygxr53i33.execute-api.ap-southeast-2.amazonaws.com/Prod/Activate";
     try {
@@ -148,12 +150,26 @@ function Assets() {
             enter code
           </p>
         </div>
+        <div className="px-3 gap-3 items-center mt-8 rounded-md grid">
+          <p
+            className="text-white font-GRegular font-normal text-[1rem]"
+            style={{ whiteSpace: "nowrap" }}
+          >
+            Your Location
+          </p>
+          <div className="relative py-2">
+            <LanguageSwitcher
+              activeLang={activeLang}
+              setActiveLang={setActiveLang}
+            />
+          </div>
+        </div>
 
         <div
           className={` ${
             isClicked
               ? "stake-loading"
-              : "py-2 rounded-md bg-primary-main -ml-2 cursor-pointer transition-all duration-300 ease-linear px-8"
+              : "py-2 rounded-md bg-primary-main -ml-2 cursor-pointer transition-all duration-300 ease-linear px-8 mt-2"
           } `}
         >
           <p
