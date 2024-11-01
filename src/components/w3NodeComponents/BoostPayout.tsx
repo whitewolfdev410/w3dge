@@ -67,11 +67,10 @@ function BoostPayout({
   const [inputValue, setInputValue] = useState<number>(
     getStepBasedOnPercentage(percentage)
   );
-  const [increaseValue, setIncreaseValue] = useState<number>(0);
   const [isClickedButton, setIsClickedButton] = useState<boolean>(false);
   const handleIncreaseChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    setIncreaseValue(value ? parseFloat(value) : 0);
+    setInputValue(value ? parseFloat(value) : 0);
   };
   const matchingUnstake = pendingUnstake
     ? pendingUnstake.find((item: any) => item.pool_id == percentage)
@@ -214,7 +213,6 @@ function BoostPayout({
     );
   };
   const handleIncreaseStake = async (percentage: any) => {
-    setInputValue(increaseValue);
     setIsClickedButton(true);
     await handleStake(percentage);
     setTimeout(() => {
