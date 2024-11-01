@@ -102,10 +102,10 @@ input[type="number"] {
 }
 .unstake-loading {
   animation: rotate 1.5s linear infinite;
-  background-color: green;
-  border: 0.3em solid green;
+  background: (0deg, rgb(26, 26, 26) 0%, rgb(26, 26, 26) 100%);
+  border: 0.3em solid #e1e1e1;
   border-radius: 1.5em;
-  border-top-color: green;
+  border-top-color: #444;
   height: 2rem;
   width: 2rem;
   pointer-events: none;

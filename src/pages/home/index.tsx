@@ -200,13 +200,6 @@ function HomePage() {
           } else {
             setError("No data found");
           }
-          const res = await fetchDataFromAWS("UserData", {
-            wallet_address: address,
-          });
-          const boxData = await fetchDataFromAWS("BoxView", {
-            box_id: { $in: res?.[0]?.boxes },
-          });
-          dispatch(setBoxViewData(boxData));
           const pendingUnstakeData = await fetchDataFromAWS("PendingUnstake", {
             wallet_address: address,
           });
@@ -214,6 +207,10 @@ function HomePage() {
           const userData = await fetchDataFromAWS("UserData", {
             wallet_address: address,
           });
+          const boxData = await fetchDataFromAWS("BoxView", {
+            box_id: { $in: userData?.[0]?.boxes },
+          });
+          dispatch(setBoxViewData(boxData));
           dispatch(
             setUserData(
               userData?.[0] || {
@@ -275,7 +272,7 @@ function HomePage() {
   //   console.log("event", event);
   // };
   return (
-    <div className="section-home md:p-7 p-2">
+    <div className="section-home md:p-5 p-2">
       {!isCalled && <LoadingScreen />}
       <div className=" hidden xl:grid">
         <HeroHeading text={"Network"} />

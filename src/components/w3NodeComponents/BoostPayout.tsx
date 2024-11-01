@@ -266,15 +266,19 @@ function BoostPayout({
     return (
       <>
         <div
-          className={`bg-[#00551899] p-2 rounded-full shadow-lg text-center absolute justify-center items-center w-[7rem] h-[7rem] flex ${
+          className={`p-2 rounded-full shadow-lg text-center absolute justify-center items-center w-[7rem] h-[7rem] flex ${
             handleUnStaked
               ? "unstake-loading top-[41%] left-[41%]"
-              : " top-[1.45rem] left-[1.4rem]"
+              : "bg-[#00551899] top-[1.45rem] left-[1.4rem]"
           }`}
-          style={{
-            background:
-              "linear-gradient(to top, rgba(0, 85, 24, 0.6), rgba(0, 187, 53, 0.6))",
-          }}
+          style={
+            !handleUnStaked
+              ? {
+                  background:
+                    "linear-gradient(to top, rgba(0, 85, 24, 0.6), rgba(0, 187, 53, 0.6))",
+                }
+              : {}
+          }
           onClick={() => handleUnstake(data.percentage)}
         >
           <p className="font-bold font-GBold text-[1rem] text-white ">
@@ -380,7 +384,7 @@ function BoostPayout({
               pendingUnstake.some((item: any) => item.pool_id == percentage)) ||
             isLocked ? (
               <LockedContent />
-            ) : isHovered ? (
+            ) : isHovered || handleUnStaked ? (
               <HoveredComponent percentage={percentage} />
             ) : (
               <>

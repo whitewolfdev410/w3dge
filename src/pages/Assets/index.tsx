@@ -4,6 +4,9 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { useAccount } from "wagmi";
 import WontToLearn from "../../components/footer/WontToLearn";
+import { setBoxViewData, setUserData } from "../../context/boxDataSlice";
+import axios from "axios";
+import { useDispatch } from "react-redux";
 
 function Assets() {
   const [inputValue, setInputValue] = useState<string>("");
@@ -13,6 +16,32 @@ function Assets() {
     setInputValue(value);
   };
   const { address } = useAccount();
+  const dispatch = useDispatch();
+  const parseResponseBody = (responseBody: any) => {
+    try {
+      return typeof responseBody === "string"
+        ? JSON.parse(responseBody)
+        : responseBody;
+    } catch (e) {
+      console.error("Error parsing response data:", e);
+      return null;
+    }
+  };
+  const fetchDataFromAWS = async (path: string, query = {}) => {
+    try {
+      const apiUrl = import.meta.env.VITE_AWS_API_URL;
+      const { data } = await axios.post(apiUrl, {
+        path: `w3dgeData/${path}`,
+        operation: "find",
+        query,
+      });
+      return parseResponseBody(data.body);
+    } catch (err) {
+      console.error(`Error fetching data from ${path}:`, err);
+      return null;
+    }
+  };
+
   const handleSubmit = async () => {
     setIsClicked(true);
     let data = {
@@ -37,6 +66,41 @@ function Assets() {
         toast.success("Success to activate");
       }
       setTimeout(() => setIsClicked(false), 3000);
+      const userData = await fetchDataFromAWS("UserData", {
+        wallet_address: address,
+      });
+      const boxData = await fetchDataFromAWS("BoxView", {
+        box_id: { $in: userData?.[0]?.boxes },
+      });
+      dispatch(setBoxViewData(boxData));
+      dispatch(
+        setUserData(
+          userData?.[0] || {
+            staking_pools: [
+              {
+                pool_type: "2%",
+                amount_locked: 0,
+                reward_earned: 0,
+              },
+              {
+                pool_type: "3%",
+                amount_locked: 0,
+                reward_earned: 0,
+              },
+              {
+                pool_type: "5%",
+                amount_locked: 0,
+                reward_earned: 0,
+              },
+              {
+                pool_type: "10%",
+                amount_locked: 0,
+                reward_earned: 0,
+              },
+            ],
+          }
+        )
+      );
     } catch (error: any) {
       toast.error(`An error occurred: ${error.message}`);
       setTimeout(() => setIsClicked(false), 3000);
