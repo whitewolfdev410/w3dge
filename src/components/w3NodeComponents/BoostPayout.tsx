@@ -16,6 +16,7 @@ import { setPendingUnstake, setUserData } from "../../context/boxDataSlice";
 import { useDispatch } from "react-redux";
 import PrimaryLogo from "../../assets/images/logo-chart-primary.png";
 import SendIcon from "../../assets/images/Send.png";
+import StakingPanel from "./stakingSystem";
 
 interface IPropsBoostPayout {
   title: string;
@@ -49,6 +50,7 @@ function BoostPayout({
   const [isLocked, setIsLocked] = useState(false);
   const [handleStaked, setHandleStaked] = useState(false);
   const [handleUnStaked, setHandleUnstaked] = useState(false);
+  const [selectedPoolId, setSelectedPoolId] = useState<any>("2%");
   const getStepBasedOnPercentage = (percentage: any) => {
     switch (parseInt(percentage)) {
       case 2:
@@ -227,38 +229,11 @@ function BoostPayout({
       setHandleStaked(false);
       return false;
     }
-    const apiUrl =
-      "https://gygxr53i33.execute-api.ap-southeast-2.amazonaws.com/Prod/ButtonStake";
-    const data = {
-      wallet_id: address,
-      pool_id: percentage,
-      value: inputValue,
-    };
-    try {
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      const jsonResponse = await response.json();
-      if (!response.ok) {
-        toast.error("Error to stake: " + jsonResponse);
-      } else {
-        toast.success("Staking successful!");
-        setIsStaked(true);
-      }
-      setHandleStaked(false);
-      handleGetUserData();
-    } catch (error: any) {
-      toast.error(`An error occurred: ${error.message}`);
-      setTimeout(() => setHandleStaked(false), 3000);
-    }
   };
 
   const handleValueChange = (value: number) => {
     setInputValue(value);
+    setSelectedPoolId(percentage);
   };
   function HoveredComponent(data: any) {
     return (
@@ -313,211 +288,223 @@ function BoostPayout({
   }
 
   return (
-    <div
-      className="bg-cover bg-center bg-no-repeat  rounded-xl md:w-[19rem] w-[24rem]"
-      style={{
-        background:
-          "linear-gradient(0deg, rgba(26,26,26,1) 0%, rgba(26,26,26,1) 100%)",
-      }}
-    >
+    <>
+      {handleStaked && (
+        <StakingPanel
+          amountStake={inputValue}
+          typePool={selectedPoolId}
+          staked={true}
+          setHandleStaked={setHandleStaked}
+        />
+      )}
       <div
-        className="p-9"
-        style={{ paddingBottom: is_piechart ? 0 : "2.8rem" }}
+        className="bg-cover bg-center bg-no-repeat  rounded-xl md:w-[19rem] w-[24rem]"
+        style={{
+          background:
+            "linear-gradient(0deg, rgba(26,26,26,1) 0%, rgba(26,26,26,1) 100%)",
+        }}
       >
-        <div className="flex justify-between gap-8">
-          <div>
-            <Heading5 text={is_piechart ? "Your Share" : title} />
-            <CounterAnimation
-              style="font-bold font-GBold text-[2.5rem] text-primary-main"
-              step={parseInt(percentage)}
-              countSteps={0.3}
-              duration={500}
-              tagText="%"
-            />
-            {subtitle ? (
-              <p
-                className="font-normal font-GRegular text-[0.75rem] text-grey-grey1"
-                dangerouslySetInnerHTML={{
-                  __html: subtitle.replace("reward", "<br/>reward"),
-                }}
+        <div
+          className="p-9"
+          style={{ paddingBottom: is_piechart ? 0 : "2.8rem" }}
+        >
+          <div className="flex justify-between gap-8">
+            <div>
+              <Heading5 text={is_piechart ? "Your Share" : title} />
+              <CounterAnimation
+                style="font-bold font-GBold text-[2.5rem] text-primary-main"
+                step={parseInt(percentage)}
+                countSteps={0.3}
+                duration={500}
+                tagText="%"
               />
-            ) : (
-              <p className="font-normal font-GRegular text-[0.75rem] text-grey-grey1">
-                Higher{" "}
-                <span className="font-normal font-GBold text-[0.75rem] text-white">
-                  daily
-                </span>{" "}
-                earning%
-              </p>
+              {subtitle ? (
+                <p
+                  className="font-normal font-GRegular text-[0.75rem] text-grey-grey1"
+                  dangerouslySetInnerHTML={{
+                    __html: subtitle.replace("reward", "<br/>reward"),
+                  }}
+                />
+              ) : (
+                <p className="font-normal font-GRegular text-[0.75rem] text-grey-grey1">
+                  Higher{" "}
+                  <span className="font-normal font-GBold text-[0.75rem] text-white">
+                    daily
+                  </span>{" "}
+                  earning%
+                </p>
+              )}
+            </div>
+            {is_piechart && (
+              <div>
+                <div className="flex justify-between">
+                  <Heading5 text={"Earned"} />
+                  <div
+                    className="w-[1.62rem] h-[1.25rem] "
+                    style={{
+                      backgroundImage: `url(${LogoIcon})`,
+                    }}
+                  ></div>
+                </div>
+                <CounterAnimation
+                  style="text-primary-main font-GBold font-bold text-[1.25rem]"
+                  step={earned}
+                  countSteps={1}
+                  duration={1000}
+                />
+              </div>
             )}
           </div>
-          {is_piechart && (
-            <div>
-              <div className="flex justify-between">
-                <Heading5 text={"Earned"} />
-                <div
-                  className="w-[1.62rem] h-[1.25rem] "
-                  style={{
-                    backgroundImage: `url(${LogoIcon})`,
-                  }}
-                ></div>
+          {is_piechart ? (
+            <div
+              className="w-[9.5rem] h-[9.5rem] grid relative mx-auto cursor-pointer"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
+              <PieChartComponent color={"#00B649"} />
+              {(pendingUnstake &&
+                pendingUnstake.some(
+                  (item: any) => item.pool_id == percentage
+                )) ||
+              isLocked ? (
+                <LockedContent />
+              ) : isHovered || handleUnStaked ? (
+                <HoveredComponent percentage={percentage} />
+              ) : (
+                <>
+                  <PieChartContent amount={amount} title="Unstake" />
+                </>
+              )}
+            </div>
+          ) : (
+            <>
+              <div className="bg-black flex justify-between px-3 py-1 gap-12 items-center mt-8 rounded-md">
+                <div className="flex gap-2 items-center w-[100%]">
+                  <div
+                    className="w-[5.62rem] h-[1.25rem]"
+                    style={{
+                      backgroundImage: `url(${LogoIcon})`,
+                    }}
+                  ></div>
+
+                  <CounterAnimationWithInput
+                    style="text-primary-main font-GBold font-bold text-[1.25rem] w-[100%]"
+                    step={getStepBasedOnPercentage(percentage)}
+                    countSteps={10}
+                    duration={5000}
+                    tagText=" items"
+                    onValueChange={handleValueChange} // Pass the callback function
+                  />
+                </div>
+                <p className="text-white font-GRegular font-normal text-[0.62rem]">
+                  required
+                </p>
               </div>
-              <CounterAnimation
-                style="text-primary-main font-GBold font-bold text-[1.25rem]"
-                step={earned}
-                countSteps={1}
-                duration={1000}
-              />
+              <div className="flex justify-between mt-2">
+                <Tooltip text="details">
+                  <div className="flex gap-3 border border-[#AAAAAA] rounded-md items-center py-1 px-2 cursor-pointer transition-all duration-300 ease-linear hover:bg-primary-main hover:border-primary-main">
+                    <Clock />
+                    <p className="font-normal font-GRegular text-[0.62rem] text-white pr-8">
+                      7 Days
+                    </p>
+                  </div>
+                </Tooltip>
+                <Tooltip text="details" handleStaked={handleStaked}>
+                  <div
+                    className={`flex gap-5 border border-[#AAAAAA] rounded-md items-center py-1 px-2 pr-6 cursor-pointer transition-all duration-300 ease-linear hover:bg-primary-main hover:border-primary-main ${
+                      handleStaked ? "stake-loading" : ""
+                    }`}
+                    onClick={() => handleStake(percentage)}
+                  >
+                    <Lock />
+                    <p className="font-normal font-GRegular text-[0.62rem] text-white pr-6">
+                      {handleStaked ? "" : "Stake"}
+                    </p>
+                  </div>
+                </Tooltip>
+              </div>
+            </>
+          )}
+          {stockNow && (
+            <div className="bg-black flex justify-center items-center rounded-md mt-10 py-2 transition-all duration-300 ease-linear cursor-pointer text-primary-main hover:text-white hover:bg-primary-main">
+              <p className="font-GBold font-bold text-[1.25rem]  hover:text-white">
+                Stake now
+              </p>
             </div>
           )}
         </div>
-        {is_piechart ? (
-          <div
-            className="w-[9.5rem] h-[9.5rem] grid relative mx-auto cursor-pointer"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-          >
-            <PieChartComponent color={"#00B649"} />
-            {(pendingUnstake &&
-              pendingUnstake.some((item: any) => item.pool_id == percentage)) ||
-            isLocked ? (
-              <LockedContent />
-            ) : isHovered || handleUnStaked ? (
-              <HoveredComponent percentage={percentage} />
-            ) : (
-              <>
-                <PieChartContent amount={amount} title="Unstake" />
-              </>
-            )}
-          </div>
-        ) : (
-          <>
-            <div className="bg-black flex justify-between px-3 py-1 gap-12 items-center mt-8 rounded-md">
-              <div className="flex gap-2 items-center w-[100%]">
-                <div
-                  className="w-[5.62rem] h-[1.25rem]"
-                  style={{
-                    backgroundImage: `url(${LogoIcon})`,
-                  }}
-                ></div>
-
-                <CounterAnimationWithInput
-                  style="text-primary-main font-GBold font-bold text-[1.25rem] w-[100%]"
-                  step={getStepBasedOnPercentage(percentage)}
-                  countSteps={10}
-                  duration={5000}
-                  tagText=" items"
-                  onValueChange={handleValueChange} // Pass the callback function
+        {validators && (
+          <div className="flex items-end gap-5">
+            <div
+              className="w-[8.93rem] h-[6.62rem]"
+              style={{
+                backgroundImage: `url(${ValedateImage})`,
+              }}
+            ></div>
+            <div className="w-[40%] grid justify-center pl-[3rem]">
+              {is_piechart &&
+                !(
+                  (pendingUnstake &&
+                    pendingUnstake.some(
+                      (item: any) => item.pool_id == percentage
+                    )) ||
+                  isLocked
+                ) && (
+                  <div className="w-full">
+                    <p className="font-normal font-GRegular text-[0.62rem] text-[#767676] pb-1 text-end">
+                      {isClickedButton
+                        ? "Sending"
+                        : isHoveredSec
+                        ? "Press send"
+                        : "Increase Stake"}
+                    </p>
+                    <div
+                      className="flex gap-1 border border-[#AAAAAA] rounded-md items-center py-[0.1rem] w-[5.5rem] cursor-pointer transition-all duration-300 ease-linear px-0"
+                      onMouseEnter={() => setIsHoveredSec(true)}
+                      onMouseLeave={() => setIsHoveredSec(false)}
+                    >
+                      {isClickedButton ? (
+                        <div className="stake-loading"></div>
+                      ) : (
+                        <img
+                          src={isHoveredSec ? SendIcon : PrimaryLogo}
+                          style={{
+                            width: "1.5rem",
+                            margin: "auto",
+                            height: "1rem",
+                          }}
+                          onClick={() => handleIncreaseStake(percentage)}
+                        />
+                      )}
+                      <input
+                        className="text-white text-[1rem] w-[2.7rem] mr-[0.5rem] bg-transparent"
+                        type="number"
+                        onChange={handleIncreaseChange}
+                      />
+                    </div>
+                  </div>
+                )}
+              <div className="flex items-end h-fit">
+                <CounterAnimation
+                  style="font-bold font-GBold text-[2.5rem] text-white leading-10"
+                  step={level}
+                  countSteps={1}
+                  duration={300}
                 />
+                <div className="pl-1">
+                  <p className="font-normal font-GRegular text-[0.75rem] text-white pb-0 -mb-1">
+                    Level
+                  </p>
+                  <p className="font-normal font-GRegular text-[0.75rem] text-white pt-0">
+                    Validator
+                  </p>
+                </div>
               </div>
-              <p className="text-white font-GRegular font-normal text-[0.62rem]">
-                required
-              </p>
             </div>
-            <div className="flex justify-between mt-2">
-              <Tooltip text="details">
-                <div className="flex gap-3 border border-[#AAAAAA] rounded-md items-center py-1 px-2 cursor-pointer transition-all duration-300 ease-linear hover:bg-primary-main hover:border-primary-main">
-                  <Clock />
-                  <p className="font-normal font-GRegular text-[0.62rem] text-white pr-8">
-                    7 Days
-                  </p>
-                </div>
-              </Tooltip>
-              <Tooltip text="details" handleStaked={handleStaked}>
-                <div
-                  className={`flex gap-5 border border-[#AAAAAA] rounded-md items-center py-1 px-2 pr-6 cursor-pointer transition-all duration-300 ease-linear hover:bg-primary-main hover:border-primary-main ${
-                    handleStaked ? "stake-loading" : ""
-                  }`}
-                  onClick={() => handleStake(percentage)}
-                >
-                  <Lock />
-                  <p className="font-normal font-GRegular text-[0.62rem] text-white pr-6">
-                    {handleStaked ? "" : "Stake"}
-                  </p>
-                </div>
-              </Tooltip>
-            </div>
-          </>
-        )}
-        {stockNow && (
-          <div className="bg-black flex justify-center items-center rounded-md mt-10 py-2 transition-all duration-300 ease-linear cursor-pointer text-primary-main hover:text-white hover:bg-primary-main">
-            <p className="font-GBold font-bold text-[1.25rem]  hover:text-white">
-              Stake now
-            </p>
           </div>
         )}
       </div>
-      {validators && (
-        <div className="flex items-end gap-5">
-          <div
-            className="w-[8.93rem] h-[6.62rem]"
-            style={{
-              backgroundImage: `url(${ValedateImage})`,
-            }}
-          ></div>
-          <div className="w-[40%] grid justify-center pl-[3rem]">
-            {is_piechart &&
-              !(
-                (pendingUnstake &&
-                  pendingUnstake.some(
-                    (item: any) => item.pool_id == percentage
-                  )) ||
-                isLocked
-              ) && (
-                <div className="w-full">
-                  <p className="font-normal font-GRegular text-[0.62rem] text-[#767676] pb-1 text-end">
-                    {isClickedButton
-                      ? "Sending"
-                      : isHoveredSec
-                      ? "Press send"
-                      : "Increase Stake"}
-                  </p>
-                  <div
-                    className="flex gap-1 border border-[#AAAAAA] rounded-md items-center py-[0.1rem] w-[5.5rem] cursor-pointer transition-all duration-300 ease-linear px-0"
-                    onMouseEnter={() => setIsHoveredSec(true)}
-                    onMouseLeave={() => setIsHoveredSec(false)}
-                  >
-                    {isClickedButton ? (
-                      <div className="stake-loading"></div>
-                    ) : (
-                      <img
-                        src={isHoveredSec ? SendIcon : PrimaryLogo}
-                        style={{
-                          width: "1.5rem",
-                          margin: "auto",
-                          height: "1rem",
-                        }}
-                        onClick={() => handleIncreaseStake(percentage)}
-                      />
-                    )}
-                    <input
-                      className="text-white text-[1rem] w-[2.7rem] mr-[0.5rem] bg-transparent"
-                      type="number"
-                      onChange={handleIncreaseChange}
-                    />
-                  </div>
-                </div>
-              )}
-            <div className="flex items-end h-fit">
-              <CounterAnimation
-                style="font-bold font-GBold text-[2.5rem] text-white leading-10"
-                step={level}
-                countSteps={1}
-                duration={300}
-              />
-              <div className="pl-1">
-                <p className="font-normal font-GRegular text-[0.75rem] text-white pb-0 -mb-1">
-                  Level
-                </p>
-                <p className="font-normal font-GRegular text-[0.75rem] text-white pt-0">
-                  Validator
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+    </>
   );
 }
 
