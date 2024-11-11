@@ -223,6 +223,7 @@ function BoostPayout({
   };
   const handleStake = async (percentage: any) => {
     setHandleStaked(true);
+    setSelectedPoolId(percentage);
     let stakeAmount = getStepBasedOnPercentage(percentage);
     if (inputValue < stakeAmount) {
       toast.error("Amount " + stakeAmount + " is minimum required value");
