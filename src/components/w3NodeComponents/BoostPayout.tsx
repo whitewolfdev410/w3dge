@@ -214,17 +214,22 @@ function BoostPayout({
       )
     );
   };
+  const [isUpstake, setIsUpstake] = useState<boolean>(false);
   const handleIncreaseStake = async (percentage: any) => {
     setIsClickedButton(true);
-    await handleStake(percentage);
+    setIsUpstake(true);
+    await handleStake(percentage, true);
     setTimeout(() => {
       setIsClickedButton(false);
     }, 2000);
   };
-  const handleStake = async (percentage: any) => {
+  const handleStake = async (percentage: any, isUpstake = false) => {
     setHandleStaked(true);
     setSelectedPoolId(percentage);
-    let stakeAmount = getStepBasedOnPercentage(percentage);
+    let stakeAmount = 0;
+    if (!isUpstake) {
+      stakeAmount = getStepBasedOnPercentage(percentage);
+    }
     if (inputValue < stakeAmount) {
       toast.error("Amount " + stakeAmount + " is minimum required value");
       setHandleStaked(false);
@@ -296,6 +301,8 @@ function BoostPayout({
           typePool={selectedPoolId}
           staked={true}
           setHandleStaked={setHandleStaked}
+          handleGetUserData={handleGetUserData}
+          isUpstake={isUpstake}
         />
       )}
       <div

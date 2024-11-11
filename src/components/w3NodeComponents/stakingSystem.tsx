@@ -25,11 +25,15 @@ const StakingPanel = ({
   typePool,
   staked,
   setHandleStaked,
+  handleGetUserData,
+  isUpstake,
 }: {
   amountStake: any;
   typePool: any;
   staked: boolean;
   setHandleStaked: any;
+  handleGetUserData: any;
+  isUpstake: boolean;
 }) => {
   const [amount, setAmount] = useState(amountStake);
   const pools = [
@@ -44,6 +48,12 @@ const StakingPanel = ({
   const [isStaking, setIsStaking] = useState<boolean>(staked);
   return (
     <div className="w-full max-w-2xl mx-auto p-6 space-y-6 bg-white rounded-xl shadow-lg absolute left-[37%] z-[1]">
+      <p
+        className="absolute right-[10px] top-[10px]"
+        onClick={() => setHandleStaked(false)}
+      >
+        close
+      </p>
       <div className="text-2xl font-bold text-gray-800 mb-6">Stake Tokens</div>
 
       {/* Pool Selection */}
@@ -86,7 +96,7 @@ const StakingPanel = ({
       </div>
 
       {/* Validation Messages */}
-      {selectedPool && amount && (
+      {selectedPool && amount && !isUpstake && (
         <div className="text-sm">
           {Number(amount) < selectedPool.minStake ? (
             <div className="text-red-500 flex items-center gap-1">
@@ -110,6 +120,7 @@ const StakingPanel = ({
           onComplete={() => setIsStaking(false)}
           onError={() => setIsStaking(false)}
           setHandleStaked={setHandleStaked}
+          handleGetUserData={handleGetUserData}
         />
       ) : (
         <button
@@ -134,12 +145,14 @@ const StakingTransaction = ({
   onComplete,
   onError,
   setHandleStaked,
+  handleGetUserData,
 }: {
   amount: number;
   poolId: string;
   onComplete: any;
   onError: any;
   setHandleStaked: any;
+  handleGetUserData: any;
 }) => {
   const [status, setStatus] = useState("initial");
   const [progress, setProgress] = useState(0);
@@ -177,9 +190,9 @@ const StakingTransaction = ({
         body: JSON.stringify(data),
       });
       const jsonResponse = await response.json();
-      console.log("here is response:::0", jsonResponse);
       if (!response.ok) {
         toast.error("Error to stake: " + jsonResponse);
+        handleGetUserData();
       } else {
         toast.success("Staking successful!");
       }
