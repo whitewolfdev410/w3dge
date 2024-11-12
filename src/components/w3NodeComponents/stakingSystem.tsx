@@ -192,9 +192,9 @@ const StakingTransaction = ({
       const jsonResponse = await response.json();
       if (!response.ok) {
         toast.error("Error to stake: " + jsonResponse);
-        handleGetUserData();
       } else {
         toast.success("Staking successful!");
+        handleGetUserData();
       }
       setHandleStaked(false);
     } catch (error: any) {
