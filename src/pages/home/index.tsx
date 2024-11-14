@@ -4,7 +4,7 @@ import DailyPayouts from "../../components/homeComponents/DailyPayouts";
 import Footer from "../../components/footer";
 import AutoScrollContainer from "../../components/animation/AutoScrollContainer";
 import Distribution from "../../components/homeComponents/Distribution";
-import { useAccount } from "wagmi";
+import { useAccount, useBalance } from "wagmi";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import CounterAnimation from "../../components/animation/counterAnimation";
@@ -19,6 +19,7 @@ import {
   setLocationCountData,
   setNetworkStats,
   setPendingUnstake,
+  setTotalBalance,
   setUserData,
   setValidatorPayoutdata,
 } from "../../context/boxDataSlice";
@@ -165,6 +166,11 @@ function HomePage() {
       return null;
     }
   };
+  const result = useBalance({
+    address: address,
+    token: import.meta.env.VITE_TOKEN_ADDRESS,
+  });
+  dispatch(setTotalBalance(result?.data?.formatted));
 
   useEffect(() => {
     if (isConnected && address && !isCalled) {

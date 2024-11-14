@@ -11,6 +11,7 @@ const initialState = {
   userData: [],
   validatorPayoutdata: [],
   isCalled: false,
+  totalBalance: 0,
 };
 
 const boxDataSlice = createSlice({
@@ -47,6 +48,9 @@ const boxDataSlice = createSlice({
     setIsCalled(state, action) {
       state.isCalled = action.payload;
     },
+    setTotalBalance(state, action) {
+      state.totalBalance = action.payload;
+    },
   },
 });
 
@@ -61,6 +65,7 @@ export const {
   setUserData,
   setValidatorPayoutdata,
   setIsCalled,
+  setTotalBalance,
 } = boxDataSlice.actions;
 
 export default boxDataSlice.reducer;

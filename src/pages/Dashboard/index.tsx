@@ -10,7 +10,7 @@ import PieChartContent from "../../components/dashboardComponent/pieChartContent
 import Earned from "../../components/dashboardComponent/Earned";
 import PureComponent from "../../components/charts/SimpleRadialBarChart";
 import CounterAnimation from "../../components/animation/counterAnimation";
-import { useAccount } from "wagmi";
+import { useAccount, useBalance } from "wagmi";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { ArrowRight } from "../../icons";
@@ -26,9 +26,13 @@ function Dashboard() {
   const [selectedBoxData, setSelectedBoxData] = useState<any>();
   const [isLoadingNet, setIsLoadingNet] = useState<boolean>(true);
   const [networkStats, setNetworkStats] = useState<any>();
-  const { userData, validatorPayoutdata, boxViewData, isLoading } = useSelector(
-    (state: any) => state.boxData
-  );
+  const {
+    userData,
+    validatorPayoutdata,
+    boxViewData,
+    isLoading,
+    totalBalance,
+  } = useSelector((state: any) => state.boxData);
   const [validatorCount, setValidatorCount] = useState<number>(0);
   const parseResponseBody = (responseBody: any) => {
     try {
@@ -76,7 +80,6 @@ function Dashboard() {
       boxViewRes?.[0]?.uptime_in_days ? boxViewRes?.[0]?.uptime_in_days * 24 : 0
     );
   };
-  console.log("validatorCount:::", validatorCount);
   useEffect(() => {
     if (boxViewData) {
       handleBoxSelect(boxViewData[0]?.box_id);
@@ -128,7 +131,7 @@ function Dashboard() {
                 />
                 <Earn
                   title="Total Balance"
-                  amount={userData?.balance ?? 0}
+                  amount={totalBalance}
                   currency="CDN"
                   key={2}
                 />

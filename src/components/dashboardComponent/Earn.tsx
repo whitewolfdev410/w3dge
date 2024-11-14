@@ -20,7 +20,7 @@ function Earn({
         <CounterAnimation
           style="font-bold font-GBold text-[3rem] text-white"
           step={Math.floor(amount)}
-          countSteps={10}
+          countSteps={100}
           duration={1000}
         />
         <p className="font-bold font-GBold text-[16x] text-primary-main pb-3">
